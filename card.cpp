@@ -34,12 +34,12 @@ public:
     // default constructor: Ace of Spades
     Card() : suit(Suit::SPADES), value(FaceValue::ACE) {}
 
-    int GetSuit()
+    Suit GetSuit()
     {
         return this->suit;
     }
 
-    int GetValue()
+    FaceValue GetValue()
     {
         return this->value;
     }
@@ -53,7 +53,10 @@ public:
 
         // determine suit
         res += this->suitSymbols[static_cast<int>(this->suit)];
+
+        return res;
     }
+
 
 private:
     Suit suit;
