@@ -9,7 +9,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_subdirectory(../googletest googletest)
 
 # Add the test executable
-add_executable(CardTests Card_Tests.cpp /Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp)
+add_executable(CardTests 
+		Card_Tests.cpp 
+		Deck_Tests.cpp
+		/Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp
+		/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp)
 
 # Link GoogleTest libraries
 target_link_libraries(CardTests gtest gtest_main)

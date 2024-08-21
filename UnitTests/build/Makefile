@@ -60,7 +60,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build
+CMAKE_BINARY_DIR = /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -132,9 +132,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build/CMakeFiles /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build/CMakeFiles /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -250,6 +250,30 @@ Card_Tests.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTests.dir/build.make CMakeFiles/CardTests.dir/Card_Tests.cpp.s
 .PHONY : Card_Tests.cpp.s
 
+Deck_Tests.o: Deck_Tests.cpp.o
+.PHONY : Deck_Tests.o
+
+# target to build an object file
+Deck_Tests.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTests.dir/build.make CMakeFiles/CardTests.dir/Deck_Tests.cpp.o
+.PHONY : Deck_Tests.cpp.o
+
+Deck_Tests.i: Deck_Tests.cpp.i
+.PHONY : Deck_Tests.i
+
+# target to preprocess a source file
+Deck_Tests.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTests.dir/build.make CMakeFiles/CardTests.dir/Deck_Tests.cpp.i
+.PHONY : Deck_Tests.cpp.i
+
+Deck_Tests.s: Deck_Tests.cpp.s
+.PHONY : Deck_Tests.s
+
+# target to generate assembly for a file
+Deck_Tests.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTests.dir/build.make CMakeFiles/CardTests.dir/Deck_Tests.cpp.s
+.PHONY : Deck_Tests.cpp.s
+
 Users/joshjacoby/Desktop/Code/Poker/Poker/card.o: Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp.o
 .PHONY : Users/joshjacoby/Desktop/Code/Poker/Poker/card.o
 
@@ -274,6 +298,30 @@ Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTests.dir/build.make CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp.s
 .PHONY : Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp.s
 
+Users/joshjacoby/Desktop/Code/Poker/Poker/deck.o: Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.o
+.PHONY : Users/joshjacoby/Desktop/Code/Poker/Poker/deck.o
+
+# target to build an object file
+Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTests.dir/build.make CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.o
+.PHONY : Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.o
+
+Users/joshjacoby/Desktop/Code/Poker/Poker/deck.i: Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.i
+.PHONY : Users/joshjacoby/Desktop/Code/Poker/Poker/deck.i
+
+# target to preprocess a source file
+Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTests.dir/build.make CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.i
+.PHONY : Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.i
+
+Users/joshjacoby/Desktop/Code/Poker/Poker/deck.s: Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.s
+.PHONY : Users/joshjacoby/Desktop/Code/Poker/Poker/deck.s
+
+# target to generate assembly for a file
+Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTests.dir/build.make CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.s
+.PHONY : Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -294,9 +342,15 @@ help:
 	@echo "... Card_Tests.o"
 	@echo "... Card_Tests.i"
 	@echo "... Card_Tests.s"
+	@echo "... Deck_Tests.o"
+	@echo "... Deck_Tests.i"
+	@echo "... Deck_Tests.s"
 	@echo "... Users/joshjacoby/Desktop/Code/Poker/Poker/card.o"
 	@echo "... Users/joshjacoby/Desktop/Code/Poker/Poker/card.i"
 	@echo "... Users/joshjacoby/Desktop/Code/Poker/Poker/card.s"
+	@echo "... Users/joshjacoby/Desktop/Code/Poker/Poker/deck.o"
+	@echo "... Users/joshjacoby/Desktop/Code/Poker/Poker/deck.i"
+	@echo "... Users/joshjacoby/Desktop/Code/Poker/Poker/deck.s"
 .PHONY : help
 
 
