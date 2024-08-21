@@ -34,22 +34,20 @@ public:
     Card(Suit s, FaceValue val);
     Card(); // Default constructor: Ace of Spades
 
-    // Getter functions
+    // Getter methods
     Suit GetSuit() const;
     FaceValue GetValue() const;
 
-    // Convert card to string representation
+    // Convert to string method
     std::string ToString() const;
 
 private:
     Suit suit;
     FaceValue value;
-    
-    // Array to map face values to symbols
-    const char* faceSymbols[14] = {"", "A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K"};
-    
-    // Array to map suit values to symbols
-    const char* suitSymbols[5] = {"", "c", "d", "h", "s"}; // Note: Added an empty string for index 0
+
+    // Static arrays to map face values and suits to symbols
+    static const char* faceSymbols[13];
+    static const char* suitSymbols[4];
 };
 
 #endif // CARD_H
