@@ -10,18 +10,20 @@ Card::Card(Suit s, FaceValue val) : suit(s), value(val) {}
 Card::Card() : suit(Suit::SPADES), value(FaceValue::ACE) {}
 
 // Getter implementations
-Card::Suit Card::GetSuit() const {
-    return suit;
+Card::Suit Card::GetSuit() const 
+{
+    return this->suit;
 }
 
-Card::FaceValue Card::GetValue() const {
-    return value;
+Card::FaceValue Card::GetValue() const 
+{
+    return this->value;
 }
 
-// Convert to string implementation
-std::string Card::ToString() const {
+std::string Card::ToString() const 
+{
     std::string res;
-    res += faceSymbols[static_cast<int>(value) - 1]; // -1 to adjust for zero-based indexing
+    res += faceSymbols[static_cast<int>(value) - 1]; 
     res += suitSymbols[static_cast<int>(suit) - 1];
     return res;
 }

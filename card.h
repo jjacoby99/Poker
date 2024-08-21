@@ -5,16 +5,16 @@
 
 class Card {
 public:
-    // Enum for Suit
-    enum class Suit {
+    enum class Suit 
+    {
         CLUBS = 1,
         DIAMONDS = 2,
         HEARTS = 3,
         SPADES = 4
     };
 
-    // Enum for FaceValue
-    enum class FaceValue {
+    enum class FaceValue 
+    {
         ACE = 1,
         TWO = 2,
         THREE = 3,
