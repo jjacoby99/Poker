@@ -2,6 +2,7 @@
 #define DECK_H
 
 #include "card.h"
+#include <vector>
 
 class Deck {
 public:
@@ -14,7 +15,7 @@ public:
     std::string ToString() const;
 
 private:
-    Card deck[52]; // Array of 52 Card instances
+    std::vector<Card> deck; // Array of 52 Card instances
 };
 
 #endif // DECK_H
