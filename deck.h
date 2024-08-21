@@ -8,8 +8,10 @@ public:
     // Constructor
     Deck();
 
-    // Method to print the deck
-    void PrintDeck() const;
+    // Randomizes the order of the deck
+    void Shuffle();
+
+    std::string ToString() const;
 
 private:
     Card deck[52]; // Array of 52 Card instances

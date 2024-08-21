@@ -1,7 +1,8 @@
 #include "deck.h"
 #include <iostream> 
 
-Deck::Deck() {
+Deck::Deck() 
+{
     int index = 0;
     // Loop through each suit
     for (int suit = static_cast<int>(Card::Suit::CLUBS); suit <= static_cast<int>(Card::Suit::SPADES); ++suit) {
@@ -13,9 +14,16 @@ Deck::Deck() {
     }
 }
 
+void Deck::Shuffle()
+{
+
+}
 // Optional method to print the deck (for testing)
-void Deck::PrintDeck() const {
+std::string Deck::ToString() const 
+{
+    std::string result;
     for (int i = 0; i < 52; ++i) {
-        std::cout << deck[i].ToString() << std::endl;
+        result += deck[i].ToString();
     }
+    return result;
 }
