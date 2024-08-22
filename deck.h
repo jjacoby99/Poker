@@ -9,6 +9,9 @@ public:
     // Constructor
     Deck();
 
+    // Copy constructor
+    Deck(const Deck &d);
+
     // Randomizes the order of the deck
     void Shuffle();
 
