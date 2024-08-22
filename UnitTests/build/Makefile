@@ -60,7 +60,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build
+CMAKE_BINARY_DIR = /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -132,9 +132,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build/CMakeFiles /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build/CMakeFiles /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -226,6 +226,30 @@ gtest_main/fast:
 	$(MAKE) $(MAKESILENT) -f googletest/googletest/CMakeFiles/gtest_main.dir/build.make googletest/googletest/CMakeFiles/gtest_main.dir/build
 .PHONY : gtest_main/fast
 
+Board_Tests.o: Board_Tests.cpp.o
+.PHONY : Board_Tests.o
+
+# target to build an object file
+Board_Tests.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTests.dir/build.make CMakeFiles/CardTests.dir/Board_Tests.cpp.o
+.PHONY : Board_Tests.cpp.o
+
+Board_Tests.i: Board_Tests.cpp.i
+.PHONY : Board_Tests.i
+
+# target to preprocess a source file
+Board_Tests.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTests.dir/build.make CMakeFiles/CardTests.dir/Board_Tests.cpp.i
+.PHONY : Board_Tests.cpp.i
+
+Board_Tests.s: Board_Tests.cpp.s
+.PHONY : Board_Tests.s
+
+# target to generate assembly for a file
+Board_Tests.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTests.dir/build.make CMakeFiles/CardTests.dir/Board_Tests.cpp.s
+.PHONY : Board_Tests.cpp.s
+
 Card_Tests.o: Card_Tests.cpp.o
 .PHONY : Card_Tests.o
 
@@ -273,6 +297,30 @@ Deck_Tests.s: Deck_Tests.cpp.s
 Deck_Tests.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTests.dir/build.make CMakeFiles/CardTests.dir/Deck_Tests.cpp.s
 .PHONY : Deck_Tests.cpp.s
+
+Users/joshjacoby/Desktop/Code/Poker/Poker/board.o: Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.o
+.PHONY : Users/joshjacoby/Desktop/Code/Poker/Poker/board.o
+
+# target to build an object file
+Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTests.dir/build.make CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.o
+.PHONY : Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.o
+
+Users/joshjacoby/Desktop/Code/Poker/Poker/board.i: Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.i
+.PHONY : Users/joshjacoby/Desktop/Code/Poker/Poker/board.i
+
+# target to preprocess a source file
+Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTests.dir/build.make CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.i
+.PHONY : Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.i
+
+Users/joshjacoby/Desktop/Code/Poker/Poker/board.s: Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.s
+.PHONY : Users/joshjacoby/Desktop/Code/Poker/Poker/board.s
+
+# target to generate assembly for a file
+Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTests.dir/build.make CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.s
+.PHONY : Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.s
 
 Users/joshjacoby/Desktop/Code/Poker/Poker/card.o: Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp.o
 .PHONY : Users/joshjacoby/Desktop/Code/Poker/Poker/card.o
@@ -339,12 +387,18 @@ help:
 	@echo "... gmock_main"
 	@echo "... gtest"
 	@echo "... gtest_main"
+	@echo "... Board_Tests.o"
+	@echo "... Board_Tests.i"
+	@echo "... Board_Tests.s"
 	@echo "... Card_Tests.o"
 	@echo "... Card_Tests.i"
 	@echo "... Card_Tests.s"
 	@echo "... Deck_Tests.o"
 	@echo "... Deck_Tests.i"
 	@echo "... Deck_Tests.s"
+	@echo "... Users/joshjacoby/Desktop/Code/Poker/Poker/board.o"
+	@echo "... Users/joshjacoby/Desktop/Code/Poker/Poker/board.i"
+	@echo "... Users/joshjacoby/Desktop/Code/Poker/Poker/board.s"
 	@echo "... Users/joshjacoby/Desktop/Code/Poker/Poker/card.o"
 	@echo "... Users/joshjacoby/Desktop/Code/Poker/Poker/card.i"
 	@echo "... Users/joshjacoby/Desktop/Code/Poker/Poker/card.s"

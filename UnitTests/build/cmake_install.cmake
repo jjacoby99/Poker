@@ -39,7 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build/googletest/cmake_install.cmake")
+  include("/Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build/googletest/cmake_install.cmake")
 
 endif()
 
@@ -58,6 +58,6 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-  file(WRITE "/Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "/Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

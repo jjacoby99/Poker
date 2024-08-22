@@ -56,7 +56,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build
+CMAKE_BINARY_DIR = /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/CardTests.dir/depend.make
@@ -72,7 +72,7 @@ include CMakeFiles/CardTests.dir/flags.make
 CMakeFiles/CardTests.dir/Card_Tests.cpp.o: CMakeFiles/CardTests.dir/flags.make
 CMakeFiles/CardTests.dir/Card_Tests.cpp.o: /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Card_Tests.cpp
 CMakeFiles/CardTests.dir/Card_Tests.cpp.o: CMakeFiles/CardTests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/CardTests.dir/Card_Tests.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/CardTests.dir/Card_Tests.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CardTests.dir/Card_Tests.cpp.o -MF CMakeFiles/CardTests.dir/Card_Tests.cpp.o.d -o CMakeFiles/CardTests.dir/Card_Tests.cpp.o -c /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Card_Tests.cpp
 
 CMakeFiles/CardTests.dir/Card_Tests.cpp.i: cmake_force
@@ -86,7 +86,7 @@ CMakeFiles/CardTests.dir/Card_Tests.cpp.s: cmake_force
 CMakeFiles/CardTests.dir/Deck_Tests.cpp.o: CMakeFiles/CardTests.dir/flags.make
 CMakeFiles/CardTests.dir/Deck_Tests.cpp.o: /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Deck_Tests.cpp
 CMakeFiles/CardTests.dir/Deck_Tests.cpp.o: CMakeFiles/CardTests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/CardTests.dir/Deck_Tests.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/CardTests.dir/Deck_Tests.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CardTests.dir/Deck_Tests.cpp.o -MF CMakeFiles/CardTests.dir/Deck_Tests.cpp.o.d -o CMakeFiles/CardTests.dir/Deck_Tests.cpp.o -c /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Deck_Tests.cpp
 
 CMakeFiles/CardTests.dir/Deck_Tests.cpp.i: cmake_force
@@ -97,10 +97,24 @@ CMakeFiles/CardTests.dir/Deck_Tests.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CardTests.dir/Deck_Tests.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Deck_Tests.cpp -o CMakeFiles/CardTests.dir/Deck_Tests.cpp.s
 
+CMakeFiles/CardTests.dir/Board_Tests.cpp.o: CMakeFiles/CardTests.dir/flags.make
+CMakeFiles/CardTests.dir/Board_Tests.cpp.o: /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Board_Tests.cpp
+CMakeFiles/CardTests.dir/Board_Tests.cpp.o: CMakeFiles/CardTests.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/CardTests.dir/Board_Tests.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CardTests.dir/Board_Tests.cpp.o -MF CMakeFiles/CardTests.dir/Board_Tests.cpp.o.d -o CMakeFiles/CardTests.dir/Board_Tests.cpp.o -c /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Board_Tests.cpp
+
+CMakeFiles/CardTests.dir/Board_Tests.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CardTests.dir/Board_Tests.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Board_Tests.cpp > CMakeFiles/CardTests.dir/Board_Tests.cpp.i
+
+CMakeFiles/CardTests.dir/Board_Tests.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CardTests.dir/Board_Tests.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Board_Tests.cpp -o CMakeFiles/CardTests.dir/Board_Tests.cpp.s
+
 CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp.o: CMakeFiles/CardTests.dir/flags.make
 CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp.o: /Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp
 CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp.o: CMakeFiles/CardTests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp.o -MF CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp.o.d -o CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp.o -c /Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp
 
 CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp.i: cmake_force
@@ -114,7 +128,7 @@ CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp.s: c
 CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.o: CMakeFiles/CardTests.dir/flags.make
 CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.o: /Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp
 CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.o: CMakeFiles/CardTests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.o -MF CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.o.d -o CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.o -c /Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp
 
 CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.i: cmake_force
@@ -125,26 +139,44 @@ CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.s: c
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp -o CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.s
 
+CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.o: CMakeFiles/CardTests.dir/flags.make
+CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.o: /Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp
+CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.o: CMakeFiles/CardTests.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.o -MF CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.o.d -o CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.o -c /Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp
+
+CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp > CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.i
+
+CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp -o CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.s
+
 # Object files for target CardTests
 CardTests_OBJECTS = \
 "CMakeFiles/CardTests.dir/Card_Tests.cpp.o" \
 "CMakeFiles/CardTests.dir/Deck_Tests.cpp.o" \
+"CMakeFiles/CardTests.dir/Board_Tests.cpp.o" \
 "CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp.o" \
-"CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.o"
+"CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.o" \
+"CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.o"
 
 # External object files for target CardTests
 CardTests_EXTERNAL_OBJECTS =
 
 CardTests: CMakeFiles/CardTests.dir/Card_Tests.cpp.o
 CardTests: CMakeFiles/CardTests.dir/Deck_Tests.cpp.o
+CardTests: CMakeFiles/CardTests.dir/Board_Tests.cpp.o
 CardTests: CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp.o
 CardTests: CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp.o
+CardTests: CMakeFiles/CardTests.dir/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp.o
 CardTests: CMakeFiles/CardTests.dir/build.make
 CardTests: lib/libgtest.a
 CardTests: lib/libgtest_main.a
 CardTests: lib/libgtest.a
 CardTests: CMakeFiles/CardTests.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable CardTests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable CardTests"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CardTests.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -156,6 +188,6 @@ CMakeFiles/CardTests.dir/clean:
 .PHONY : CMakeFiles/CardTests.dir/clean
 
 CMakeFiles/CardTests.dir/depend:
-	cd /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/Build/CMakeFiles/CardTests.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build /Users/joshjacoby/Desktop/Code/Poker/Poker/UnitTests/build/CMakeFiles/CardTests.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/CardTests.dir/depend
 
