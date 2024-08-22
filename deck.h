@@ -14,6 +14,10 @@ public:
 
     std::string ToString() const;
 
+    // returns the first num_cards cards from the top of the deck
+    // has the side effect of removing those cards from the deck
+    std::vector<Card> Deal(size_t num_cards);
+    
 private:
     std::vector<Card> deck; // Array of 52 Card instances
 };

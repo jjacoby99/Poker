@@ -2,7 +2,7 @@
 #include <iostream> 
 #include <algorithm>
 #include <random>
-
+#include <exception>
 
 Deck::Deck() {
     deck.reserve(52); // Reserve space for 52 cards
@@ -24,7 +24,29 @@ void Deck::Shuffle()
     std::cout << "After shuffle first element: " << this->deck[0].ToString() << std::endl;
 
 }
-// Optional method to print the deck (for testing)
+
+std::vector<Card> Deck::Deal(size_t num_cards)
+{
+    if(num_cards >= this->deck.size())
+    {
+        throw std::runtime_error("Attempted to deal more cards than remain in the deck.\n");
+    }
+
+    std::vector<Card> result;
+    result.reserve(num_cards);
+
+    for(int i = 0; i < num_cards; i++)
+    {
+        //populate result
+        result.emplace_back(this->deck[0]);
+
+        //remove card from deck
+        this->deck.erase(this->deck.begin());
+    }
+
+    return result;
+}
+
 std::string Deck::ToString() const 
 {
     std::string result;
