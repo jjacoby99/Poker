@@ -18,14 +18,12 @@ void PrintVec(std::vector<Card> v)
     }
     std::cout << std::endl;
 }
+
 void VectorsEqual(std::vector<Card> first, std::vector<Card> second)
 {
 
     EXPECT_EQ(first.size(), second.size());
-    std::cout << "first:\n";
-    PrintVec(first);
-    std::cout << "second:\n";
-    PrintVec(second);
+    
     for(int i = 0; i < first.size(); i++)
     {
 
@@ -34,6 +32,16 @@ void VectorsEqual(std::vector<Card> first, std::vector<Card> second)
     }
 }
 
+TEST(DeckTest, CopyConstructor)
+{
+    Deck deck;
+
+    deck.Shuffle();
+
+    Deck d2(deck);
+
+    VectorsEqual(d2.Deal(52), deck.Deal(52));
+}
 
 TEST(DeckTest, ToString)
 {
