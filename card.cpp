@@ -9,6 +9,14 @@ Card::Card(Suit s, FaceValue val) : suit(s), value(val) {}
 
 Card::Card() : suit(Suit::SPADES), value(FaceValue::ACE) {}
 
+Card& Card::operator=(const Card& other)
+{
+    this->suit = other.GetSuit();
+    this->value = other.GetValue();
+
+    return *this;
+}
+
 // Getter implementations
 Card::Suit Card::GetSuit() const 
 {

@@ -34,6 +34,9 @@ public:
     Card(Suit s, FaceValue val);
     Card(); // Default constructor: Ace of Spades
 
+    //assignment operator
+    Card& operator=(const Card& other);
+
     // Getter methods
     Suit GetSuit() const;
     FaceValue GetValue() const;
