@@ -77,6 +77,47 @@ bool Hand::IsFlush(std::vector<Card>& hand)
 }
 
 
+bool Hand::IsStraight(std::vector<Card>& hand)
+{
+    if(hand.size() != 5)
+    {
+        throw std::runtime_error("Hand is not 5 cards\n");
+    }
+
+    // sort into accending order
+    // ace is high under this sort
+    std::sort(hand.begin(), hand.end(), CompareFaceValue);
+
+    
+    // check wheel straight
+    if( hand[4].GetValue() == Card::FaceValue::ACE &&
+        hand[0].GetValue() == Card::FaceValue::TWO && 
+        hand[1].GetValue() == Card::FaceValue::THREE &&
+        hand[2].GetValue() == Card::FaceValue::FOUR &&
+        hand[3].GetValue() == Card::FaceValue::FIVE) 
+        {
+            return true;
+        }
+    
+    
+    for(int i = 1; i < 5; i++)
+    {        
+        int last = static_cast<int>(hand[i-1].GetValue());
+        int cur = static_cast<int>(hand[i].GetValue());
+        
+        if(cur == 1)
+        {
+            // ace gets assigned 14
+            cur += 13;
+        }
+
+        if(last + 1 != cur) 
+        {
+            return false;
+        }
+    }
+    return true;
+}
 
 std::vector<Card> Hand::BestHand()
 {

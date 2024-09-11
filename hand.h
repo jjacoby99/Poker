@@ -30,18 +30,16 @@ public:
     // Determines best 5 card poker hand
     std::vector<Card> BestHand();
 
-    static bool IsFlush(std::vector<Card>& hand);
     static bool IsRoyalFlush(std::vector<Card>& hand);
 
+
+    static bool IsFlush(std::vector<Card>& hand);
+
+    static bool IsStraight(std::vector<Card>& hand);
     // returns true if c1.FaceValue < c2.FaceValue
     // returns false if c1.FaceValue == c2.FaceValue
     static bool CompareFaceValue(const Card& card1, const Card& card2);
 private:
-
-    
-
-    
-
     // all cards available 
     std::vector<Card> cards;
 
