@@ -177,5 +177,29 @@ TEST(HandTest, Straight)
     result = Hand::IsStraight(hand);
     EXPECT_EQ(result, true);
 
+    // try another straight
+    hand = {Card(Card::Suit::CLUBS, Card::FaceValue::SEVEN), Card(Card::Suit::DIAMONDS, Card::FaceValue::FOUR), Card(Card::Suit::SPADES, Card::FaceValue::SIX), Card(Card::Suit::SPADES, Card::FaceValue::FIVE), Card(Card::Suit::SPADES, Card::FaceValue::THREE)};
+    result = Hand::IsStraight(hand);
+    EXPECT_EQ(result, true);
+}
+
+// test some non straights
+TEST(HandTest, NotStraight)
+{
+
+    std::vector<Card> hand = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::FOUR), Card(Card::Suit::SPADES, Card::FaceValue::SIX), Card(Card::Suit::SPADES, Card::FaceValue::EIGHT), Card(Card::Suit::SPADES, Card::FaceValue::TEN)};
+    bool result = Hand::IsStraight(hand);
+    EXPECT_EQ(result, false);
+
+
+    //wrap around straight is not a straight
+    hand = {Card(Card::Suit::SPADES, Card::FaceValue::THREE), Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::SPADES, Card::FaceValue::QUEEN)};
+    result = Hand::IsStraight(hand);
+    EXPECT_EQ(result, false);
+
+    //test a one gapper 
+    hand = {Card(Card::Suit::SPADES, Card::FaceValue::THREE), Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::SPADES, Card::FaceValue::FOUR), Card(Card::Suit::SPADES, Card::FaceValue::SIX)};
+    result = Hand::IsStraight(hand);
+    EXPECT_EQ(result, false);
 
 }
