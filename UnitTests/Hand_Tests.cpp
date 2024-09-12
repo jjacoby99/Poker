@@ -203,3 +203,160 @@ TEST(HandTest, NotStraight)
     EXPECT_EQ(result, false);
 
 }
+
+TEST(HandTest, StraightFlush)
+{
+    std::vector<Card> hand = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::THREE), Card(Card::Suit::SPADES, Card::FaceValue::FOUR), Card(Card::Suit::SPADES, Card::FaceValue::FIVE), Card(Card::Suit::SPADES, Card::FaceValue::SIX)};
+    bool result = Hand::IsStraightFlush(hand);
+    EXPECT_EQ(result, true);
+
+    hand = {Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::SPADES, Card::FaceValue::QUEEN), Card(Card::Suit::SPADES, Card::FaceValue::JACK), Card(Card::Suit::SPADES, Card::FaceValue::TEN)};
+    result = Hand::IsStraightFlush(hand);
+    EXPECT_EQ(result, true);
+}
+
+
+TEST(HandTest, TripsTest)
+{
+
+    std::vector<Card> hand = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::DIAMONDS, Card::FaceValue::TWO), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::SEVEN), Card(Card::Suit::SPADES, Card::FaceValue::ACE)};
+    bool result = Hand::IsThreeOfAKind(hand);
+    EXPECT_EQ(result, true);
+
+    hand = {Card(Card::Suit::SPADES, Card::FaceValue::TEN), Card(Card::Suit::DIAMONDS, Card::FaceValue::TEN), Card(Card::Suit::CLUBS, Card::FaceValue::TEN), Card(Card::Suit::SPADES, Card::FaceValue::SEVEN), Card(Card::Suit::SPADES, Card::FaceValue::TWO)};
+    result = Hand::IsThreeOfAKind(hand);
+    EXPECT_EQ(result, true);
+}
+
+TEST(HandTest, NotTrips)
+{
+    std::vector<Card> hand = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::DIAMONDS, Card::FaceValue::THREE), Card(Card::Suit::CLUBS, Card::FaceValue::FOUR), Card(Card::Suit::SPADES, Card::FaceValue::FIVE), Card(Card::Suit::SPADES, Card::FaceValue::ACE)};
+    bool result = Hand::IsThreeOfAKind(hand);
+    EXPECT_EQ(result, false);
+
+    //test a pair
+    hand = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::DIAMONDS, Card::FaceValue::TWO), Card(Card::Suit::CLUBS, Card::FaceValue::FOUR), Card(Card::Suit::SPADES, Card::FaceValue::FIVE), Card(Card::Suit::SPADES, Card::FaceValue::ACE)};
+    result = Hand::IsThreeOfAKind(hand);
+    EXPECT_EQ(result, false);
+}
+
+TEST(HandTest, Quads)
+{
+    std::vector<Card> hand = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::DIAMONDS, Card::FaceValue::TWO), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::HEARTS, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::ACE)};
+    bool result = Hand::IsQuads(hand);
+    EXPECT_EQ(result, true);
+
+    hand = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::DIAMONDS, Card::FaceValue::TWO), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::HEARTS, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::FOUR)};
+    result = Hand::IsQuads(hand);
+    EXPECT_EQ(result, true);
+
+    hand = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::KING), Card(Card::Suit::HEARTS, Card::FaceValue::KING), Card(Card::Suit::SPADES, Card::FaceValue::THREE)};
+    result = Hand::IsQuads(hand);
+    EXPECT_EQ(result, true);
+
+}
+
+TEST(HandTest, NotQuads)
+{
+    // three of a kind
+    std::vector<Card> hand = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::DIAMONDS, Card::FaceValue::TWO), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::HEARTS, Card::FaceValue::THREE), Card(Card::Suit::SPADES, Card::FaceValue::ACE)};
+    bool result = Hand::IsQuads(hand);
+    EXPECT_EQ(result, false);
+
+    hand = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::DIAMONDS, Card::FaceValue::FOUR), Card(Card::Suit::CLUBS, Card::FaceValue::SIX), Card(Card::Suit::HEARTS, Card::FaceValue::EIGHT), Card(Card::Suit::SPADES, Card::FaceValue::ACE)};
+    result = Hand::IsQuads(hand);
+    EXPECT_EQ(result, false);
+}
+
+TEST(HandTest, Pair)
+{
+    std::vector<Card> hand = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::DIAMONDS, Card::FaceValue::TWO), Card(Card::Suit::CLUBS, Card::FaceValue::THREE), Card(Card::Suit::HEARTS, Card::FaceValue::FOUR), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
+    bool result = Hand::IsPair(hand);
+    EXPECT_EQ(result, true);
+
+    hand = {Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::ACE), Card(Card::Suit::CLUBS, Card::FaceValue::THREE), Card(Card::Suit::HEARTS, Card::FaceValue::FOUR), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
+    result = Hand::IsPair(hand);
+    EXPECT_EQ(result, true);
+}
+
+TEST(HandTest, NotPair)
+{
+    std::vector<Card> hand = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::DIAMONDS, Card::FaceValue::FOUR), Card(Card::Suit::CLUBS, Card::FaceValue::SIX), Card(Card::Suit::HEARTS, Card::FaceValue::EIGHT), Card(Card::Suit::SPADES, Card::FaceValue::ACE)};
+    bool result = Hand::IsPair(hand);
+    EXPECT_EQ(result, false);
+}
+
+TEST(HandTest, CountReccuring)
+{
+    Card c1(Card::Suit::SPADES, Card::FaceValue::ACE);
+    Card c2(Card::Suit::CLUBS, Card::FaceValue::ACE);
+    Card c3(Card::Suit::DIAMONDS, Card::FaceValue::ACE);
+    Card c4(Card::Suit::SPADES, Card::FaceValue::KING);
+    Card c5(Card::Suit::CLUBS, Card::FaceValue::KING);
+
+    std::vector<Card> hand = {c1, c2, c3, c4, c5};
+
+    std::map<int, int> expected;
+    expected[static_cast<int>(c1.GetValue())] = 3;
+    expected[static_cast<int>(c4.GetValue())] = 2;
+
+    std::map<int, int> result = Hand::CountReccuring(hand);
+    
+    EXPECT_EQ(result[static_cast<int>(c1.GetValue())], expected[static_cast<int>(c1.GetValue())]);
+    EXPECT_EQ(result[static_cast<int>(c4.GetValue())], expected[static_cast<int>(c4.GetValue())]);
+
+    hand[0] = Card(Card::Suit::SPADES, Card::FaceValue::ACE);
+    hand[1] = Card(Card::Suit::SPADES, Card::FaceValue::TWO);
+    hand[2] = Card(Card::Suit::SPADES, Card::FaceValue::THREE);
+    hand[3] = Card(Card::Suit::SPADES, Card::FaceValue::FOUR);
+    hand[4] = Card(Card::Suit::SPADES, Card::FaceValue::FIVE);
+
+    
+    std::map<int, int> expected1;
+
+    expected1[1] = 1;
+    expected1[2] = 1;
+    expected1[3] = 1;
+    expected1[4] = 1;
+    expected1[5] = 1;
+
+    result = Hand::CountReccuring(hand);
+
+    EXPECT_EQ(result[1], 1);
+    EXPECT_EQ(result[2], 1);
+    EXPECT_EQ(result[3], 1);
+    EXPECT_EQ(result[4], 1);
+    EXPECT_EQ(result[5], 1);
+
+}
+
+TEST(HandTest, TwoPair)
+{
+    std::vector<Card> hand = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::DIAMONDS, Card::FaceValue::TWO), Card(Card::Suit::CLUBS, Card::FaceValue::THREE), Card(Card::Suit::HEARTS, Card::FaceValue::THREE), Card(Card::Suit::SPADES, Card::FaceValue::ACE)};
+    bool result = Hand::IsTwoPair(hand);
+    EXPECT_EQ(result, true);
+
+    hand = {Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::ACE), Card(Card::Suit::CLUBS, Card::FaceValue::TEN), Card(Card::Suit::HEARTS, Card::FaceValue::TEN), Card(Card::Suit::SPADES, Card::FaceValue::FOUR)};
+    result = Hand::IsTwoPair(hand);
+    EXPECT_EQ(result, true);
+}
+
+TEST(HandTest, NotTwoPair)
+{
+    std::vector<Card> hand = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::DIAMONDS, Card::FaceValue::SIX), Card(Card::Suit::CLUBS, Card::FaceValue::THREE), Card(Card::Suit::HEARTS, Card::FaceValue::THREE), Card(Card::Suit::SPADES, Card::FaceValue::ACE)};
+    bool result = Hand::IsTwoPair(hand);
+    EXPECT_EQ(result, false);
+}
+
+
+TEST(HandTest, FullHouse)
+{
+    std::vector<Card> hand = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::DIAMONDS, Card::FaceValue::TWO), Card(Card::Suit::CLUBS, Card::FaceValue::THREE), Card(Card::Suit::HEARTS, Card::FaceValue::THREE), Card(Card::Suit::HEARTS, Card::FaceValue::TWO)};
+    bool result = Hand::IsFullHouse(hand);
+    EXPECT_EQ(result, true);
+
+    hand = {Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::ACE), Card(Card::Suit::CLUBS, Card::FaceValue::ACE), Card(Card::Suit::HEARTS, Card::FaceValue::THREE), Card(Card::Suit::CLUBS, Card::FaceValue::THREE)};
+    result = Hand::IsFullHouse(hand);
+    EXPECT_EQ(result, true);
+
+}

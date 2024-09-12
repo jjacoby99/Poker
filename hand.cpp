@@ -60,6 +60,58 @@ bool Hand::IsRoyalFlush(std::vector<Card>& hand)
     return true;
 }
 
+bool Hand::IsStraightFlush(std::vector<Card>& hand)
+{
+    return Hand::IsStraight(hand) && Hand::IsFlush(hand);
+}
+
+bool Hand::IsQuads(std::vector<Card>& hand)
+{
+    std::sort(hand.begin(),hand.end(),CompareFaceValue);
+
+    int count = 1;
+    for(int i = 1; i < 5; i++)
+    {
+        int cur = static_cast<int>(hand[i].GetValue());
+        int last = static_cast<int>(hand[i-1].GetValue());
+
+        if(cur == last)
+        {
+            count++;
+        }
+        else
+        {
+            count = 1;
+        }
+        
+        if(count == 4)
+        {
+            return true;
+        }
+    }
+    return count == 4;
+}
+
+bool Hand::IsFullHouse(std::vector<Card>& hand)
+{
+    std::map<int,int> occur = Hand::CountReccuring(hand);
+    
+    bool hasTrips = false;
+    bool hasPair = false;
+    for(auto el: occur)
+    {
+        if(el.second == 3)
+        {
+            hasTrips = true;
+        }
+        else if(el.second == 2)
+        {
+            hasPair = true;
+        }
+    }
+    return hasTrips && hasPair;
+}
+
 bool Hand::IsFlush(std::vector<Card>& hand)
 {
     if(hand.size() != 5)
@@ -117,6 +169,96 @@ bool Hand::IsStraight(std::vector<Card>& hand)
         }
     }
     return true;
+}
+
+bool Hand::IsThreeOfAKind(std::vector<Card>& hand)
+{
+    std::sort(hand.begin(),hand.end(),CompareFaceValue);
+
+    int count = 1;
+    for(int i = 1; i < 5; i++)
+    {
+        int cur = static_cast<int>(hand[i].GetValue());
+        int last = static_cast<int>(hand[i-1].GetValue());
+
+        if(cur == last)
+        {
+            count++;
+        }
+        else
+        {
+            count = 1;
+        }
+
+        if(count == 3)
+        {
+            return true;
+        }
+    }
+    return count == 3;
+}
+
+bool Hand::IsTwoPair(std::vector<Card>& hand)
+{
+    std::map<int, int> occur = Hand::CountReccuring(hand);
+
+    int pairCount = 0;
+    for(auto el: occur)
+    {   
+        if(el.second == 2)
+        {
+            pairCount++;
+        }
+    }
+    
+    return pairCount == 2;
+}
+
+bool Hand::IsPair(std::vector<Card>& hand)
+{
+    std::sort(hand.begin(),hand.end(),CompareFaceValue);
+
+    int count = 1;
+    for(int i = 1; i < 5; i++)
+    {
+        int cur = static_cast<int>(hand[i].GetValue());
+        int last = static_cast<int>(hand[i-1].GetValue());
+
+        if(cur == last)
+        {
+            return true;
+        }
+        
+    }
+    return false;
+}
+
+std::map<int, int> Hand::CountReccuring(std::vector<Card>& hand)
+{
+    std::sort(hand.begin(),hand.end(),CompareFaceValue);
+
+    std::map<int, int> occurrences;
+    int count = 1;
+
+    int cur = 0;
+    int next = 0; 
+    for(int i = 0; i < 4; i++)
+    {
+        cur = static_cast<int>(hand[i].GetValue());
+        next = static_cast<int>(hand[i+1].GetValue());
+        if(cur == next)
+        {
+            count++;
+        }
+        if(cur != next)
+        {
+            occurrences[cur] = count;
+            count = 1;
+        }
+
+    }
+    occurrences[next] = count;
+    return occurrences;
 }
 
 std::vector<Card> Hand::BestHand()
