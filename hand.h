@@ -28,9 +28,17 @@ public:
 
     // Generates all permutations of 5 card poker hands
     std::vector<std::vector<Card>> GeneratePokerHands();
+
+    // classifies a 5 card poker hand into one of the HandRankings
+    static HandRanking EvaluateHand(std::vector<Card>& hand);
     
     // Determines best 5 card poker hand
-    std::vector<Card> BestHand();
+    static std::pair<std::vector<Card>, Hand::HandRanking> BestHand(std::vector<Card>& cards);
+
+    // returns 1 if h1 > h2
+    // returns 0 if h1 == h2
+    // returns -1 if h1 < h2
+    static int CompareHands(std::vector<Card>& h1, std::vector<Card>& h2);
 
     static bool IsRoyalFlush(std::vector<Card>& hand);
 
@@ -53,6 +61,14 @@ public:
     // returns true if c1.FaceValue < c2.FaceValue
     // returns false if c1.FaceValue == c2.FaceValue
     static bool CompareFaceValue(const Card& card1, const Card& card2);
+
+    // returns true if h1 < h2
+    // returns false if h1 > h2
+    static bool CompareFullHouse(std::vector<Card>& hand1, std::vector<Card>& hand2);
+
+    // returns true if h1 < h2
+    // returns false if h1 > h2
+    static bool CompareFlush(std::vector<Card>& hand1,std::vector<Card>& hand2);
 
     static std::map<int, int> CountReccuring(std::vector<Card>& hand); 
 

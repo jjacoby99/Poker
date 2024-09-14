@@ -3,7 +3,14 @@
 #include "deck.h"
 #include <iostream>
 
-
+void PrintHand(std::vector<Card>& h, std::string delim = " ")
+{
+    for(Card c: h)
+    {
+        std::cout << c.ToString() << delim;
+    }
+    std::cout << std::endl;
+}
 // ensures all 21 permutations of 5 card hands from 7 cards are being generated 
 TEST(HandTest, HandPermutations)
 {
@@ -360,3 +367,49 @@ TEST(HandTest, FullHouse)
     EXPECT_EQ(result, true);
 
 }
+
+TEST(HandTest, CompareFullHouse)
+{
+    std::vector<Card> hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::DIAMONDS, Card::FaceValue::TWO), Card(Card::Suit::CLUBS, Card::FaceValue::THREE), Card(Card::Suit::HEARTS, Card::FaceValue::THREE), Card(Card::Suit::HEARTS, Card::FaceValue::TWO)};
+    std::vector<Card> hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::THREE), Card(Card::Suit::DIAMONDS, Card::FaceValue::THREE), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::HEARTS, Card::FaceValue::TWO), Card(Card::Suit::HEARTS, Card::FaceValue::THREE)};
+    bool result = Hand::CompareFullHouse(hand1, hand2);
+
+    EXPECT_EQ(result,false);
+
+    result = Hand::CompareFullHouse(hand2, hand1);
+    EXPECT_EQ(result,true);
+}
+
+TEST(HandTest, CompareFlush)
+{
+    Card ace(Card::Suit::CLUBS, Card::FaceValue::ACE);
+    Card five(Card::Suit::CLUBS, Card::FaceValue::FIVE);
+    Card six(Card::Suit::CLUBS, Card::FaceValue::SIX);
+    Card seven(Card::Suit::CLUBS, Card::FaceValue::SEVEN);
+    Card jack(Card::Suit::CLUBS, Card::FaceValue::JACK);
+    Card ten(Card::Suit::CLUBS, Card::FaceValue::TEN);
+
+    
+
+    std::vector<Card> hand1 = {ten, five, six, seven, jack};
+    
+
+    std::vector<Card> hand2 = {ace, five, six, seven, jack};
+
+
+    // h1 < h2: should be true
+    bool result = Hand::CompareFlush(hand1, hand2);
+
+    
+    EXPECT_EQ(result, true);
+
+
+    
+    // h2 < h1: should be false
+    result = Hand::CompareFlush(hand2, hand1);
+
+    EXPECT_EQ(result, false);
+
+}
+
+

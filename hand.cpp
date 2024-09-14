@@ -260,8 +260,169 @@ std::map<int, int> Hand::CountReccuring(std::vector<Card>& hand)
     occurrences[next] = count;
     return occurrences;
 }
-
-std::vector<Card> Hand::BestHand()
+int Hand::CompareHands(std::vector<Card>& h1, std::vector<Card>& h2)
 {
+    // todo: handle chop
+    
+}
+bool Hand::CompareFullHouse(std::vector<Card>& hand1, std::vector<Card>& hand2)
+{
+    std::map<int, int> o1 = Hand::CountReccuring(hand1);
+    std::map<int, int> o2 = Hand::CountReccuring(hand2);
+
+    //already know it's a full house
+    int h1Trips = -1;
+    int h1Pair = -1;
+
+    int h2Trips = -1;
+    int h2Pair = -1;
+
+    for(auto el: o1)
+    {
+        if(el.second == 3)
+        {
+            h1Trips = el.first;
+        }
+        else
+        {
+            h1Pair = el.second;
+        }
+        break;
+    }
+
+    for(auto el: o2)
+    {
+        if(el.second == 3)
+        {
+            h2Trips = el.first;
+        }
+        else
+        {
+            h2Pair = el.second;
+        }
+        break;
+    }
+
+    if(h1Trips < h2Trips)
+    {
+        return true;
+    }
+    if(h1Trips > h2Trips )
+    {
+        return false;
+    }
+
+    if(h1Pair < h2Pair)
+    {
+        return true;
+    }
+    return false;
+}
+// true if h1 < h2
+// false if h2 > h1
+bool Hand::CompareFlush(std::vector<Card>& hand1, std::vector<Card>& hand2)
+{
+    std::sort(hand1.begin(), hand1.end(), CompareFaceValue);
+    std::sort(hand2.begin(), hand2.end(), CompareFaceValue);
+
+    for(int i = 4; i >= 0; i--)
+    {
+        if(static_cast<int>(hand1[i].GetValue()) < static_cast<int>(hand2[i].GetValue()))
+        {
+            return false;
+        }
+        if(static_cast<int>(hand1[i].GetValue()) > static_cast<int>(hand2[i].GetValue()))
+        {
+            return true;
+        }
+    }
+    // the two are equal
+    return false;
+
+}
+Hand::HandRanking Hand::EvaluateHand(std::vector<Card>& hand)
+{
+    if(Hand::IsRoyalFlush(hand))
+    {
+        return Hand::HandRanking::ROYALFLUSH;
+    }
+    if(Hand::IsStraightFlush(hand))
+    {
+        return Hand::HandRanking::STRAIGHFLUSH;
+    }
+    if(Hand::IsQuads(hand))
+    {
+        return Hand::HandRanking::QUADS;
+    }
+    if(Hand::IsFullHouse(hand))
+    {
+        return Hand::HandRanking::FULLHOUSE;
+    }
+    if(Hand::IsFlush(hand))
+    {
+        return Hand::HandRanking::FLUSH;
+    }
+    if(Hand::IsStraight(hand))
+    {
+        return Hand::HandRanking::STRAIGHT;
+    }
+    if(Hand::IsThreeOfAKind(hand))
+    {
+        return Hand::HandRanking::THREEOFAKIND;
+    }
+    if(Hand::IsTwoPair(hand))
+    {
+        return Hand::HandRanking::TWOPAIR;
+    }
+    if(Hand::IsPair(hand))
+    {
+        return Hand::HandRanking::PAIR;
+    }
+    return Hand::HandRanking::HIGHCARD;
+
+}
+
+std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(std::vector<Card>& cards)
+{
+    Hand h(cards);
+    std::vector<std::vector<Card>> allHands = h.GeneratePokerHands();
+
+    // keep track of the current highest hand and any duplicate classifications
+    std::vector<std::vector<Card>> duplicateRankings;
+    
+    //keep track of the hand classification of the high hand, and number of times that classification occurs
+    Hand::HandRanking max = Hand::HandRanking::HIGHCARD;
+    int maxcount = 1;
+
+    for(std::vector<Card> el: allHands)
+    {
+        Hand::HandRanking cur = Hand::EvaluateHand(el);
+        if(static_cast<int>(cur) > static_cast<int>(max))
+        {
+            // new high hand
+            // update max, maxcount
+            // clear the duplicate rankings
+            // add new max
+
+            max = cur;
+            maxcount = 1;
+
+            duplicateRankings.clear();
+            duplicateRankings.push_back(el);
+        }
+        if(static_cast<int>(cur) == static_cast<int>(max))
+        {
+            maxcount++;
+            duplicateRankings.push_back(el);
+        }
+    }
+    if(duplicateRankings.size() == 1)
+    {
+        return {duplicateRankings[0], max};
+    }
+
+    // have to compare multiple hands of the given hand type
+    
+
 
 }
