@@ -338,7 +338,38 @@ bool Hand::CompareFlush(std::vector<Card>& hand1, std::vector<Card>& hand2)
     }
     // the two are equal
     return false;
+}
 
+// true if h1 < h2
+// false if h1 > h2
+bool Hand::CompareStraight(std::vector<Card>& hand1, std::vector<Card>& hand2)
+{
+    std::sort(hand1.begin(), hand1.end(), CompareFaceValue);
+    std::sort(hand2.begin(), hand2.end(), CompareFaceValue);
+    
+    // check if we have a wheel
+    if(hand1[4].GetValue() == Card::FaceValue::ACE && hand1[0].GetValue() == Card::FaceValue::TWO)
+    {
+        //hand1 is a wheel
+        int highCard = hand2[4].GetValue() == Card::FaceValue::ACE ? 14 : static_cast<int>(hand2[4].GetValue());
+        if(highCard > 5)
+        {
+            //hand 2 is a higher straight
+            return true;
+        }
+    }
+    // check hand2
+    if(hand2[4].GetValue() == Card::FaceValue::ACE && hand2[0].GetValue() == Card::FaceValue::TWO)
+    {
+        //hand2 is a wheel
+        int highCard = hand1[4].GetValue() == Card::FaceValue::ACE ? 14 : static_cast<int>(hand1[4].GetValue());
+        if(highCard > 5)
+        {
+            //hand 1 is a higher straight
+            return false;
+        }
+    }
+    return Hand::CompareFaceValue(hand1[4], hand2[4]);
 }
 Hand::HandRanking Hand::EvaluateHand(std::vector<Card>& hand)
 {

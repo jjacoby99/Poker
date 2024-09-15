@@ -403,13 +403,66 @@ TEST(HandTest, CompareFlush)
     
     EXPECT_EQ(result, true);
 
-
-    
     // h2 < h1: should be false
     result = Hand::CompareFlush(hand2, hand1);
 
     EXPECT_EQ(result, false);
 
+}
+
+TEST(HandTest, CompareStraight)
+{
+    std::vector<Card> hand1 = {Card(Card::Suit::CLUBS, Card::FaceValue::SEVEN), Card(Card::Suit::DIAMONDS, Card::FaceValue::FOUR), Card(Card::Suit::SPADES, Card::FaceValue::SIX), Card(Card::Suit::SPADES, Card::FaceValue::FIVE), Card(Card::Suit::SPADES, Card::FaceValue::THREE)};
+    std::vector<Card> hand2 = {Card(Card::Suit::CLUBS, Card::FaceValue::SEVEN), Card(Card::Suit::DIAMONDS, Card::FaceValue::FOUR), Card(Card::Suit::SPADES, Card::FaceValue::SIX), Card(Card::Suit::SPADES, Card::FaceValue::FIVE), Card(Card::Suit::SPADES, Card::FaceValue::EIGHT)};
+
+    bool result = Hand::CompareStraight(hand1, hand2);
+
+    EXPECT_EQ(result, true);
+
+    result = Hand::CompareStraight(hand2, hand1);
+
+    EXPECT_EQ(result, false);
+
+    // wheel
+    hand1 = {Card(Card::Suit::CLUBS, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::FOUR), Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::FIVE), Card(Card::Suit::SPADES, Card::FaceValue::THREE)};
+    
+    result = Hand::CompareStraight(hand1, hand2);
+
+    EXPECT_EQ(result, true);
+
+    result = Hand::CompareStraight(hand2, hand1);
+
+    EXPECT_EQ(result, false);
+
+    
+}
+
+TEST(HandTest, AvsK)
+{
+    std::vector<Card> hand1 = {Card(Card::Suit::CLUBS, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::QUEEN), Card(Card::Suit::SPADES, Card::FaceValue::NINE), Card(Card::Suit::SPADES, Card::FaceValue::TEN), Card(Card::Suit::SPADES, Card::FaceValue::JACK)};
+    std::vector<Card> hand2 = {Card(Card::Suit::CLUBS, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::QUEEN), Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::SPADES, Card::FaceValue::TEN), Card(Card::Suit::SPADES, Card::FaceValue::JACK)};
+
+    // hand1 < hand 2
+    bool result = Hand::CompareStraight(hand1, hand2);
+    EXPECT_EQ(result, true);
+
+    result = Hand::CompareStraight(hand2, hand1);
+    EXPECT_EQ(result, false);
+}
+
+//Ensuring ace high straight beats wheel straight
+TEST(HandTest, WheelvsA)
+{
+    std::vector<Card> wheel = {Card(Card::Suit::CLUBS, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::FOUR), Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::FIVE), Card(Card::Suit::SPADES, Card::FaceValue::THREE)};
+    std::vector<Card> broadway = {Card(Card::Suit::CLUBS, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::QUEEN), Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::SPADES, Card::FaceValue::TEN), Card(Card::Suit::SPADES, Card::FaceValue::JACK)};
+
+    // wheel < broadway == true
+    bool result = Hand::CompareStraight(wheel, broadway);
+    EXPECT_EQ(result, true);
+
+    // broadway > wheel == true
+    result = Hand::CompareStraight(broadway, wheel);
+    EXPECT_EQ(result, false);
 }
 
 

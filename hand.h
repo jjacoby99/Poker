@@ -69,6 +69,10 @@ public:
     // returns true if h1 < h2
     // returns false if h1 > h2
     static bool CompareFlush(std::vector<Card>& hand1,std::vector<Card>& hand2);
+    
+    // returns true if h1 < h2
+    // returns false if h1 > h2
+    static bool CompareStraight(std::vector<Card>& hand1, std::vector<Card>& hand2);
 
     static std::map<int, int> CountReccuring(std::vector<Card>& hand); 
 
