@@ -94,7 +94,7 @@ bool Hand::IsQuads(std::vector<Card>& hand)
 
 bool Hand::IsFullHouse(std::vector<Card>& hand)
 {
-    std::map<int,int> occur = Hand::CountReccuring(hand);
+    std::map<int,int> occur = Hand::CountRecurring(hand);
     
     bool hasTrips = false;
     bool hasPair = false;
@@ -200,7 +200,7 @@ bool Hand::IsThreeOfAKind(std::vector<Card>& hand)
 
 bool Hand::IsTwoPair(std::vector<Card>& hand)
 {
-    std::map<int, int> occur = Hand::CountReccuring(hand);
+    std::map<int, int> occur = Hand::CountRecurring(hand);
 
     int pairCount = 0;
     for(auto el: occur)
@@ -233,7 +233,7 @@ bool Hand::IsPair(std::vector<Card>& hand)
     return false;
 }
 
-std::map<int, int> Hand::CountReccuring(std::vector<Card>& hand)
+std::map<int, int> Hand::CountRecurring(std::vector<Card>& hand)
 {
     std::sort(hand.begin(),hand.end(),CompareFaceValue);
 
@@ -267,8 +267,8 @@ int Hand::CompareHands(std::vector<Card>& h1, std::vector<Card>& h2)
 }
 bool Hand::CompareFullHouse(std::vector<Card>& hand1, std::vector<Card>& hand2)
 {
-    std::map<int, int> o1 = Hand::CountReccuring(hand1);
-    std::map<int, int> o2 = Hand::CountReccuring(hand2);
+    std::map<int, int> o1 = Hand::CountRecurring(hand1);
+    std::map<int, int> o2 = Hand::CountRecurring(hand2);
 
     //already know it's a full house
     int h1Trips = -1;
@@ -276,9 +276,9 @@ bool Hand::CompareFullHouse(std::vector<Card>& hand1, std::vector<Card>& hand2)
 
     int h2Trips = -1;
     int h2Pair = -1;
-
     for(auto el: o1)
     {
+
         if(el.second == 3)
         {
             h1Trips = el.first;
@@ -286,8 +286,8 @@ bool Hand::CompareFullHouse(std::vector<Card>& hand1, std::vector<Card>& hand2)
         else
         {
             h1Pair = el.second;
+
         }
-        break;
     }
 
     for(auto el: o2)
@@ -300,26 +300,8 @@ bool Hand::CompareFullHouse(std::vector<Card>& hand1, std::vector<Card>& hand2)
         {
             h2Pair = el.second;
         }
-        break;
-    }
-    // handle aces
-    if(h1Trips == 1)
-    {
-        h1Trips = 14;
-    }
-    else if(h1Pair == 1)
-    {
-        h1Pair = 14;
     }
     
-    if(h2Trips == 1)
-    {
-        h2Trips = 14;
-    }
-    else if(h2Pair == 1)
-    {
-        h2Pair = 14;
-    }
 
     if(h1Trips < h2Trips)
     {
