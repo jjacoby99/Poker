@@ -293,7 +293,7 @@ TEST(HandTest, NotPair)
     EXPECT_EQ(result, false);
 }
 
-TEST(HandTest, CountReccuring)
+TEST(HandTest, CountRecurring)
 {
     Card c1(Card::Suit::SPADES, Card::FaceValue::ACE);
     Card c2(Card::Suit::CLUBS, Card::FaceValue::ACE);
@@ -304,12 +304,13 @@ TEST(HandTest, CountReccuring)
     std::vector<Card> hand = {c1, c2, c3, c4, c5};
 
     std::map<int, int> expected;
-    expected[static_cast<int>(c1.GetValue())] = 3;
+    int aceVal = 14;
+    expected[aceVal] = 3;
     expected[static_cast<int>(c4.GetValue())] = 2;
 
-    std::map<int, int> result = Hand::CountReccuring(hand);
+    std::map<int, int> result = Hand::CountRecurring(hand);
     
-    EXPECT_EQ(result[static_cast<int>(c1.GetValue())], expected[static_cast<int>(c1.GetValue())]);
+    EXPECT_EQ(result[aceVal], expected[aceVal]);
     EXPECT_EQ(result[static_cast<int>(c4.GetValue())], expected[static_cast<int>(c4.GetValue())]);
 
     hand[0] = Card(Card::Suit::SPADES, Card::FaceValue::ACE);
@@ -321,15 +322,15 @@ TEST(HandTest, CountReccuring)
     
     std::map<int, int> expected1;
 
-    expected1[1] = 1;
+    expected1[14] = 1;
     expected1[2] = 1;
     expected1[3] = 1;
     expected1[4] = 1;
     expected1[5] = 1;
 
-    result = Hand::CountReccuring(hand);
+    result = Hand::CountRecurring(hand);
 
-    EXPECT_EQ(result[1], 1);
+    EXPECT_EQ(result[aceVal], 1);
     EXPECT_EQ(result[2], 1);
     EXPECT_EQ(result[3], 1);
     EXPECT_EQ(result[4], 1);
@@ -374,10 +375,10 @@ TEST(HandTest, CompareFullHouse)
     std::vector<Card> hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::THREE), Card(Card::Suit::DIAMONDS, Card::FaceValue::THREE), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::HEARTS, Card::FaceValue::TWO), Card(Card::Suit::HEARTS, Card::FaceValue::THREE)};
     bool result = Hand::CompareFullHouse(hand1, hand2);
 
-    EXPECT_EQ(result,false);
+    EXPECT_EQ(result,true);
 
     result = Hand::CompareFullHouse(hand2, hand1);
-    EXPECT_EQ(result,true);
+    EXPECT_EQ(result,false);
 
     hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::ACE), Card(Card::Suit::CLUBS, Card::FaceValue::ACE), Card(Card::Suit::HEARTS, Card::FaceValue::THREE), Card(Card::Suit::DIAMONDS, Card::FaceValue::THREE)};
     hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::KING), Card(Card::Suit::HEARTS, Card::FaceValue::THREE), Card(Card::Suit::DIAMONDS, Card::FaceValue::THREE)};
@@ -533,6 +534,22 @@ TEST(HandTest, TripsCompareAceHigh)
 
     result = Hand::CompareTrips(hand2, hand1);
     EXPECT_EQ(result, true);
+
+}
+
+TEST(HandTest, CompareTwoPair)
+{
+    std::vector<Card> hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
+    std::vector<Card> hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::THREE), Card(Card::Suit::SPADES, Card::FaceValue::THREE), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
+
+    bool result = Hand::CompareTwoPair(hand1, hand2);
+    EXPECT_EQ(result, true);
+
+    result = Hand::CompareTwoPair(hand2, hand1);
+    EXPECT_EQ(result, false);
+
+    hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::ACE), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
+    hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
 
 }
 
