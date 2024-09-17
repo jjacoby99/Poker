@@ -302,6 +302,24 @@ bool Hand::CompareFullHouse(std::vector<Card>& hand1, std::vector<Card>& hand2)
         }
         break;
     }
+    // handle aces
+    if(h1Trips == 1)
+    {
+        h1Trips = 14;
+    }
+    else if(h1Pair == 1)
+    {
+        h1Pair = 14;
+    }
+    
+    if(h2Trips == 1)
+    {
+        h2Trips = 14;
+    }
+    else if(h2Pair == 1)
+    {
+        h2Pair = 14;
+    }
 
     if(h1Trips < h2Trips)
     {
@@ -370,6 +388,95 @@ bool Hand::CompareStraight(std::vector<Card>& hand1, std::vector<Card>& hand2)
         }
     }
     return Hand::CompareFaceValue(hand1[4], hand2[4]);
+}
+bool Hand::CompareTrips(std::vector<Card>& hand1, std::vector<Card>& hand2)
+{
+    std::map<int, int> o1 = Hand::CountReccuring(hand1);
+    std::map<int, int> o2 = Hand::CountReccuring(hand2);
+
+    int trips1 = -1;
+    int trips2 = -1;
+
+    for(auto el: o1)
+    {
+        if(el.second == 3)
+        {
+            trips1 = el.first;
+        }
+    }
+
+    for(auto el: o2)
+    {
+        if(el.second == 3)
+        {
+            trips2 = el.first;
+        }
+    }
+    if(trips1 == 1)
+    {
+        trips1 = 14;
+    }
+    if(trips2 == 1)
+    {
+        trips2 = 14;
+    }
+    if(trips1 < trips2)
+    {
+        return true;
+    }
+    if(trips1 > trips2)
+    {
+        return false;
+    }
+    
+    // know trips1 == trips2 == const
+    // need to look at other cards
+    std::sort(hand1.begin(), hand1.end(), CompareFaceValue);
+    std::sort(hand2.begin(), hand2.end(), CompareFaceValue);
+    
+
+    // just look at kickers
+    std::vector<Card> kickers1;
+    std::vector<Card> kickers2;
+
+    for(int i = 0; i < 5; i++)
+    {
+        if(static_cast<int>(hand1[i].GetValue()) != trips1)
+        {
+            kickers1.push_back(hand1[i]);
+        } 
+        if(static_cast<int>(hand2[i].GetValue()) != trips2)
+        {
+            kickers2.push_back(hand2[i]);
+        } 
+    }
+    
+    for(int i = 1; i >= 0; i--)
+    {
+        int val1 = static_cast<int>(kickers1[i].GetValue());
+        int val2 = static_cast<int>(kickers2[i].GetValue());
+
+        if(val1 == 1)
+        {
+            val1 = 14;
+        }
+        if(val2 == 1)
+        {
+            val2 = 14;
+        }
+
+        if(val1 < val2)
+        {
+            return true;
+        }
+        if(val1 > val2)
+        {
+            return false;
+        }
+
+    }
+    // the two are equal, shouldn't get here
+    return false;
 }
 Hand::HandRanking Hand::EvaluateHand(std::vector<Card>& hand)
 {

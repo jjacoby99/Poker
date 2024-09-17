@@ -74,6 +74,8 @@ public:
     // returns false if h1 > h2
     static bool CompareStraight(std::vector<Card>& hand1, std::vector<Card>& hand2);
 
+    static bool CompareTrips(std::vector<Card>& hand1, std::vector<Card>& hand2);
+
     static std::map<int, int> CountReccuring(std::vector<Card>& hand); 
 
 private:
