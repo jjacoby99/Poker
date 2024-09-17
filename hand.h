@@ -75,8 +75,11 @@ public:
     static bool CompareStraight(std::vector<Card>& hand1, std::vector<Card>& hand2);
 
     static bool CompareTrips(std::vector<Card>& hand1, std::vector<Card>& hand2);
+    
+    static bool CompareTwoPair(std::vector<Card>& hand1, std::vector<Card>& hand2);
 
-    static std::map<int, int> CountReccuring(std::vector<Card>& hand); 
+
+    static std::map<int, int> CountRecurring(std::vector<Card>& hand); 
 
 private:
 

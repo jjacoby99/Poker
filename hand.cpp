@@ -1,5 +1,6 @@
 #include "hand.h"
 #include <iostream>
+#include <functional>
 Hand::Hand(std::vector<Card> cards) : cards(cards) {}
 
 bool Hand::CompareFaceValue(const Card& card1, const Card& card2)
@@ -252,12 +253,22 @@ std::map<int, int> Hand::CountRecurring(std::vector<Card>& hand)
         }
         if(cur != next)
         {
+            if(cur == 1) // account for aces always being high in pair, twopair, trips, fullhouse, quads
+
+            {
+                cur = 14;
+            }
             occurrences[cur] = count;
             count = 1;
         }
 
     }
+    if(next == 1)
+    {
+        next = 14;
+    }
     occurrences[next] = count;
+    
     return occurrences;
 }
 int Hand::CompareHands(std::vector<Card>& h1, std::vector<Card>& h2)
@@ -373,9 +384,10 @@ bool Hand::CompareStraight(std::vector<Card>& hand1, std::vector<Card>& hand2)
 }
 bool Hand::CompareTrips(std::vector<Card>& hand1, std::vector<Card>& hand2)
 {
-    std::map<int, int> o1 = Hand::CountReccuring(hand1);
-    std::map<int, int> o2 = Hand::CountReccuring(hand2);
+    std::map<int, int> o1 = Hand::CountRecurring(hand1);
+    std::map<int, int> o2 = Hand::CountRecurring(hand2);
 
+    std::vector<int> kickers1, kickers2;
     int trips1 = -1;
     int trips2 = -1;
 
@@ -385,6 +397,10 @@ bool Hand::CompareTrips(std::vector<Card>& hand1, std::vector<Card>& hand2)
         {
             trips1 = el.first;
         }
+        else
+        {
+            kickers1.push_back(el.first);
+        }
     }
 
     for(auto el: o2)
@@ -393,15 +409,12 @@ bool Hand::CompareTrips(std::vector<Card>& hand1, std::vector<Card>& hand2)
         {
             trips2 = el.first;
         }
+        else
+        {
+            kickers2.push_back(el.first);
+        }
     }
-    if(trips1 == 1)
-    {
-        trips1 = 14;
-    }
-    if(trips2 == 1)
-    {
-        trips2 = 14;
-    }
+    
     if(trips1 < trips2)
     {
         return true;
@@ -413,45 +426,17 @@ bool Hand::CompareTrips(std::vector<Card>& hand1, std::vector<Card>& hand2)
     
     // know trips1 == trips2 == const
     // need to look at other cards
-    std::sort(hand1.begin(), hand1.end(), CompareFaceValue);
-    std::sort(hand2.begin(), hand2.end(), CompareFaceValue);
-    
-
-    // just look at kickers
-    std::vector<Card> kickers1;
-    std::vector<Card> kickers2;
-
-    for(int i = 0; i < 5; i++)
-    {
-        if(static_cast<int>(hand1[i].GetValue()) != trips1)
-        {
-            kickers1.push_back(hand1[i]);
-        } 
-        if(static_cast<int>(hand2[i].GetValue()) != trips2)
-        {
-            kickers2.push_back(hand2[i]);
-        } 
-    }
+    std::sort(kickers1.begin(), kickers1.end(), std::greater<int>());
+    std::sort(kickers2.begin(), kickers2.end(), std::greater<int>());
     
     for(int i = 1; i >= 0; i--)
     {
-        int val1 = static_cast<int>(kickers1[i].GetValue());
-        int val2 = static_cast<int>(kickers2[i].GetValue());
-
-        if(val1 == 1)
-        {
-            val1 = 14;
-        }
-        if(val2 == 1)
-        {
-            val2 = 14;
-        }
-
-        if(val1 < val2)
+        
+        if(kickers1[i] < kickers2[i])
         {
             return true;
         }
-        if(val1 > val2)
+        if(kickers1[i] > kickers2[i])
         {
             return false;
         }
@@ -459,6 +444,50 @@ bool Hand::CompareTrips(std::vector<Card>& hand1, std::vector<Card>& hand2)
     }
     // the two are equal, shouldn't get here
     return false;
+}
+bool Hand::CompareTwoPair(std::vector<Card>& hand1, std::vector<Card>& hand2)
+{
+    std::map<int, int> o1 = Hand::CountRecurring(hand1);
+    std::map<int, int> o2 = Hand::CountRecurring(hand2);
+
+    // keep track of pairs and kickers
+    std::vector<int> hand1Pairs, hand2Pairs;
+
+    int kicker1 = -1;
+    int kicker2 = -1;
+
+    auto extractPairsAndKicker = [](const std::map<int, int>& occurrences, std::vector<int>& pairs, int& kicker) {
+        for (const auto& [value, count] : occurrences) {
+            if (count == 2) {
+                pairs.push_back(value);
+            } else if (count == 1) {
+                kicker = value;
+            }
+        }
+        std::sort(pairs.begin(), pairs.end(), std::greater<int>()); // Sort pairs descending for comparison
+    };
+
+    extractPairsAndKicker(o1, hand1Pairs, kicker1);
+    extractPairsAndKicker(o2, hand2Pairs, kicker2);
+
+    if(hand1Pairs[0] < hand2Pairs[0])
+    {
+        return true;
+    }
+    if(hand1Pairs[0] > hand2Pairs[0])
+    {
+        return false;
+    }
+
+    if(hand1Pairs[1] < hand2Pairs[1])
+    {
+        return true;
+    }
+    if(hand1Pairs[1] > hand2Pairs[1])
+    {
+        return false;
+    }
+    return kicker1 < kicker2;
 }
 Hand::HandRanking Hand::EvaluateHand(std::vector<Card>& hand)
 {
