@@ -378,6 +378,26 @@ TEST(HandTest, CompareFullHouse)
 
     result = Hand::CompareFullHouse(hand2, hand1);
     EXPECT_EQ(result,true);
+
+    hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::ACE), Card(Card::Suit::CLUBS, Card::FaceValue::ACE), Card(Card::Suit::HEARTS, Card::FaceValue::THREE), Card(Card::Suit::DIAMONDS, Card::FaceValue::THREE)};
+    hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::KING), Card(Card::Suit::HEARTS, Card::FaceValue::THREE), Card(Card::Suit::DIAMONDS, Card::FaceValue::THREE)};
+
+    result = Hand::CompareFullHouse(hand1, hand2);
+    EXPECT_EQ(result, false);
+
+    result = Hand::CompareFullHouse(hand2, hand1);
+    EXPECT_EQ(result, true);
+
+    hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::ACE), Card(Card::Suit::CLUBS, Card::FaceValue::ACE), Card(Card::Suit::HEARTS, Card::FaceValue::THREE), Card(Card::Suit::DIAMONDS, Card::FaceValue::THREE)};
+    hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::KING), Card(Card::Suit::HEARTS, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::ACE)};
+
+    result = Hand::CompareFullHouse(hand1, hand2);
+    EXPECT_EQ(result, false);
+
+    result = Hand::CompareFullHouse(hand2, hand1);
+    EXPECT_EQ(result, true);
+
+
 }
 
 TEST(HandTest, CompareFlush)
@@ -463,6 +483,57 @@ TEST(HandTest, WheelvsA)
     // broadway > wheel == true
     result = Hand::CompareStraight(broadway, wheel);
     EXPECT_EQ(result, false);
+}
+
+TEST(HandTest, TripsCompare)
+{
+    std::vector<Card> hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::DIAMONDS, Card::FaceValue::TWO), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::SEVEN), Card(Card::Suit::SPADES, Card::FaceValue::ACE)};
+    std::vector<Card> hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::THREE), Card(Card::Suit::DIAMONDS, Card::FaceValue::THREE), Card(Card::Suit::CLUBS, Card::FaceValue::THREE), Card(Card::Suit::SPADES, Card::FaceValue::SEVEN), Card(Card::Suit::SPADES, Card::FaceValue::ACE)};
+
+    // hand1 < hand2 == true
+    bool result = Hand::CompareTrips(hand1, hand2);
+    EXPECT_EQ(result, true);
+
+    result = Hand::CompareTrips(hand2, hand1);
+    EXPECT_EQ(result, false);
+
+    //ensure aces is best
+    hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::ACE), Card(Card::Suit::CLUBS, Card::FaceValue::ACE), Card(Card::Suit::SPADES, Card::FaceValue::SEVEN), Card(Card::Suit::SPADES, Card::FaceValue::FOUR)};
+    hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::KING), Card(Card::Suit::SPADES, Card::FaceValue::SEVEN), Card(Card::Suit::SPADES, Card::FaceValue::ACE)};
+
+    result = Hand::CompareTrips(hand1, hand2);
+    EXPECT_EQ(result, false);
+
+    result = Hand::CompareTrips(hand2, hand1);
+    EXPECT_EQ(result, true);
+
+    //ensure kickers matter
+    hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::ACE), Card(Card::Suit::CLUBS, Card::FaceValue::ACE), Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
+    hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::ACE), Card(Card::Suit::CLUBS, Card::FaceValue::ACE), Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::SPADES, Card::FaceValue::FOUR)};
+
+
+    result = Hand::CompareTrips(hand1, hand2);
+    EXPECT_EQ(result, false);
+
+    result = Hand::CompareTrips(hand2, hand1);
+    EXPECT_EQ(result, true);
+
+    
+
+
+}
+
+TEST(HandTest, TripsCompareAceHigh)
+{
+    std::vector<Card> hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::KING), Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
+    std::vector<Card> hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::KING), Card(Card::Suit::SPADES, Card::FaceValue::QUEEN), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
+
+    bool result = Hand::CompareTrips(hand1, hand2);
+    EXPECT_EQ(result, false);
+
+    result = Hand::CompareTrips(hand2, hand1);
+    EXPECT_EQ(result, true);
+
 }
 
 
