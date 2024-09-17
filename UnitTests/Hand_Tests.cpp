@@ -549,8 +549,82 @@ TEST(HandTest, CompareTwoPair)
     EXPECT_EQ(result, false);
 
     hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::ACE), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
-    hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
+    hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
 
+    result = Hand::CompareTwoPair(hand1, hand2);
+    EXPECT_EQ(result, false);
+    
+    result = Hand::CompareTwoPair(hand2, hand1);
+    EXPECT_EQ(result, true);
+
+    hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::ACE)};
+    hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
+
+    result = Hand::CompareTwoPair(hand1, hand2);
+    EXPECT_EQ(result, false);
+    
+    result = Hand::CompareTwoPair(hand2, hand1);
+    EXPECT_EQ(result, true);
+}
+
+TEST(HandTest, PairCompare)
+{
+    // pair1 < pair2
+    std::vector<Card> hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::THREE), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
+    std::vector<Card> hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::ACE), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::TEN), Card(Card::Suit::SPADES, Card::FaceValue::EIGHT)};
+
+    bool result = Hand::ComparePair(hand1, hand2);
+    EXPECT_EQ(result, true);
+
+    result = Hand::ComparePair(hand2, hand1);
+    EXPECT_EQ(result, false);
+
+    // pair1 == pair2, kicker1 < kicker2
+    hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::THREE), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
+    hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::TWO), Card(Card::Suit::SPADES, Card::FaceValue::THREE), Card(Card::Suit::SPADES, Card::FaceValue::ACE)};
+
+    result = Hand::ComparePair(hand1, hand2);
+    EXPECT_EQ(result, true);
+
+    result = Hand::ComparePair(hand2, hand1);
+    EXPECT_EQ(result, false);
+}
+
+TEST(HandTest, CompareQuads)
+{
+    //quads1 < quads2
+    std::vector<Card> hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::DIAMONDS, Card::FaceValue::KING), Card(Card::Suit::CLUBS, Card::FaceValue::KING), Card(Card::Suit::HEARTS, Card::FaceValue::KING), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
+    std::vector<Card> hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::ACE), Card(Card::Suit::CLUBS, Card::FaceValue::ACE), Card(Card::Suit::HEARTS, Card::FaceValue::ACE), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
+
+    bool result = Hand::CompareQuads(hand1, hand2);
+    EXPECT_EQ(result, true);
+
+    result = Hand::CompareQuads(hand2, hand1);
+    EXPECT_EQ(result, false);
+
+
+    // quads1 == quads2, kicker1 < kicker2
+    hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::ACE), Card(Card::Suit::CLUBS, Card::FaceValue::ACE), Card(Card::Suit::HEARTS, Card::FaceValue::ACE), Card(Card::Suit::SPADES, Card::FaceValue::FIVE)};
+    hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::DIAMONDS, Card::FaceValue::ACE), Card(Card::Suit::CLUBS, Card::FaceValue::ACE), Card(Card::Suit::HEARTS, Card::FaceValue::ACE), Card(Card::Suit::SPADES, Card::FaceValue::SIX)};
+
+    result = Hand::CompareQuads(hand1, hand2);
+    EXPECT_EQ(result, true);
+
+    result = Hand::CompareQuads(hand2, hand1);
+    EXPECT_EQ(result, false);
+
+}
+
+TEST(HandTest, CompareStraightFlush)
+{
+    std::vector<Card> hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::ACE), Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::SPADES, Card::FaceValue::QUEEN), Card(Card::Suit::SPADES, Card::FaceValue::JACK), Card(Card::Suit::SPADES, Card::FaceValue::TEN)};
+    std::vector<Card> hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::NINE), Card(Card::Suit::SPADES, Card::FaceValue::KING), Card(Card::Suit::SPADES, Card::FaceValue::QUEEN), Card(Card::Suit::SPADES, Card::FaceValue::JACK), Card(Card::Suit::SPADES, Card::FaceValue::TEN)};
+
+    bool result = Hand::CompareQuads(hand1, hand2);
+    EXPECT_EQ(result, false);
+
+    result = Hand::CompareQuads(hand2, hand1);
+    EXPECT_EQ(result, true);
 }
 
 
