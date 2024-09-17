@@ -1,6 +1,7 @@
 #include "hand.h"
 #include <iostream>
 #include <functional>
+#include <exception>
 Hand::Hand(std::vector<Card> cards) : cards(cards) {}
 
 bool Hand::CompareFaceValue(const Card& card1, const Card& card2)
@@ -270,11 +271,7 @@ std::map<int, int> Hand::CountRecurring(std::vector<Card>& hand)
     
     return occurrences;
 }
-int Hand::CompareHands(std::vector<Card>& h1, std::vector<Card>& h2)
-{
-    // todo: handle chop
-    return 0;
-}
+
 
 bool Hand::CompareStraightFlush(std::vector<Card>& hand1, std::vector<Card>& hand2)
 {
@@ -615,6 +612,34 @@ bool Hand::ComparePair(std::vector<Card>& hand1, std::vector<Card>& hand2)
     return false;
 
 }
+bool Hand::CompareHighCard(std::vector<Card>& hand1, std::vector<Card>& hand2)
+{
+    std::sort(hand1.begin(), hand1.end(), CompareFaceValue);
+    std::sort(hand2.begin(), hand2.end(), CompareFaceValue);
+
+    for(int i = 4; i >= 0; i--)
+    {
+        int c1 = static_cast<int>(hand1[i].GetValue());
+        int c2 = static_cast<int>(hand2[i].GetValue());
+        if(c1 == 1)
+        {
+            c1 = 14;
+        }
+        if(c2 == 1)
+        {
+            c2 = 14;
+        }
+        if(c1 < c2)
+        {
+            return true;
+        }
+        if(c1 > c2)
+        {
+            return false;
+        }
+    }
+    return false;
+}
 Hand::HandRanking Hand::EvaluateHand(std::vector<Card>& hand)
 {
     if(Hand::IsRoyalFlush(hand))
@@ -656,7 +681,62 @@ Hand::HandRanking Hand::EvaluateHand(std::vector<Card>& hand)
     return Hand::HandRanking::HIGHCARD;
 
 }
+bool HandsEqual(std::vector<Card>& h1, std::vector<Card>& h2)
+{
+    // todo: handle chop
+    std::sort(h1.begin(), h1.end(), Hand::CompareFaceValue);
+    std::sort(h2.begin(), h2.end(), Hand::CompareFaceValue);
+    for(int i = 0; i < 5; i++)
+    {
+        if(h1[i].GetValue() != h2[i].GetValue())
+        {
+            return false;
+        }
+    }
+    return true;
+    
+}
+bool Hand::CompareHands(std::vector<Card>& h1, std::vector<Card>& h2, const HandRanking rank)
+{
+    /*if(HandsEqual(h1, h2))
+    {
+        throw std::runtime_error("Hand 1 and Hand 2 are equal");
+    }*/
 
+    if(rank == HandRanking::STRAIGHFLUSH)
+    {
+        return CompareStraightFlush(h1, h2);
+    }
+    if(rank == HandRanking::QUADS)
+    {
+        return CompareQuads(h1, h2);
+    }
+    if(rank == HandRanking::FULLHOUSE)
+    {
+        return CompareFullHouse(h1, h2);
+    }
+    if(rank == HandRanking::FLUSH)
+    {
+        return CompareFlush(h1, h2);
+    }
+    if(rank == HandRanking::STRAIGHT)
+    {
+        return CompareStraight(h1, h2);
+    }
+    if(rank == HandRanking::THREEOFAKIND)
+    {
+        return CompareTrips(h1, h2);
+    }
+    if(rank == HandRanking::TWOPAIR)
+    {
+        return CompareTwoPair(h1, h2);
+    }
+    if(rank == HandRanking::PAIR)
+    {
+        return ComparePair(h1, h2);
+    }
+    return CompareHighCard(h1, h2);
+}
 std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(std::vector<Card>& cards)
 {
     Hand h(cards);
@@ -685,18 +765,26 @@ std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(std::vector<Card>
             duplicateRankings.clear();
             duplicateRankings.push_back(el);
         }
-        if(static_cast<int>(cur) == static_cast<int>(max))
+        else if(static_cast<int>(cur) == static_cast<int>(max))
         {
             maxcount++;
             duplicateRankings.push_back(el);
         }
     }
+    
     if(duplicateRankings.size() == 1)
     {
+        std::cout << std::endl;
         return {duplicateRankings[0], max};
     }
 
-    // have to compare multiple hands of the given hand type
+    
+    // need to determine best version of the duplicate hand class
+    std::sort(duplicateRankings.begin(), duplicateRankings.end(), 
+    [max](std::vector<Card>& h1, std::vector<Card>& h2) {
+        return Hand::CompareHands(h1, h2, max);
+    });
+
     
 
     return {duplicateRankings[0], Hand::HandRanking::ROYALFLUSH};

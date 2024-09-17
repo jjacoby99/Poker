@@ -35,10 +35,9 @@ public:
     // Determines best 5 card poker hand
     static std::pair<std::vector<Card>, Hand::HandRanking> BestHand(std::vector<Card>& cards);
 
-    // returns 1 if h1 > h2
-    // returns 0 if h1 == h2
-    // returns -1 if h1 < h2
-    static int CompareHands(std::vector<Card>& h1, std::vector<Card>& h2);
+    // returns true if h1 < h2
+    // returns -1 if h1 > h2
+    static bool CompareHands(std::vector<Card>& h1, std::vector<Card>& h2, HandRanking rank);
 
     static bool IsRoyalFlush(std::vector<Card>& hand);
 
@@ -83,6 +82,8 @@ public:
     static bool CompareTwoPair(std::vector<Card>& hand1, std::vector<Card>& hand2);
 
     static bool ComparePair(std::vector<Card>& hand1, std::vector<Card>& hand2);
+
+    static bool CompareHighCard(std::vector<Card>& hand1, std::vector<Card>& hand2);
 
     static std::map<int, int> CountRecurring(std::vector<Card>& hand); 
 
