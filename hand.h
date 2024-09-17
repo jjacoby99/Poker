@@ -62,6 +62,10 @@ public:
     // returns false if c1.FaceValue == c2.FaceValue
     static bool CompareFaceValue(const Card& card1, const Card& card2);
 
+    static bool CompareStraightFlush(std::vector<Card>& hand1, std::vector<Card>& hand2);
+
+    static bool CompareQuads(std::vector<Card>& hand1, std::vector<Card>& hand2);
+    
     // returns true if h1 < h2
     // returns false if h1 > h2
     static bool CompareFullHouse(std::vector<Card>& hand1, std::vector<Card>& hand2);
@@ -78,6 +82,7 @@ public:
     
     static bool CompareTwoPair(std::vector<Card>& hand1, std::vector<Card>& hand2);
 
+    static bool ComparePair(std::vector<Card>& hand1, std::vector<Card>& hand2);
 
     static std::map<int, int> CountRecurring(std::vector<Card>& hand); 
 

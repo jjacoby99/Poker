@@ -254,7 +254,6 @@ std::map<int, int> Hand::CountRecurring(std::vector<Card>& hand)
         if(cur != next)
         {
             if(cur == 1) // account for aces always being high in pair, twopair, trips, fullhouse, quads
-
             {
                 cur = 14;
             }
@@ -274,8 +273,75 @@ std::map<int, int> Hand::CountRecurring(std::vector<Card>& hand)
 int Hand::CompareHands(std::vector<Card>& h1, std::vector<Card>& h2)
 {
     // todo: handle chop
-    
+    return 0;
 }
+
+bool Hand::CompareStraightFlush(std::vector<Card>& hand1, std::vector<Card>& hand2)
+{
+    std::sort(hand1.begin(), hand1.end(), CompareFaceValue);
+    std::sort(hand2.begin(), hand2.end(), CompareFaceValue);
+
+
+    if(CompareFaceValue(hand1[4], hand2[4]))
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Hand::CompareQuads(std::vector<Card>& hand1, std::vector<Card>& hand2)
+{
+    std::map<int, int> o1 = Hand::CountRecurring(hand1);
+    std::map<int, int> o2 = Hand::CountRecurring(hand2);
+
+    int h1Quads = -1;
+    int h1Pair = -1;
+
+    int h2Quads = -1;
+    int h2Pair = -1;
+
+    for(auto el: o1)
+    {
+        if(el.second == 4)
+        {
+            h1Quads = el.first;
+        }
+        else
+        {
+            h1Pair = el.first;
+        }
+    }
+
+    for(auto el: o2)
+    {
+        if(el.second == 4)
+        {
+            h2Quads = el.first;
+        }
+        else
+        {
+            h2Pair = el.first;
+        }
+    }
+
+    // compare quads
+    if(h1Quads < h2Quads)
+    {
+        return true;
+    }
+    if(h1Quads > h2Quads)
+    {
+        return false;
+    }
+
+    if(h1Pair < h2Pair)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 bool Hand::CompareFullHouse(std::vector<Card>& hand1, std::vector<Card>& hand2)
 {
     std::map<int, int> o1 = Hand::CountRecurring(hand1);
@@ -469,7 +535,7 @@ bool Hand::CompareTwoPair(std::vector<Card>& hand1, std::vector<Card>& hand2)
 
     extractPairsAndKicker(o1, hand1Pairs, kicker1);
     extractPairsAndKicker(o2, hand2Pairs, kicker2);
-
+    
     if(hand1Pairs[0] < hand2Pairs[0])
     {
         return true;
@@ -488,6 +554,66 @@ bool Hand::CompareTwoPair(std::vector<Card>& hand1, std::vector<Card>& hand2)
         return false;
     }
     return kicker1 < kicker2;
+}
+
+bool Hand::ComparePair(std::vector<Card>& hand1, std::vector<Card>& hand2)
+{
+    std::map<int, int> o1 = Hand::CountRecurring(hand1);
+    std::map<int, int> o2 = Hand::CountRecurring(hand2);
+
+    std::vector<int> kickers1, kickers2;
+    int pair1 = -1;
+    int pair2 = -1;
+
+    for(auto el: o1)
+    {
+        if(el.second == 2)
+        {
+            pair1 = el.first;
+        }
+        else
+        {
+            kickers1.push_back(el.first);
+        }
+    }
+
+    for(auto el: o2)
+    {
+        if(el.second == 2)
+        {
+            pair2 = el.first;
+        }
+        else
+        {
+            kickers2.push_back(el.first);
+        }
+    }
+    if(pair1 < pair2)
+    {
+        return true;
+    }
+    if(pair1 > pair2)
+    {
+        return false;
+    }
+    // know pair1 == pair2 == const
+    // need to look at other cards
+    std::sort(kickers1.begin(), kickers1.end(), std::greater<int>());
+    std::sort(kickers2.begin(), kickers2.end(), std::greater<int>());
+
+    for(int i = 0; i < 4; i++)
+    {
+        if(kickers1[i] < kickers2[i])
+        {
+            return true;
+        }
+        if(kickers1[i] > kickers2[i])
+        {
+            return false;
+        }
+    }
+    return false;
+
 }
 Hand::HandRanking Hand::EvaluateHand(std::vector<Card>& hand)
 {
@@ -573,5 +699,5 @@ std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(std::vector<Card>
     // have to compare multiple hands of the given hand type
     
 
-
+    return {duplicateRankings[0], Hand::HandRanking::ROYALFLUSH};
 }
