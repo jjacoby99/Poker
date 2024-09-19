@@ -627,4 +627,72 @@ TEST(HandTest, CompareStraightFlush)
     EXPECT_EQ(result, true);
 }
 
+TEST(HandTest, CompareHighCard)
+{
+    std::vector<Card> hand1 = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::CLUBS, Card::FaceValue::THREE), Card(Card::Suit::SPADES, Card::FaceValue::FOUR), Card(Card::Suit::SPADES, Card::FaceValue::FIVE), Card(Card::Suit::SPADES, Card::FaceValue::SEVEN)};
+    std::vector<Card> hand2 = {Card(Card::Suit::SPADES, Card::FaceValue::TWO), Card(Card::Suit::CLUBS, Card::FaceValue::THREE), Card(Card::Suit::SPADES, Card::FaceValue::FOUR), Card(Card::Suit::SPADES, Card::FaceValue::FIVE), Card(Card::Suit::SPADES, Card::FaceValue::EIGHT)};
+
+    bool result = Hand::CompareHighCard(hand1, hand2);
+    EXPECT_EQ(result, true);
+    
+    result = Hand::CompareHighCard(hand2, hand1);
+    EXPECT_EQ(result, false);
+}
+
+void HandsSame(std::vector<Card>& h1, std::vector<Card>& h2)
+{
+    for(int i = 0; i < 5; i++)
+    {
+        EXPECT_EQ(static_cast<int>(h1[i].GetValue()),static_cast<int>(h2[i].GetValue()));
+        EXPECT_EQ(static_cast<int>(h2[i].GetSuit()), static_cast<int>(h2[i].GetSuit()));
+    }
+}
+//make sure the best poker hand is recognized
+TEST(HandTest, BestHandStraightFlush)
+{
+    Card TwoS(Card::Suit::SPADES, Card::FaceValue::TWO);
+    Card ThreeC(Card::Suit::CLUBS, Card::FaceValue::THREE);
+    Card FourD(Card::Suit::DIAMONDS, Card::FaceValue::FOUR);
+    Card ThreeS(Card::Suit::SPADES, Card::FaceValue::THREE);
+    Card FourS(Card::Suit::SPADES, Card::FaceValue::FOUR);
+    Card FiveS(Card::Suit::SPADES, Card::FaceValue::FIVE);
+    Card SixS(Card::Suit::SPADES, Card::FaceValue::SIX);
+
+    // best is a straight flush
+    std::vector<Card> cards = {TwoS, ThreeC, FourD, ThreeS, FourS, FiveS, SixS};
+    
+    std::vector<Card> expectedBest = {TwoS, ThreeS, FourS, FiveS, SixS};
+    Hand::HandRanking expectedRanking = Hand::HandRanking::STRAIGHFLUSH;
+    
+    
+    auto result = Hand::BestHand(cards);
+
+    HandsSame(expectedBest, result.first);
+    EXPECT_EQ(static_cast<int>(expectedRanking), static_cast<int>(result.second));
+
+
+}
+TEST(HandTest, BestHandRoyalFlush)
+{
+    Card AceS(Card::Suit::SPADES, Card::FaceValue::ACE);
+    Card AceC(Card::Suit::CLUBS, Card::FaceValue::ACE);
+    Card KingS(Card::Suit::SPADES, Card::FaceValue::KING);
+    Card QueenS(Card::Suit::SPADES, Card::FaceValue::QUEEN);
+    Card JackS(Card::Suit::SPADES, Card::FaceValue::JACK);
+    Card TenS(Card::Suit::SPADES, Card::FaceValue::TEN);
+    Card AceD(Card::Suit::DIAMONDS, Card::FaceValue::ACE);
+
+    // best is a straight flush
+    std::vector<Card> cards = {AceS, AceC, KingS, QueenS, JackS, TenS, AceD};
+    
+    std::vector<Card> expectedBest = {TenS, JackS, QueenS, KingS, AceS};
+    Hand::HandRanking expectedRanking = Hand::HandRanking::ROYALFLUSH;
+    
+    
+    auto result = Hand::BestHand(cards);
+
+    HandsSame(expectedBest, result.first);
+    EXPECT_EQ(static_cast<int>(expectedRanking), static_cast<int>(result.second));
+}
+
 
