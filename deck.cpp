@@ -5,27 +5,20 @@
 #include <exception>
 
 Deck::Deck() {
-    deck.reserve(52); // Reserve space for 52 cards
 
-    for (int suit = static_cast<int>(Card::Suit::CLUBS); suit <= static_cast<int>(Card::Suit::SPADES); ++suit) {
-        for (int value = static_cast<int>(Card::FaceValue::ACE); value <= static_cast<int>(Card::FaceValue::KING); ++value) {
-            deck.emplace_back(static_cast<Card::Suit>(suit), static_cast<Card::FaceValue>(value));
+    std::deque<Card> deck;
+
+    for (int suit = static_cast<int>(Card::Suit::CLUBS); suit <= static_cast<int>(Card::Suit::SPADES); ++suit)
+    {
+        for (int value = static_cast<int>(Card::FaceValue::ACE); value <= static_cast<int>(Card::FaceValue::KING); ++value) 
+        {
+            this->deck.push_back(Card(static_cast<Card::Suit>(suit), static_cast<Card::FaceValue>(value)));
         }
     }
 }
 
-Deck::Deck(const Deck &d)
-{
-    size_t size = d.deck.size();
+Deck::Deck(const Deck &d) : deck(d.deck) {}
 
-    this->deck.reserve(size);
-
-    for(Card c: d.deck)
-    {
-        deck.emplace_back(c);
-    }
-
-}
 
 void Deck::Shuffle()
 {
@@ -47,10 +40,9 @@ std::vector<Card> Deck::Deal(size_t num_cards)
     for(int i = 0; i < num_cards; i++)
     {
         //populate result
-        result.emplace_back(this->deck[0]);
+        result.emplace_back(this->deck.front());
 
-        //remove card from deck
-        this->deck.erase(this->deck.begin());
+        this->deck.pop_front();
     }
 
     return result;
@@ -59,8 +51,14 @@ std::vector<Card> Deck::Deal(size_t num_cards)
 std::string Deck::ToString() const 
 {
     std::string result;
-    for (int i = 0; i < 52; ++i) {
-        result += deck[i].ToString();
+    for(Card c: this->deck)
+    {
+        result += c.ToString();
     }
     return result;
+}
+
+int Deck::CardsRemaining()
+{
+    return this->deck.size();
 }

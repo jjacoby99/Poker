@@ -3,6 +3,7 @@
 
 #include "card.h"
 #include <vector>
+#include <deque>
 
 class Deck {
 public:
@@ -20,9 +21,12 @@ public:
     // returns the first num_cards cards from the top of the deck
     // has the side effect of removing those cards from the deck
     std::vector<Card> Deal(size_t num_cards);
+
+    // returns the number of cards remaining in the deck
+    int CardsRemaining();
     
 private:
-    std::vector<Card> deck; // Array of 52 Card instances
+    std::deque<Card> deck; // Array of 52 Card instances
 };
 
 #endif // DECK_H
