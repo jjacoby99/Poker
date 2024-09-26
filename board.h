@@ -11,19 +11,19 @@ public:
     Board();
 
     // pre-specify flop
-    Board(std::vector<Card> flop);
+    Board(const std::vector<Card>& flop);
 
     // pre-specify flop & turn
-    Board(std::vector<Card> flop, Card turn);
+    Board(const std::vector<Card>& flop, const Card& turn);
 
     // pre-specify flop, turn, & river
-    Board(std::vector<Card> flop, Card turn, Card river);
+    Board(const std::vector<Card>& flop, const Card& turn, const Card& river);
 
-    void Flop(std::vector<Card> flop);
+    void Flop(const std::vector<Card>& flop);
 
-    void Turn(Card turn);
+    void Turn(const Card& turn);
 
-    void River(Card river);
+    void River(const Card& river);
 
     // print the current state of the board
     void DisplayBoard();

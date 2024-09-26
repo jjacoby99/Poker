@@ -6,55 +6,51 @@ Board::Board()
     
 }
 
-Board::Board(std::vector<Card> flop)
+Board::Board(const std::vector<Card>& flop)
 {
-    this->board.reserve(3);
     this->Flop(flop);
 }
 // pre-specify flop & turn
-Board::Board(std::vector<Card> flop, Card turn)
+Board::Board(const std::vector<Card>& flop, const Card& turn)
 {
-    this->board.reserve(4);
     this->Flop(flop);
-    this->board.emplace_back(turn);
+    this->board.push_back(turn);
 }
 
 // pre-specify flop, turn, & river
-Board::Board(std::vector<Card> flop, Card turn, Card river)
-{
-    this->board.reserve(5);
-    if(flop.size() != 3)
-    {
-        throw std::runtime_error("The flop must contain 3 cards");
-    }
-    for(Card c: flop)
-    {
-        this->board.emplace_back(c);
-    }
-    this->board.emplace_back(turn);
-    this->board.emplace_back(river);
-}
-
-void Board::Flop(std::vector<Card> flop)
+Board::Board(const std::vector<Card>& flop, const Card& turn, const Card& river)
 {
     if(flop.size() != 3)
     {
         throw std::runtime_error("The flop must contain 3 cards");
     }
+    this->Flop(flop);
+    this->board.emplace_back(turn);
+    this->board.emplace_back(river);
+}
+
+void Board::Flop(const std::vector<Card>& flop)
+{
+    if(flop.size() != 3)
+    {
+        throw std::runtime_error("The flop must contain 3 cards");
+    }
+    this->board.reserve(3);
+
     for(Card c: flop)
     {
-        this->board.emplace_back(c);
+        this->board.push_back(c);
     }
 }
 
-void Board::Turn(Card turn)
+void Board::Turn(const Card& turn)
 {
-    this->board.emplace_back(turn);
+    this->board.push_back(turn);
 }
 
-void Board::River(Card river)
+void Board::River(const Card& river)
 {
-    this->board.emplace_back(river);
+    this->board.push_back(river);
 }
 
 // print the current state of the board
