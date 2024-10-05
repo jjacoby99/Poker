@@ -695,4 +695,65 @@ TEST(HandTest, BestHandRoyalFlush)
     EXPECT_EQ(static_cast<int>(expectedRanking), static_cast<int>(result.second));
 }
 
+TEST(HandTest, StraightRecognize)
+{
+    Card KingS(Card::Suit::SPADES, Card::FaceValue::KING);
+    Card QueenD(Card::Suit::DIAMONDS, Card::FaceValue::QUEEN);
+    Card JackC(Card::Suit::CLUBS, Card::FaceValue::JACK);
+    Card TenS(Card::Suit::SPADES, Card::FaceValue::TEN);
+    Card NineH(Card::Suit::HEARTS, Card::FaceValue::NINE);
+
+    std::vector<Card> cards = {KingS, QueenD, JackC, TenS, NineH};
+    
+    Hand::HandRanking expectedRanking = Hand::HandRanking::STRAIGHT;
+    auto result = Hand::EvaluateHand(cards);
+
+    EXPECT_EQ(static_cast<int>(result), static_cast<int>(expectedRanking));
+
+    Card Kings(Card::Suit::SPADES, Card::FaceValue::KING);
+    Card SevenD(Card::Suit::DIAMONDS, Card::FaceValue::SEVEN);
+
+    cards.push_back(Kings);
+    cards.push_back(SevenD);
+
+    std::pair<std::vector<Card>, Hand::HandRanking> r2 = Hand::BestHand(cards);
+    std::vector<Card> expected = {NineH, TenS, JackC, QueenD, KingS};
+    HandsSame(expected, r2.first);
+
+    Hand h(cards);
+    std::vector<std::vector<Card>> allHands;
+
+    allHands = h.GeneratePokerHands();
+    int i = 1;
+    
+    EXPECT_EQ(static_cast<int>(Hand::HandRanking::STRAIGHT), static_cast<int>(r2.second));
+
+}
+
+TEST(HandTest, BestHandBoard)
+{
+    Card KingS(Card::Suit::SPADES, Card::FaceValue::KING);
+    Card KingD(Card::Suit::DIAMONDS, Card::FaceValue::KING);
+    Card QueenD(Card::Suit::DIAMONDS, Card::FaceValue::QUEEN);
+    Card JackC(Card::Suit::CLUBS, Card::FaceValue::JACK);
+    Card TenS(Card::Suit::SPADES, Card::FaceValue::TEN);
+    Card NineH(Card::Suit::HEARTS, Card::FaceValue::NINE);
+    Card ThreeC(Card::Suit::CLUBS, Card::FaceValue::THREE);
+    Card SevenD(Card::Suit::DIAMONDS, Card::FaceValue::SEVEN);
+
+    std::vector<Card> cards = {ThreeC, QueenD, JackC, TenS, NineH};
+    Board b;
+    b.AddCards(cards);
+    std::pair<Card, Card> holeCards = {KingS, KingD};
+
+
+    std::pair<std::vector<Card>, Hand::HandRanking> r2 = Hand::BestHand(b, holeCards);
+    std::vector<Card> expected = {NineH, TenS, JackC, QueenD, KingS};
+    HandsSame(expected, r2.first);
+
+    EXPECT_EQ(static_cast<int>(Hand::HandRanking::STRAIGHT), static_cast<int>(r2.second));
+
+}
+
+
 
