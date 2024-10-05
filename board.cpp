@@ -5,6 +5,13 @@ Board::Board()
 {
     
 }
+Board::Board(const Board& other)
+{
+    for(Card c: other.board)
+    {
+        this->board.push_back(c);
+    }
+}
 
 Board::Board(const std::vector<Card>& flop)
 {
@@ -25,8 +32,8 @@ Board::Board(const std::vector<Card>& flop, const Card& turn, const Card& river)
         throw std::runtime_error("The flop must contain 3 cards");
     }
     this->Flop(flop);
-    this->board.emplace_back(turn);
-    this->board.emplace_back(river);
+    this->board.push_back(turn);
+    this->board.push_back(river);
 }
 
 void Board::Flop(const std::vector<Card>& flop)
@@ -35,7 +42,6 @@ void Board::Flop(const std::vector<Card>& flop)
     {
         throw std::runtime_error("The flop must contain 3 cards");
     }
-    this->board.reserve(3);
 
     for(Card c: flop)
     {
@@ -63,7 +69,20 @@ void Board::DisplayBoard()
     std::cout << std::endl;
 }
 
-std::vector<Card> Board::GetBoard()
+std::vector<Card> Board::GetBoard() const 
 {
     return this->board;
+}
+
+void Board::AddCards(const std::vector<Card>& cards)
+{
+    if(cards.size() > 5 - this->board.size())
+    {
+        throw std::runtime_error("Too many cards provided");
+    }
+    
+    for(Card c: cards)
+    {
+        this->board.push_back(c);
+    }
 }
