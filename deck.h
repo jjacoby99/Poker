@@ -24,7 +24,10 @@ public:
 
     // returns the number of cards remaining in the deck
     int CardsRemaining();
+
+    void RemoveCards(const std::vector<Card>& cards);
     
+    Deck& operator=(const Deck& other);
 private:
     std::deque<Card> deck; // Array of 52 Card instances
 };

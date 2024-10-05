@@ -26,7 +26,11 @@ void Deck::Shuffle()
     std::mt19937 g(rd());
     std::shuffle(this->deck.begin(),this->deck.end(),g);
 }
-
+Deck& Deck::operator=(const Deck& other)
+{
+    this->deck = other.deck;
+    return *this;
+}
 std::vector<Card> Deck::Deal(size_t num_cards)
 {
     if(num_cards > this->deck.size())
