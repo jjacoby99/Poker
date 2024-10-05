@@ -16,7 +16,15 @@ Card& Card::operator=(const Card& other)
 
     return *this;
 }
-
+bool Card::operator==(const Card& other) const
+{
+    return static_cast<int>(this->suit) == static_cast<int>(other.GetSuit()) && static_cast<int>(this->value) == static_cast<int>(other.GetValue());
+}
+std::ostream& operator<<(std::ostream& os,const Card& c)
+{
+    os << c.ToString();
+    return os;
+}
 // Getter implementations
 Card::Suit Card::GetSuit() const 
 {

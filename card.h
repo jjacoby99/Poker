@@ -2,7 +2,7 @@
 #define CARD_H
 
 #include <string>
-
+#include <sstream>
 class Card {
 public:
     enum class Suit 
@@ -36,6 +36,12 @@ public:
 
     //assignment operator
     Card& operator=(const Card& other);
+
+    bool operator==(const Card& other) const;
+
+    friend std::ostream& operator<<(std::ostream& os, const Card& c);
+
+    
 
     // Getter methods
     Suit GetSuit() const;
