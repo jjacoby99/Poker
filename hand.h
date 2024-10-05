@@ -1,10 +1,11 @@
 #ifndef HAND_H
 #define HAND_H
 
-#include "card.h"
+#include "board.h"
 #include <vector>
 #include <map>
 
+class Board;
 class Hand 
 {
 public:
@@ -33,11 +34,14 @@ public:
     static HandRanking EvaluateHand(std::vector<Card>& hand);
     
     // Determines best 5 card poker hand
-    static std::pair<std::vector<Card>, Hand::HandRanking> BestHand(std::vector<Card>& cards);
+    static std::pair<std::vector<Card>, Hand::HandRanking> BestHand(const std::vector<Card>& cards);
+    static std::pair<std::vector<Card>, Hand::HandRanking> BestHand(const Board& b, const std::pair<Card, Card>& holeCards);
 
     // returns true if h1 < h2
-    // returns -1 if h1 > h2
+    // returns false if h1 > h2
     static bool CompareHands(std::vector<Card>& h1, std::vector<Card>& h2, HandRanking rank);
+
+    static bool CompareHands(std::vector<Card>& h1, std::vector<Card>& h2);
 
     static bool IsRoyalFlush(std::vector<Card>& hand);
 
@@ -96,6 +100,7 @@ private:
     std::vector<Card> hand;
 
     HandRanking ranking;
+
 
 
 };

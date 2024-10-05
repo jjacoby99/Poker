@@ -737,8 +737,20 @@ bool Hand::CompareHands(std::vector<Card>& h1, std::vector<Card>& h2, const Hand
     }
     return CompareHighCard(h1, h2);
 }
-std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(std::vector<Card>& cards)
+bool HandsEqual(const std::vector<Card>& h1, const std::vector<Card>& h2)
 {
+    for(int i = 0; i < 5; i++)
+    {
+        if(!(h1 == h2))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(const std::vector<Card>& cards)
+{
+    
     Hand h(cards);
     std::vector<std::vector<Card>> allHands = h.GeneratePokerHands();
 
@@ -752,6 +764,7 @@ std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(std::vector<Card>
     for(std::vector<Card> el: allHands)
     {
         Hand::HandRanking cur = Hand::EvaluateHand(el);
+        
         if(static_cast<int>(cur) > static_cast<int>(max))
         {
             // new high hand
@@ -774,11 +787,8 @@ std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(std::vector<Card>
     
     if(duplicateRankings.size() == 1)
     {
-        std::cout << std::endl;
         return {duplicateRankings[0], max};
     }
-
-    
     // need to determine best version of the duplicate hand class
     std::sort(duplicateRankings.begin(), duplicateRankings.end(), 
     [max](std::vector<Card>& h1, std::vector<Card>& h2) {
@@ -787,5 +797,30 @@ std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(std::vector<Card>
 
     
 
-    return {duplicateRankings[0], Hand::HandRanking::ROYALFLUSH};
+    return {duplicateRankings[0], max};
+}
+bool CompareHands(std::vector<Card>& h1, std::vector<Card>& h2)
+{
+    Hand::HandRanking h1Rank = Hand::EvaluateHand(h1);
+    Hand::HandRanking h2Rank = Hand::EvaluateHand(h2);
+
+    if(static_cast<int>(h1Rank) < static_cast<int>(h2Rank))
+    {
+        return true;
+    }
+    if(static_cast<int>(h1Rank) > static_cast<int>(h2Rank))
+    {
+        return false;
+    }
+
+    return Hand::CompareHands(h1, h2, h1Rank);
+}
+std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(const Board& b, const std::pair<Card, Card>& holeCards)
+{
+    std::vector<Card> cards = b.GetBoard();
+    cards.push_back(holeCards.first);
+    cards.push_back(holeCards.second);
+
+    
+    return Hand::BestHand(cards);
 }
