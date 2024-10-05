@@ -80,3 +80,34 @@ TEST(DeckTest, Deal)
 
     VectorsEqual(expected, result);
 }
+
+TEST(DeckTest, CardsRemaining)
+{
+    Deck deck;
+
+    int size = 52;
+
+    for(int i = 0; i < 52; i++)
+    {
+        std::vector<Card> cur = deck.Deal(1);
+        size -= 1;
+        EXPECT_EQ(size, deck.CardsRemaining());
+    }
+}
+
+TEST(DeckTest, RemoveCards)
+{
+    Deck d;
+    int size = 52;
+
+    Card As(Card::Suit::SPADES, Card::FaceValue::ACE);
+    Card Ac(Card::Suit::CLUBS, Card::FaceValue::ACE);
+
+    Card Kh(Card::Suit::HEARTS, Card::FaceValue::KING);
+    Card Kd(Card::Suit::DIAMONDS, Card::FaceValue::KING);
+
+    std::vector<Card> removeCards = {As, Ac, Kh, Kd};
+
+    d.RemoveCards(removeCards);
+    EXPECT_EQ(size - 4, d.CardsRemaining());
+}
