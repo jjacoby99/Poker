@@ -61,3 +61,22 @@ TEST(BoardTest, RiverConstructor)
 
     EXPECT_EQ(deckstr.substr(0,10), actual);
 }
+
+TEST(BoardTest, Flop)
+{
+    Board b;
+    Card As(Card::Suit::SPADES, Card::FaceValue::ACE);
+    Card Ks(Card::Suit::SPADES, Card::FaceValue::KING);
+    Card Qs(Card::Suit::SPADES, Card::FaceValue::QUEEN);
+
+    std::vector<Card> threeCards = {As, Ks, Qs};
+
+    b.Flop(threeCards);
+
+    for(int i = 0; i < 3; i++)
+    {
+        EXPECT_EQ(static_cast<int>(b.GetBoard()[i].GetValue()), static_cast<int>(threeCards[i].GetValue()));
+        EXPECT_EQ(static_cast<int>(b.GetBoard()[i].GetSuit()), static_cast<int>(threeCards[i].GetSuit()));
+
+    }
+}
