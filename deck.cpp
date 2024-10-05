@@ -66,3 +66,17 @@ int Deck::CardsRemaining()
 {
     return this->deck.size();
 }
+
+void Deck::RemoveCards(const std::vector<Card>& cards)
+{
+    for(Card c: cards)
+    {
+        auto it = std::find(this->deck.begin(), this->deck.end(), c);
+        
+
+        if(it != this->deck.end())
+        {
+            this->deck.erase(it);
+        }
+    }
+}
