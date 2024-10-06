@@ -59,35 +59,9 @@ double Sim::CalculateEquity(size_t numSims)
         auto p1 = Hand::BestHand(simBoard, h1);
         auto p2 = Hand::BestHand(simBoard, h2);       
         
-
-        // printing
-        /*std::cout << "Hand " << i << ". Board: ";
-        for(Card c: simBoard.GetBoard())
-        {
-            std::cout << c.ToString() << " ";
-        }
-        std::cout << std::endl;
-
-        std::cout << "\tP1: " << h1.first.ToString() << " " << h1.second.ToString() << std::endl;
-        std::cout << "\tP2: " << h2.first.ToString() << " " << h1.second.ToString() << std::endl;
-
-        std::cout << "\tH1: " << static_cast<int>(p1.second) << std::endl;
-        for(Card c: p1.first)
-        {
-            std::cout << c.ToString() << " ";
-        }
-        std::cout << std::endl;
-        std::cout << "\tH2: " << static_cast<int>(p2.second) << std::endl;
-        for(Card c: p2.first)
-        {
-            std::cout << c.ToString() << " ";
-        }
-        std::cout << std::endl;
-        */
         if(static_cast<int>(p1.second) > static_cast<int> (p2.second))
         {
             // h1 classification is greater than h2 classification: h1 winds
-            //std::cout << "HAND 1 WINS" <<std::endl;
             h1Wins += 1.0;
         }
         else if(static_cast<int>(p1.second) == static_cast<int> (p2.second))
@@ -96,17 +70,10 @@ double Sim::CalculateEquity(size_t numSims)
             bool resultsimDeck = Hand::CompareHands(p1.first, p2.first, p1.second); // this is equivalent to the question ( h1 < h2 )?
             if(!resultsimDeck)
             {
-                //std::cout << "HAND 1 WINS" <<std::endl;
                 h1Wins++;
             }
-            /*else{
-                //std::cout << "HAND 2 WINS" << std::endl;
-            }*/
+            
         }
-
-        
-
-        
     }
     return h1Wins / static_cast<double>(numSims);
 
