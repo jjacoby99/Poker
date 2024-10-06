@@ -2,6 +2,7 @@
 #include <iostream>
 #include <functional>
 #include <exception>
+#include <unordered_map>
 Hand::Hand(std::vector<Card> cards) : cards(cards) {}
 
 bool Hand::CompareFaceValue(const Card& card1, const Card& card2)
@@ -703,7 +704,7 @@ bool Hand::CompareHands(std::vector<Card>& h1, std::vector<Card>& h2, const Hand
         throw std::runtime_error("Hand 1 and Hand 2 are equal");
     }*/
 
-    if(rank == HandRanking::STRAIGHFLUSH)
+    /*if(rank == HandRanking::STRAIGHFLUSH)
     {
         return CompareStraightFlush(h1, h2);
     }
@@ -735,7 +736,27 @@ bool Hand::CompareHands(std::vector<Card>& h1, std::vector<Card>& h2, const Hand
     {
         return ComparePair(h1, h2);
     }
-    return CompareHighCard(h1, h2);
+    return CompareHighCard(h1, h2);*/
+    // Create a map of hand rankings to comparison functions
+    static const std::unordered_map<HandRanking, std::function<bool(std::vector<Card>&, std::vector<Card>&)>> compareFuncs = {
+        { HandRanking::STRAIGHFLUSH, CompareStraightFlush },
+        { HandRanking::QUADS, CompareQuads },
+        { HandRanking::FULLHOUSE, CompareFullHouse },
+        { HandRanking::FLUSH, CompareFlush },
+        { HandRanking::STRAIGHT, CompareStraight },
+        { HandRanking::THREEOFAKIND, CompareTrips },
+        { HandRanking::TWOPAIR, CompareTwoPair },
+        { HandRanking::PAIR, ComparePair },
+        { HandRanking::HIGHCARD, CompareHighCard }
+    };
+
+    auto compareFunc = compareFuncs.find(rank);
+    if (compareFunc != compareFuncs.end()) {
+        return compareFunc->second(h1, h2);  // Call the corresponding function
+    } 
+    else {
+        throw std::runtime_error("Invalid hand ranking");
+    }
 }
 bool HandsEqual(const std::vector<Card>& h1, const std::vector<Card>& h2)
 {

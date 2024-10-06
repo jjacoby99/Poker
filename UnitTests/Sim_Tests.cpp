@@ -107,6 +107,41 @@ TEST(SimTests, WeirdCase)
     Sim s(h1, h2, b, d);
 
     std::cout << s.CalculateEquity(1);
+}
+*/
+TEST(SimTest, Time)
+{
+    Card As(Card::Suit::SPADES, Card::FaceValue::ACE);
+    Card Ac(Card::Suit::CLUBS, Card::FaceValue::ACE);
+
+    std::pair<Card, Card> h1 = {As, Ac};
+
+    Card Kh(Card::Suit::HEARTS, Card::FaceValue::KING);
+    Card Kd(Card::Suit::DIAMONDS, Card::FaceValue::KING);
+
+    std::pair<Card, Card> h2 = {Kh, Kd};
 
 
+    Sim s1(h1, h2);
+
+    int numSims = 10;
+    int trials = 5;
+
+    for(numSims = 10; numSims <= 100000; numSims *= 10)
+    {
+        std::cout << numSims << " simulations." << std::endl;
+        for(int i = 1; i <= trials; i++ )
+        {
+            auto start = std::chrono::high_resolution_clock::now();
+            double h1Equity = s1.CalculateEquity(numSims);
+            auto end = std::chrono::high_resolution_clock::now(); 
+            std::chrono::duration<double> diff = end - start;
+            std::cout << diff.count() << " ";
+        }
+        std::cout << std::endl;
+    }
+    
+    
+
+    
 }
