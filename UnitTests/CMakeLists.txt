@@ -15,7 +15,8 @@ add_executable(CardTests
 		Board_Tests.cpp
 		/Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp
 		/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp
-		/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp)
+		/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp
+		)
 
 # Link GoogleTest libraries
 target_link_libraries(CardTests gtest gtest_main)
