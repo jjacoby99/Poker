@@ -2,7 +2,7 @@
 #include "sim.h"
 
 int main() {
-     Card As(Card::Suit::SPADES, Card::FaceValue::ACE);
+    Card As(Card::Suit::SPADES, Card::FaceValue::ACE);
     Card Ac(Card::Suit::CLUBS, Card::FaceValue::ACE);
 
     std::pair<Card, Card> h1 = {As, Ac};
