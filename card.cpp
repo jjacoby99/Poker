@@ -25,7 +25,7 @@ std::ostream& operator<<(std::ostream& os,const Card& c)
     os << c.ToString();
     return os;
 }
-// Getter implementations
+
 Card::Suit Card::GetSuit() const 
 {
     return this->suit;
