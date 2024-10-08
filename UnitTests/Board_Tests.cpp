@@ -80,3 +80,88 @@ TEST(BoardTest, Flop)
 
     }
 }
+
+TEST(BoardTest, PossibleStraight)
+{
+    Board b;
+    Card Twos(Card::Suit::SPADES, Card::FaceValue::TWO);
+    Card Fours(Card::Suit::SPADES, Card::FaceValue::FOUR);
+    Card Sixs(Card::Suit::SPADES, Card::FaceValue::SIX);
+
+    Card Td(Card::Suit::DIAMONDS, Card::FaceValue::TEN);
+    Card Kc(Card::Suit::CLUBS, Card::FaceValue::KING);
+
+    std::vector<Card> flop = {Twos, Fours, Sixs};
+    b.Flop(flop);
+    
+    bool result = b.PossibleStraight();
+    EXPECT_EQ(result, true);
+
+    b.Turn(Td);
+    b.River(Kc);
+
+    EXPECT_EQ(b.PossibleStraight(), true);
+}
+
+TEST(BoardTest, NotPossibleStraight)
+{
+    Board b;
+    Card Twos(Card::Suit::SPADES, Card::FaceValue::TWO);
+    Card Fours(Card::Suit::SPADES, Card::FaceValue::FOUR);
+    Card Sevs(Card::Suit::SPADES, Card::FaceValue::SEVEN);
+
+    Card Td(Card::Suit::DIAMONDS, Card::FaceValue::TEN);
+    Card Kc(Card::Suit::CLUBS, Card::FaceValue::KING);
+
+    std::vector<Card> flop = {Twos, Fours, Sevs};
+    b.Flop(flop);
+    
+    bool result = b.PossibleStraight();
+    EXPECT_EQ(result, false);
+
+    b.Turn(Td);
+    b.River(Kc);
+
+    EXPECT_EQ(b.PossibleStraight(), false);
+}
+
+TEST(BoardTest, Broadway)
+{
+    Board b;
+    Card Jh(Card::Suit::HEARTS, Card::FaceValue::JACK);
+    Card Fours(Card::Suit::SPADES, Card::FaceValue::FOUR);
+    Card Sevs(Card::Suit::SPADES, Card::FaceValue::SEVEN);
+
+    Card Td(Card::Suit::DIAMONDS, Card::FaceValue::TEN);
+    Card Kc(Card::Suit::CLUBS, Card::FaceValue::KING);
+
+    std::vector<Card> cards = {Jh, Fours, Sevs, Td, Kc};
+
+    b.AddCards(cards);
+
+    EXPECT_EQ(b.PossibleStraight(), true);
+
+    Board b2;
+
+    cards[3] = Card(Card::Suit::SPADES, Card::FaceValue::ACE);
+    
+    b2.AddCards(cards);
+
+    EXPECT_EQ(b2.PossibleStraight(), true);
+}
+
+TEST(BoardTest, Wheel)
+{
+    Board b;
+    Card Fivec(Card::Suit::CLUBS, Card::FaceValue::FIVE);
+    Card Fours(Card::Suit::SPADES, Card::FaceValue::FOUR);
+    Card As(Card::Suit::SPADES, Card::FaceValue::ACE);
+
+    Card Td(Card::Suit::DIAMONDS, Card::FaceValue::TEN);
+    Card Kc(Card::Suit::CLUBS, Card::FaceValue::KING);
+
+    std::vector<Card> cards = {Fivec, Fours, As, Td, Kc};
+    b.AddCards(cards);
+
+    EXPECT_EQ(b.PossibleStraight(), true);
+}

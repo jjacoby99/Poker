@@ -90,7 +90,51 @@ void Board::AddCards(const std::vector<Card>& cards)
 
 bool Board::PossibleStraight() const
 {
-    return true;
+    std::vector<int> faceValues;
+    for(int i = 0; i < this->board.size(); i++)
+    {
+        faceValues.push_back(static_cast<int>(this->GetBoard()[i].GetValue()));
+    }
+    
+    std::sort(faceValues.begin(), faceValues.end());
+    for(int i: faceValues)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    faceValues.erase(std::unique(faceValues.begin(), faceValues.end()), faceValues.end());
+    
+    int unique = faceValues.size();
+
+    if(unique < 3)
+    {
+        return false;
+    }
+
+    for(int i = 2; i < unique; i++)
+    {
+        if(faceValues[i] - faceValues[i-2] <= 4)
+        {
+            return true;
+        }
+    }
+
+    // handle broadway straight
+    if(faceValues[0] == 1)
+    {
+        faceValues[0] = 14;
+    }
+    std::sort(faceValues.begin(), faceValues.end());
+
+    for(int i = 2; i < unique; i++)
+    {
+        if(faceValues[i] - faceValues[i-2] <= 4)
+        {
+            return true;
+        }
+    }
+    
+    return false;
 }
 
 bool Board::PossibleFlush() const
