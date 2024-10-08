@@ -34,6 +34,13 @@ public:
     void DisplayBoard();
 
     std::vector<Card> GetBoard() const;
+
+    bool PossibleStraight() const;
+
+    bool PossibleFlush() const;
+
+    bool BoardPaired() const;
+
     
 private:
     std::vector<Card> board;

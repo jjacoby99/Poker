@@ -1,5 +1,6 @@
 #include "board.h"
 #include <iostream>
+#include "hand.h"
 
 Board::Board()
 {
@@ -85,4 +86,35 @@ void Board::AddCards(const std::vector<Card>& cards)
     {
         this->board.push_back(c);
     }
+}
+
+bool Board::PossibleStraight() const
+{
+    return true;
+}
+
+bool Board::PossibleFlush() const
+{
+    int suitCount[4] = {0, 0, 0, 0};
+
+    for(Card c: this->board)
+    {
+        suitCount[static_cast<int>(c.GetValue()) - 1]++;
+    }
+    return suitCount[0] > 2 || suitCount[1] > 2 || suitCount[2] > 2 || suitCount[3] > 2;
+}
+
+bool Board::BoardPaired() const 
+{
+    std::vector<Card> b = this->GetBoard();
+    std::map<int, int> occur = Hand::CountRecurring(b);
+
+    for(auto el: occur)
+    {
+        if(el.second > 1)
+        {
+            return true;
+        }
+    }
+    return false;
 }
