@@ -13,9 +13,11 @@ add_executable(CardTests
 		Card_Tests.cpp 
 		Deck_Tests.cpp
 		Board_Tests.cpp
+		Hand_Tests.cpp
 		/Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp
 		/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp
 		/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp
+		/Users/joshjacoby/Desktop/Code/Poker/Poker/hand.cpp
 		)
 
 # Link GoogleTest libraries
