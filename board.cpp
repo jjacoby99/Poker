@@ -97,11 +97,7 @@ bool Board::PossibleStraight() const
     }
     
     std::sort(faceValues.begin(), faceValues.end());
-    for(int i: faceValues)
-    {
-        std::cout << i << " ";
-    }
-    std::cout << std::endl;
+    
     faceValues.erase(std::unique(faceValues.begin(), faceValues.end()), faceValues.end());
     
     int unique = faceValues.size();
@@ -143,16 +139,17 @@ bool Board::PossibleFlush() const
 
     for(Card c: this->board)
     {
-        suitCount[static_cast<int>(c.GetValue()) - 1]++;
+        suitCount[static_cast<int>(c.GetSuit()) - 1]++;
     }
     return suitCount[0] > 2 || suitCount[1] > 2 || suitCount[2] > 2 || suitCount[3] > 2;
 }
 
 bool Board::BoardPaired() const 
 {
-    std::vector<Card> b = this->GetBoard();
-    std::map<int, int> occur = Hand::CountRecurring(b);
 
+    std::vector<Card> b = this->GetBoard();
+
+    std::map<int, int> occur = Hand::CountRecurring(b);
     for(auto el: occur)
     {
         if(el.second > 1)
