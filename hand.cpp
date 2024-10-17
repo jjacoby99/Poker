@@ -2,7 +2,19 @@
 #include <iostream>
 #include <functional>
 #include <exception>
+#include <unordered_map>
+
 Hand::Hand(std::vector<Card> cards) : cards(cards) {}
+
+Hand::Hand(const Board& b, const std::pair<Card, Card>& holeCards)
+{
+    this->board = b;
+    this->holeCards = holeCards;
+
+    this->cards = b.GetBoard();
+    this->cards.push_back(holeCards.first);
+    this->cards.push_back(holeCards.second);
+}
 
 bool Hand::CompareFaceValue(const Card& card1, const Card& card2)
 {
@@ -681,6 +693,69 @@ Hand::HandRanking Hand::EvaluateHand(std::vector<Card>& hand)
     return Hand::HandRanking::HIGHCARD;
 
 }
+std::map<Hand::HandRanking, bool> Hand::GetPossibleHands(const Board& board)
+{
+
+    std::map<Hand::HandRanking, bool> possibleHands;
+    
+    for(int i = 10; i >= 1; i--)
+    {
+        possibleHands[static_cast<Hand::HandRanking>(i)] = true;
+    }
+
+    //--- Determine which hands are possible ---//
+    if(!board.BoardPaired())
+    {
+        possibleHands[Hand::HandRanking::QUADS] = false;
+        possibleHands[Hand::HandRanking::FULLHOUSE] = false;
+    }
+
+    if(!board.PossibleFlush())
+    {
+        possibleHands[Hand::HandRanking::FLUSH] = false;
+    }
+
+    if(!board.PossibleStraight())
+    {
+        possibleHands[Hand::HandRanking::STRAIGHT] = false;
+    }
+    
+    return possibleHands;
+}
+
+Hand::HandRanking Hand::EvaluateHand2(std::vector<Card>& hand, const std::map<HandRanking, bool>& possibleHands)
+{
+    static const std::unordered_map<Hand::HandRanking, std::function<bool(std::vector<Card>&)>> funcMap = {
+        { HandRanking::ROYALFLUSH, IsRoyalFlush},
+        { HandRanking::STRAIGHFLUSH, IsStraightFlush },
+        { HandRanking::QUADS, IsQuads },
+        { HandRanking::FULLHOUSE, IsFullHouse },
+        { HandRanking::FLUSH, IsFlush },
+        { HandRanking::STRAIGHT, IsStraight },
+        { HandRanking::THREEOFAKIND, IsThreeOfAKind },
+        { HandRanking::TWOPAIR, IsTwoPair },
+        { HandRanking::PAIR, IsPair }
+    };
+    
+    //--- When a hand is possible, call the corresponding classification funciton ---//
+    //--- When a hand is possible, call the corresponding classification function ---//
+    for(auto it = possibleHands.rbegin(); it != possibleHands.rend(); ++it)
+    {
+        std::cout << "Evaluating hand: " << static_cast<int>(it->first) << " Possible: " << it->second << std::endl;
+        if(it->second == true)
+        {
+            auto func = funcMap.find(it->first);
+            if (func != funcMap.end()) 
+            {
+                if(func->second(hand))
+                {
+                    return it->first;
+                }
+            } 
+        }
+    }
+    return Hand::HandRanking::HIGHCARD;
+}
 bool HandsEqual(std::vector<Card>& h1, std::vector<Card>& h2)
 {
     // todo: handle chop
@@ -799,7 +874,7 @@ std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(const std::vector
 
     return {duplicateRankings[0], max};
 }
-bool CompareHands(std::vector<Card>& h1, std::vector<Card>& h2)
+bool Hand::CompareHands(std::vector<Card>& h1, std::vector<Card>& h2)
 {
     Hand::HandRanking h1Rank = Hand::EvaluateHand(h1);
     Hand::HandRanking h2Rank = Hand::EvaluateHand(h2);
@@ -820,7 +895,53 @@ std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(const Board& b, c
     std::vector<Card> cards = b.GetBoard();
     cards.push_back(holeCards.first);
     cards.push_back(holeCards.second);
+    Hand h(cards);
+    std::vector<std::vector<Card>> allHands = h.GeneratePokerHands();
+
+    // keep track of the current highest hand and any duplicate classifications
+    std::vector<std::vector<Card>> duplicateRankings;
+    
+    //keep track of the hand classification of the high hand, and number of times that classification occurs
+    Hand::HandRanking max = Hand::HandRanking::HIGHCARD;
+    int maxcount = 1;
+
+    auto possibleHands = Hand::GetPossibleHands(b);
+    for(std::vector<Card> el: allHands)
+    {
+        Hand::HandRanking cur = Hand::EvaluateHand2(el, possibleHands);
+        
+        if(static_cast<int>(cur) > static_cast<int>(max))
+        {
+            // new high hand
+            // update max, maxcount
+            // clear the duplicate rankings
+            // add new max
+
+            max = cur;
+            maxcount = 1;
+
+            duplicateRankings.clear();
+            duplicateRankings.push_back(el);
+        }
+        else if(static_cast<int>(cur) == static_cast<int>(max))
+        {
+            maxcount++;
+            duplicateRankings.push_back(el);
+        }
+    }
+    
+    if(duplicateRankings.size() == 1)
+    {
+        return {duplicateRankings[0], max};
+    }
+    // need to determine best version of the duplicate hand class
+    std::sort(duplicateRankings.begin(), duplicateRankings.end(), 
+    [max](std::vector<Card>& h1, std::vector<Card>& h2) {
+        return Hand::CompareHands(h1, h2, max);
+    });
 
     
-    return Hand::BestHand(cards);
+
+    return {duplicateRankings[0], max};
+        
 }

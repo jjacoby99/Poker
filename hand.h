@@ -25,6 +25,7 @@ public:
 
     Hand(std::vector<Card> cards);
 
+    Hand(const Board& b, const std::pair<Card, Card>& holeCards);
     void GetAllCombinations(std::vector<Card>& cards, std::vector<Card>& hand, std::vector<std::vector<Card>>& allHands, int idx, int start);
 
     // Generates all permutations of 5 card poker hands
@@ -33,6 +34,10 @@ public:
     // classifies a 5 card poker hand into one of the HandRankings
     static HandRanking EvaluateHand(std::vector<Card>& hand);
     
+    static HandRanking EvaluateHand2(std::vector<Card>& hand, const std::map<HandRanking, bool>& possibleHands);
+    
+    static std::map<HandRanking, bool> GetPossibleHands(const Board& board);
+
     // Determines best 5 card poker hand
     static std::pair<std::vector<Card>, Hand::HandRanking> BestHand(const std::vector<Card>& cards);
     static std::pair<std::vector<Card>, Hand::HandRanking> BestHand(const Board& b, const std::pair<Card, Card>& holeCards);
@@ -96,10 +101,12 @@ private:
     // all cards available 
     std::vector<Card> cards;
 
-    // cards to make best 5 card poker hand
-    std::vector<Card> hand;
+    Board board;
+    std::pair<Card, Card> holeCards;
 
     HandRanking ranking;
+
+
 
 
 
