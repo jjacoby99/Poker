@@ -159,3 +159,13 @@ bool Board::BoardPaired() const
     }
     return false;
 }
+
+bool Board::PossibleRoyal() const
+{
+    return this->PossibleFlush() && this->PossibleStraight();
+}
+
+bool Board::PossibleStraightFlush() const
+{
+    return this->PossibleFlush() && this->PossibleStraight();
+}

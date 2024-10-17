@@ -35,6 +35,10 @@ public:
 
     std::vector<Card> GetBoard() const;
 
+    bool PossibleRoyal() const;
+
+    bool PossibleStraightFlush() const;
+
     bool PossibleStraight() const;
 
     bool PossibleFlush() const;
