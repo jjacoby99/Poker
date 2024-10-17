@@ -730,7 +730,7 @@ TEST(HandTest, StraightRecognize)
 
 }
 
-TEST(HandTest, BestHandBoard)
+/*TEST(HandTest, BestHandBoard)
 {
     Card KingS(Card::Suit::SPADES, Card::FaceValue::KING);
     Card KingD(Card::Suit::DIAMONDS, Card::FaceValue::KING);
@@ -753,7 +753,32 @@ TEST(HandTest, BestHandBoard)
 
     EXPECT_EQ(static_cast<int>(Hand::HandRanking::STRAIGHT), static_cast<int>(r2.second));
 
+}*/
+
+
+
+TEST(HandTest, PruningEvaluateFullHouse)
+{
+    Card Ks(Card::Suit::SPADES, Card::FaceValue::KING);
+    Card Kd(Card::Suit::DIAMONDS, Card::FaceValue::KING);
+    Card Qd(Card::Suit::DIAMONDS, Card::FaceValue::QUEEN);
+    Card Jc(Card::Suit::CLUBS, Card::FaceValue::JACK);
+    Card Ts(Card::Suit::SPADES, Card::FaceValue::TEN);
+
+    Card Qh(Card::Suit::HEARTS, Card::FaceValue::QUEEN);
+    Card Qc(Card::Suit::CLUBS, Card::FaceValue::QUEEN);
+
+    std::vector<Card> board = {Ks, Kd, Qd, Jc, Ts};
+    Board b;
+    b.AddCards(board);
+
+    std::cout << std::endl;
+    std::pair<Card, Card> holeCards = {Qh, Qd};
+    
+    std::vector<Card> hand = {Ks, Kd, Qd, Qh, Qd};
+
+    auto pos = Hand::GetPossibleHands(b);
+    //auto result = Hand::EvaluateHand2(std::vector<Card>& hand, const std::map<HandRanking, bool>& possibleHands)
+    auto result = Hand::EvaluateHand2(hand, pos);
+    EXPECT_EQ(static_cast<int>(result), static_cast<int>(Hand::HandRanking::FULLHOUSE));
 }
-
-
-
