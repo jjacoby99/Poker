@@ -704,6 +704,12 @@ std::map<Hand::HandRanking, bool> Hand::GetPossibleHands(const Board& board)
     }
 
     //--- Determine which hands are possible ---//
+
+    if(!board.PossibleStraightFlush())
+    {
+        possibleHands[Hand::HandRanking::ROYALFLUSH] = false;
+        possibleHands[Hand::HandRanking::STRAIGHFLUSH] = false;
+    }
     if(!board.BoardPaired())
     {
         possibleHands[Hand::HandRanking::QUADS] = false;
@@ -738,10 +744,8 @@ Hand::HandRanking Hand::EvaluateHand2(std::vector<Card>& hand, const std::map<Ha
     };
     
     //--- When a hand is possible, call the corresponding classification funciton ---//
-    //--- When a hand is possible, call the corresponding classification function ---//
     for(auto it = possibleHands.rbegin(); it != possibleHands.rend(); ++it)
     {
-        std::cout << "Evaluating hand: " << static_cast<int>(it->first) << " Possible: " << it->second << std::endl;
         if(it->second == true)
         {
             auto func = funcMap.find(it->first);
