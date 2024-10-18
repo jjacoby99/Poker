@@ -1,29 +1,27 @@
-# Specify the CMake minimum version and project name
 cmake_minimum_required(VERSION 3.10)
-project(PokerUnitTests)
+project(CardTests)
 
-# Set the C++ standard
-set(CMAKE_CXX_STANDARD 20)
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Find the Google Test package
-find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
+# Add GoogleTest
+add_subdirectory(../googletest googletest)
 
-# Add your test source files
-set(TEST_SOURCES
-    Board_Tests.cpp
-    Deck_Tests.cpp
-    Hand_Tests.cpp
-    Card_Tests.cpp
-    Player_Tests.cpp
-    Sim_Tests.cpp
-)
+# Add the test executable
+add_executable(CardTests 
+		Card_Tests.cpp 
+		Deck_Tests.cpp
+		Board_Tests.cpp
+		Hand_Tests.cpp
+		/Users/joshjacoby/Desktop/Code/Poker/Poker/card.cpp
+		/Users/joshjacoby/Desktop/Code/Poker/Poker/deck.cpp
+		/Users/joshjacoby/Desktop/Code/Poker/Poker/board.cpp
+		/Users/joshjacoby/Desktop/Code/Poker/Poker/hand.cpp
+		)
 
-# Create the test executable
-add_executable(PokerTests ${TEST_SOURCES})
+# Link GoogleTest libraries
+target_link_libraries(CardTests gtest gtest_main)
 
-# Link the Google Test libraries
-target_link_libraries(PokerTests ${GTEST_LIBRARIES} pthread)
-
-# If you have additional include directories
-include_directories(../include ../src)
+# Include directories - Add the path to card.h
+target_include_directories(CardTests PRIVATE /Users/joshjacoby/Desktop/Code/Poker/Poker ../googletest/googletest/include)
