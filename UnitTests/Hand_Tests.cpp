@@ -782,3 +782,35 @@ TEST(HandTest, PruningEvaluateFullHouse)
     auto result = Hand::EvaluateHand2(hand, pos);
     EXPECT_EQ(static_cast<int>(result), static_cast<int>(Hand::HandRanking::FULLHOUSE));
 }
+// Board where straights, full houses, and full houses are impossible.
+TEST(HandTest, MultipleNotPossible)
+{
+    Card Ks(Card::Suit::SPADES, Card::FaceValue::KING);
+    Card Td(Card::Suit::DIAMONDS, Card::FaceValue::TEN);
+    Card Ec(Card::Suit::CLUBS, Card::FaceValue::EIGHT);
+    Card Fh(Card::Suit::HEARTS, Card::FaceValue::FIVE);
+    Card Threes(Card::Suit::SPADES, Card::FaceValue::THREE);
+
+    Card Eh(Card::Suit::HEARTS, Card::FaceValue::EIGHT);
+    Card Es(Card::Suit::SPADES, Card::FaceValue::EIGHT);
+
+    std::vector<Card> board = {Ks, Td, Ec, Fh, Threes};
+    std::pair<Card, Card> holeCards = {Eh, Es};
+
+    std::vector<Card> hand = {Ks, Td, Ec, Eh, Es};
+
+    Board b;
+    b.AddCards(board);
+
+    auto pos = Hand::GetPossibleHands(b);
+    std::vector<bool> expectedPossible = {true, true, true, true, false, false, false, false, false, false};
+    int i = 0;
+    for(auto el: pos)
+    {
+        EXPECT_EQ(expectedPossible[i++], el.second);
+    }
+    
+    auto result = Hand::EvaluateHand2(hand, pos);
+    EXPECT_EQ(static_cast<int>(result), static_cast<int>(Hand::HandRanking::THREEOFAKIND));
+
+}
