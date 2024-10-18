@@ -55,39 +55,62 @@ double Sim::CalculateEquity(size_t numSims)
         
 
         simBoard.AddCards(simDeck.Deal(board - boardSize));
+               
         
         auto p1 = Hand::BestHand(simBoard, h1);
-        auto p2 = Hand::BestHand(simBoard, h2);       
+        auto p2 = Hand::BestHand(simBoard, h2); 
         
-
-        // printing
-        /*std::cout << "Hand " << i << ". Board: ";
-        for(Card c: simBoard.GetBoard())
-        {
-            std::cout << c.ToString() << " ";
-        }
-        std::cout << std::endl;
-
-        std::cout << "\tP1: " << h1.first.ToString() << " " << h1.second.ToString() << std::endl;
-        std::cout << "\tP2: " << h2.first.ToString() << " " << h1.second.ToString() << std::endl;
-
-        std::cout << "\tH1: " << static_cast<int>(p1.second) << std::endl;
-        for(Card c: p1.first)
-        {
-            std::cout << c.ToString() << " ";
-        }
-        std::cout << std::endl;
-        std::cout << "\tH2: " << static_cast<int>(p2.second) << std::endl;
-        for(Card c: p2.first)
-        {
-            std::cout << c.ToString() << " ";
-        }
-        std::cout << std::endl;
-        */
         if(static_cast<int>(p1.second) > static_cast<int> (p2.second))
         {
             // h1 classification is greater than h2 classification: h1 winds
-            //std::cout << "HAND 1 WINS" <<std::endl;
+            h1Wins += 1.0;
+        }
+        else if(static_cast<int>(p1.second) == static_cast<int> (p2.second))
+        {
+            // h2 classification == h2 classification: compare
+            bool resultsimDeck = Hand::CompareHands(p1.first, p2.first, p1.second); // this is equivalent to the question ( h1 < h2 )?
+            if(!resultsimDeck)
+            {
+                h1Wins++;
+            }
+        } 
+    }
+    return h1Wins / static_cast<double>(numSims);
+
+}
+
+double Sim::CalculateEquityNoPruning(size_t numSims)
+{
+    Board startBoard(this->board);
+    
+    const int boardSize = startBoard.GetBoard().size();
+    const int board = 5;
+    double h1Wins = 0;
+
+    Deck simDeck(this->deck);
+    for(int i = 0; i < numSims; i++)
+    {
+        // deal out remaining cards, add to board
+        Board simBoard(startBoard);
+
+        // re-initialize the deck if needed
+        if(simDeck.CardsRemaining() < board - boardSize)
+        {
+            simDeck = this->deck;
+            simDeck.Shuffle();
+        }
+        
+
+        simBoard.AddCards(simDeck.Deal(board - boardSize));
+        
+        std::vector<Card> board = simBoard.GetBoard();
+        
+        auto p1 = Hand::BestHand({board[0], board[1],board[2], board[3], board[4], h1.first, h1.second});
+        auto p2 = Hand::BestHand({board[0], board[1],board[2], board[3], board[4], h2.first, h2.second}); 
+
+        if(static_cast<int>(p1.second) > static_cast<int> (p2.second))
+        {
+            // h1 classification is greater than h2 classification: h1 winds
             h1Wins += 1.0;
         }
         else if(static_cast<int>(p1.second) == static_cast<int> (p2.second))
