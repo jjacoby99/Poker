@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "player.h"
+#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/player.h"
 #include <string>
 
 TEST(PlayerTests, Constructor)

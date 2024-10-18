@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "deck.h"
+#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/deck.h"
 
 // helper function that checks each character of the two strings are equal
 void StringsEqual(std::string first, std::string second)

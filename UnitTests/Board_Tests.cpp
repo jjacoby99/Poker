@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "board.h"
+#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/board.h"
 
 TEST(BoardTest, FlopConstructor)
 {

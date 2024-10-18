@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "hand.h"
-#include "deck.h"
+#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/hand.h"
+#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/deck.h"
 #include <iostream>
 
 void PrintHand(std::vector<Card>& h, std::string delim = " ")

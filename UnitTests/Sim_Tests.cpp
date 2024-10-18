@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "sim.h"
+#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/sim.h"
 #include <iostream>
 
 TEST(SimTests, Equity)

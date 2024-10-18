@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "card.h"
+#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/card.h"
 
 // test default constructor
 TEST(CardTest, DefaultConstructor) {
