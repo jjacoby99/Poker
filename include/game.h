@@ -35,7 +35,7 @@ private:
 
     // keeps track of players in the game, true if in current hand, false if not. 
     // Hand over if only 1 players.second == true;
-    std::vector<std::pair<Player, bool>> players;
+    std::vector<std::pair<Player, bool>> playerList;
     int button; // index of button in players
 
     int turn; // index of player who's turn it is currently

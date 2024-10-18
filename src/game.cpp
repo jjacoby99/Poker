@@ -1,4 +1,4 @@
-#include "game.h"
+#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/game.h"
 
 Game::Game(std::vector<Player> startPlayers, double sb, double bb)
 {
@@ -7,14 +7,14 @@ Game::Game(std::vector<Player> startPlayers, double sb, double bb)
 
     this->maxBuyIn = 100.0 * bb;
 
-    this->players.reserve(startPlayers.size());
 
     for(Player p: startPlayers)
     {
-        this->players.emplace_back(p);
+
+        this->playerList.push_back({p, true});
     }
 
-    this->button = this->players.size();
+    this->button = this->playerList.size();
     this->turn = 2; // 0 - sb, 1 - bb, 2, utg1
 
     this->deck.Shuffle();
