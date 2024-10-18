@@ -731,34 +731,44 @@ std::map<Hand::HandRanking, bool> Hand::GetPossibleHands(const Board& board)
 
 Hand::HandRanking Hand::EvaluateHand2(std::vector<Card>& hand, const std::map<HandRanking, bool>& possibleHands)
 {
-    static const std::unordered_map<Hand::HandRanking, std::function<bool(std::vector<Card>&)>> funcMap = {
-        { HandRanking::ROYALFLUSH, IsRoyalFlush},
-        { HandRanking::STRAIGHFLUSH, IsStraightFlush },
-        { HandRanking::QUADS, IsQuads },
-        { HandRanking::FULLHOUSE, IsFullHouse },
-        { HandRanking::FLUSH, IsFlush },
-        { HandRanking::STRAIGHT, IsStraight },
-        { HandRanking::THREEOFAKIND, IsThreeOfAKind },
-        { HandRanking::TWOPAIR, IsTwoPair },
-        { HandRanking::PAIR, IsPair }
-    };
-    
-    //--- When a hand is possible, call the corresponding classification funciton ---//
-    for(auto it = possibleHands.rbegin(); it != possibleHands.rend(); ++it)
+    if(possibleHands.at(HandRanking::ROYALFLUSH) && Hand::IsRoyalFlush(hand))
     {
-        if(it->second == true)
-        {
-            auto func = funcMap.find(it->first);
-            if (func != funcMap.end()) 
-            {
-                if(func->second(hand))
-                {
-                    return it->first;
-                }
-            } 
-        }
+        return HandRanking::ROYALFLUSH;
     }
-    return Hand::HandRanking::HIGHCARD;
+    if(possibleHands.at(HandRanking::STRAIGHFLUSH) && Hand::IsStraightFlush(hand))
+    {
+        return HandRanking::STRAIGHFLUSH;
+    }
+    if(possibleHands.at(HandRanking::QUADS) && Hand::IsQuads(hand))
+    {
+        return HandRanking::QUADS;
+    }
+    if(possibleHands.at(HandRanking::FULLHOUSE) && Hand::IsFullHouse(hand))
+    {
+        return HandRanking::FULLHOUSE;
+    }
+    if(possibleHands.at(HandRanking::FLUSH) && Hand::IsFullHouse(hand))
+    {
+        return HandRanking::FLUSH;
+    }
+    if(possibleHands.at(HandRanking::STRAIGHT) && Hand::IsStraight(hand))
+    {
+        return HandRanking::STRAIGHT;
+    }
+    if(Hand::IsThreeOfAKind(hand))
+    {
+        return HandRanking::THREEOFAKIND;
+    }
+    if(Hand::IsTwoPair(hand))
+    {
+        return HandRanking::TWOPAIR;
+    }
+    if(Hand::IsPair(hand))
+    {
+        return HandRanking::PAIR;
+    }
+    return HandRanking::HIGHCARD;
+    
 }
 bool HandsEqual(std::vector<Card>& h1, std::vector<Card>& h2)
 {
