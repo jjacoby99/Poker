@@ -119,18 +119,51 @@ double Sim::CalculateEquityNoPruning(size_t numSims)
             bool resultsimDeck = Hand::CompareHands(p1.first, p2.first, p1.second); // this is equivalent to the question ( h1 < h2 )?
             if(!resultsimDeck)
             {
-                //std::cout << "HAND 1 WINS" <<std::endl;
                 h1Wins++;
             }
-            /*else{
-                //std::cout << "HAND 2 WINS" << std::endl;
-            }*/
-        }
-
-        
-
-        
+        } 
     }
     return h1Wins / static_cast<double>(numSims);
 
+}
+void Sim::ThreadTask(size_t num_sims, double & result)
+{
+    result = this->CalculateEquity(num_sims);
+}
+
+double Sim::CalculateEquity(size_t num_sims, size_t num_threads)
+{
+    unsigned int maxThreads = std::thread::hardware_concurrency();
+    if(num_threads > maxThreads)
+    {
+        throw std::runtime_error("Too many threads provided.\n");
+    }
+
+    // determine breakdown of threads
+    size_t simsPerThread = num_sims / num_threads;
+    size_t remaining = num_sims - simsPerThread * num_threads;
+
+    std::vector<std::thread> threads;
+
+    std::vector<double> results(num_threads, 0.0);
+
+    // start up threads
+    threads.push_back(std::thread(&Sim::ThreadTask, this, simsPerThread + remaining, std::ref(results[0])));
+    for(unsigned int i = 1; i < num_threads; i++)
+    {
+        threads.push_back(std::thread(&Sim::ThreadTask, this, simsPerThread, std::ref(results[i])));
+    }
+
+    for(auto& t: threads)
+    {
+        t.join();
+    }
+
+    double equity = results[0] * (simsPerThread + remaining);
+
+    for(int i = 1; i < num_threads; i++)
+    {
+        equity += results[i] * static_cast<double>(simsPerThread);
+    }
+    return equity / static_cast<double>(num_sims);
 }
