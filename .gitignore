@@ -1,5 +1,6 @@
 /UnitTests/build/
 *.o
+*.bin
 *.so
 *.exe
 *.log
@@ -7,4 +8,4 @@ CMakeCache.txt
 CMakeFiles/
 .vscode/
 .idea/
-
+testing.cpp
