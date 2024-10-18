@@ -9,3 +9,5 @@ CMakeFiles/
 .vscode/
 .idea/
 testing.cpp
+main
+.DS_Store
