@@ -1,0 +1,29 @@
+cmake_minimum_required(VERSION 3.10)
+
+# Set the project name and version
+project(Poker VERSION 1.0 LANGUAGES CXX)
+
+# Specify the C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# Specify the source files in the src directory
+file(GLOB_RECURSE SOURCES
+    src/*.cpp
+)
+
+# Specify the header files in the include directory
+file(GLOB_RECURSE HEADERS
+    include/*.h
+)
+
+# Add the executable
+add_executable(Poker ${SOURCES} ${HEADERS})
+
+# Include directories for headers
+target_include_directories(Poker PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+# Optional: If you're using Google Test for unit testing
+# Uncomment the following lines if you decide to implement unit tests
+# find_package(GTest REQUIRED)
+# target_link_libraries(Poker GTest::GTest GTest::Main)
