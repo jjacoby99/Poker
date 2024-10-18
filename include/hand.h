@@ -5,7 +5,7 @@
 #include <vector>
 #include <map>
 
-class Board;
+
 class Hand 
 {
 public:

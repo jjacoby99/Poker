@@ -41,7 +41,9 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const Card& c);
 
-    
+    // returns true if c1.FaceValue < c2.FaceValue
+    // returns false if c1.FaceValue == c2.FaceValue
+    static bool CompareFaceValue(const Card& card1, const Card& card2);
 
     // Getter methods
     Suit GetSuit() const;

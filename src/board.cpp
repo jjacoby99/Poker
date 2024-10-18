@@ -1,7 +1,6 @@
-#include "board.h"
-#include <iostream>
-#include "hand.h"
+#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/board.h"
 
+#include <iostream>
 Board::Board()
 {
     
@@ -144,12 +143,48 @@ bool Board::PossibleFlush() const
     return suitCount[0] > 2 || suitCount[1] > 2 || suitCount[2] > 2 || suitCount[3] > 2;
 }
 
-bool Board::BoardPaired() const 
+
+std::map<int, int> Board::CountRecurring() const 
+{
+    std::vector<Card> cards = this->GetBoard();
+    std::sort(cards.begin(),cards.end(),Card::CompareFaceValue);
+
+    std::map<int, int> occurrences;
+    int count = 1;
+
+    int cur = 0;
+    int next = 0; 
+    for(int i = 0; i < 4; i++)
+    {
+        cur = static_cast<int>(cards[i].GetValue());
+        next = static_cast<int>(cards[i+1].GetValue());
+        if(cur == next)
+        {
+            count++;
+        }
+        if(cur != next)
+        {
+            if(cur == 1) // account for aces always being high in pair, twopair, trips, fullhouse, quads
+            {
+                cur = 14;
+            }
+            occurrences[cur] = count;
+            count = 1;
+        }
+
+    }
+    if(next == 1)
+    {
+        next = 14;
+    }
+    occurrences[next] = count;
+    
+    return occurrences;
+}
+bool Board::BoardPaired() const
 {
 
-    std::vector<Card> b = this->GetBoard();
-
-    std::map<int, int> occur = Hand::CountRecurring(b);
+    std::map<int, int> occur = this->CountRecurring();
     for(auto el: occur)
     {
         if(el.second > 1)

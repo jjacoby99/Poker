@@ -1,4 +1,4 @@
-#include "card.h"
+#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/card.h"
 
 // Initialize static arrays
 const char* Card::faceSymbols[13] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K"};
@@ -42,4 +42,18 @@ std::string Card::ToString() const
     res += faceSymbols[static_cast<int>(value) - 1]; 
     res += suitSymbols[static_cast<int>(suit) - 1];
     return res;
+}
+bool Card::CompareFaceValue(const Card& card1, const Card& card2)
+{
+    if(card1.GetValue() == card2.GetValue()) return false;
+
+    if(card1.GetValue() == Card::FaceValue::ACE)
+    {
+        return false;
+    }
+    if(card2.GetValue() == Card::FaceValue::ACE)
+    {
+        return true;
+    }
+    return static_cast<int>(card1.GetValue()) < static_cast<int>(card2.GetValue());
 }

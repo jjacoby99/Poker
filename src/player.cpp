@@ -1,4 +1,5 @@
-#include "player.h"
+#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/player.h"
+
 Player::Player() : stack(0.0) {}
 
 Player::Player(double stack, std::string name) : stack(stack), name(name) {}

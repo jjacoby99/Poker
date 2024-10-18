@@ -1,8 +1,9 @@
-#include "deck.h"
+#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/deck.h"
 #include <iostream> 
 #include <algorithm>
 #include <random>
 #include <exception>
+
 
 Deck::Deck() {
 

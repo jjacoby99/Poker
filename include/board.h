@@ -2,7 +2,7 @@
 #define BOARD_H
 
 #include "deck.h"
-
+#include <map>
 
 class Board
 {
@@ -43,10 +43,12 @@ public:
 
     bool PossibleFlush() const;
 
+    // has the side effect of sorting the board in ascending order
     bool BoardPaired() const;
 
-    
+    std::map<int, int> CountRecurring() const;
 private:
+
     std::vector<Card> board;
 };
 

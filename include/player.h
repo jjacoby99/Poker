@@ -1,7 +1,8 @@
 #ifndef PLAYER_H
-#define BOARD_H
+#define PLAYER_H
 
 #include "card.h"
+#include "board.h"
 #include "hand.h"
 #include <vector>
 

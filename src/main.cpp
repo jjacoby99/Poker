@@ -1,5 +1,5 @@
 #include <iostream>
-#include "sim.h"
+#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/sim.h"
 
 int main() {
     Card As(Card::Suit::SPADES, Card::FaceValue::ACE);
