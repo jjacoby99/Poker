@@ -40,6 +40,8 @@ public:
 
     // Determines best 5 card poker hand
     static std::pair<std::vector<Card>, Hand::HandRanking> BestHand(const std::vector<Card>& cards);
+
+    // uses pruning based on board
     static std::pair<std::vector<Card>, Hand::HandRanking> BestHand(const Board& b, const std::pair<Card, Card>& holeCards);
 
     // returns true if h1 < h2
