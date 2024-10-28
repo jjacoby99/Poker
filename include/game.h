@@ -23,6 +23,8 @@ public:
 
 private:
 
+    int Action(int playerIdx, double toCall, const std::string& street);
+
     double maxBuyIn;
 
     Deck deck;
