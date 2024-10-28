@@ -7,14 +7,21 @@ project(Poker VERSION 1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+
+# Find the SFML package and required components
+find_package(SFML 2.5 COMPONENTS system window graphics REQUIRED)
+
+# Include directories for your main source files
+include_directories(${PROJECT_SOURCE_DIR}/src)
+
 # Specify the source files in the src directory
 file(GLOB_RECURSE SOURCES
-    src/*.cpp
+    /Users/joshjacoby/Desktop/Code/Poker/Poker/src/*.cpp
 )
 
 # Specify the header files in the include directory
 file(GLOB_RECURSE HEADERS
-    include/*.h
+    /Users/joshjacoby/Desktop/Code/Poker/Poker/include/*.h
 )
 
 # Add the executable
