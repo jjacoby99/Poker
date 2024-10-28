@@ -6,6 +6,7 @@ Player::Player(double stack, std::string name) : stack(stack), name(name) {}
 
 double Player::Bet(double bet)
 {
+    this->action = 1;
     if(bet <= this->stack)
     {
         this->stack -= bet;
@@ -28,7 +29,7 @@ std::vector<Card> Player::GetHoleCards()
 }
 void Player::Check()
 {
-
+    this->action = 0;
 }
 void Player::DetermineBestHand(std::vector<Card> board)
 {
@@ -63,6 +64,7 @@ double Player::GetStack()
 }
 void Player::Fold()
 {
+    this->action = -1;
     this->holeCards.clear();
     this->bestHand.clear();
 }

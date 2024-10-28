@@ -13,7 +13,7 @@ public:
     Player();
     Player(double buyin, std::string name);
 
-    void Bet(double bet);
+    double Bet(double bet);
 
     void Check();
 
@@ -44,8 +44,14 @@ private:
     std::vector<Card> bestHand;
     Hand::HandRanking ranking;
 
-
+    double currentBet;
     std::string name;
+
+    // attribute for storing player's choice:
+    // 1: bet/call
+    // 0: check
+    // -1: fold
+    int action;
 };
 
 
