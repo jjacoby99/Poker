@@ -1,18 +1,22 @@
 #include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/player.h"
 
-Player::Player() : stack(0.0) {}
+Player::Player() : stack(0.0), currentBet(0.0) {}
 
 Player::Player(double stack, std::string name) : stack(stack), name(name) {}
 
-void Player::Bet(double bet)
+double Player::Bet(double bet)
 {
     if(bet <= this->stack)
     {
         this->stack -= bet;
-        return;
+        this->currentBet = bet;
+        return bet;
     }
     // player is all in
+    this->currentBet = this->stack;
+    double copy = this->stack;
     this->stack = 0;
+    return copy;
 }
 std::vector<Card> Player::GetHoleCards()
 {
