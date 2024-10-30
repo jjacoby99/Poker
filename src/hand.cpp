@@ -943,7 +943,7 @@ std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(const std::vector
 
     
 
-    return {duplicateRankings[0], max};
+    return {duplicateRankings[duplicateRankings.size()-1], max};
 }
 
 
