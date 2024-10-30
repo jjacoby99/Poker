@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 
 # Find the SFML package and required components
-find_package(SFML 2.5 COMPONENTS system window graphics REQUIRED)
+#find_package(SFML 2.5 COMPONENTS system window graphics REQUIRED)
 
 # Include directories for your main source files
 include_directories(${PROJECT_SOURCE_DIR}/src)
