@@ -23,13 +23,21 @@ public:
         HIGHCARD = 1
     };
 
+    static std::string HandRankingToEnglish(HandRanking rank);
+
     Hand(std::vector<Card> cards);
 
     Hand(const Board& b, const std::pair<Card, Card>& holeCards);
-    void GetAllCombinations(std::vector<Card>& cards, std::vector<Card>& hand, std::vector<std::vector<Card>>& allHands, int idx, int start);
+    static void GetAllCombinations(const std::vector<Card>& cards, std::vector<Card>& hand, std::vector<std::vector<Card>>& allHands, int idx, int start);
 
+    // determines the winning hand between p1 and p2
+    // returns true if p1 < p2
+    // false if p1 > p2
+    static bool PlayerVsPlayer(const std::pair<Card, Card>& p1, const std::pair<Card, Card>& p2, const Board& b);
+
+    
     // Generates all permutations of 5 card poker hands
-    std::vector<std::vector<Card>> GeneratePokerHands();
+    static std::vector<std::vector<Card>> GeneratePokerHands(const std::vector<Card>& cards);
 
     // classifies a 5 card poker hand into one of the HandRankings
     static HandRanking EvaluateHand(std::vector<Card>& hand);

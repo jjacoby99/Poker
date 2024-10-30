@@ -16,9 +16,9 @@ Sim::Sim(std::pair<Card, Card> h1, std::pair<Card, Card> h2, Board b, Deck d)
     this->h1 = h1;
     this->h2 = h2;
 
-    if(b.GetBoard().size() > 5 || b.GetBoard().size() < 3)
+    if(b.GetBoard().size() > 5 || b.GetBoard().size() < 1)
     {
-        throw std::runtime_error("Invalid board size. Board must contain 3, 4, or 5 cards.\n");
+        throw std::runtime_error("Invalid board size. Board must contain 0, 3, 4, or 5 cards.\n");
     }
    
     // remove hole cards and deck d
@@ -41,6 +41,11 @@ double Sim::CalculateEquity(size_t numSims)
     const int board = 5;
     double h1Wins = 0;
 
+    if(boardSize == 5)
+    {
+        // only one sim required:
+        numSims = 1;
+    }
     Deck simDeck(this->deck);
     for(int i = 0; i < numSims; i++)
     {

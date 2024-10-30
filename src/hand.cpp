@@ -15,6 +15,47 @@ Hand::Hand(const Board& b, const std::pair<Card, Card>& holeCards)
     this->cards.push_back(holeCards.first);
     this->cards.push_back(holeCards.second);
 }
+std::string Hand::HandRankingToEnglish(HandRanking rank)
+{
+    if(rank == HandRanking::ROYALFLUSH)
+    {
+        return "Royal Flush";
+    }
+    if(rank == HandRanking::STRAIGHFLUSH)
+    {
+        return "Straight Flush";
+    }
+    if(rank == HandRanking::QUADS)
+    {
+        return "Four of a Kind";
+    }
+    if(rank == HandRanking::FULLHOUSE)
+    {
+        return "Full House";
+    }
+    if(rank == HandRanking::FLUSH)
+    {
+        return "Flush";
+    }
+    if(rank == HandRanking::STRAIGHT)
+    {
+        return "Straight";
+    }
+    if(rank == HandRanking::THREEOFAKIND)
+    {
+        return "Three of a Kind";
+    }
+    if(rank == HandRanking::TWOPAIR)
+    {
+        return "Two Pair";
+    }
+    if(rank == HandRanking::PAIR)
+    {
+        return "Pair";
+    }
+    return "High Card";
+
+}
 
 bool Hand::CompareFaceValue(const Card& card1, const Card& card2)
 {
@@ -31,7 +72,7 @@ bool Hand::CompareFaceValue(const Card& card1, const Card& card2)
     return static_cast<int>(card1.GetValue()) < static_cast<int>(card2.GetValue());
 }
 
-void Hand::GetAllCombinations(std::vector<Card>& cards, std::vector<Card>& hand, std::vector<std::vector<Card>>& allHands, int idx, int start)
+void Hand::GetAllCombinations(const std::vector<Card>& cards, std::vector<Card>& hand, std::vector<std::vector<Card>>& allHands, int idx, int start)
 {
     if(idx == 5)
     {
@@ -44,12 +85,12 @@ void Hand::GetAllCombinations(std::vector<Card>& cards, std::vector<Card>& hand,
     }
 }
 
-std::vector<std::vector<Card>> Hand::GeneratePokerHands()
+std::vector<std::vector<Card>> Hand::GeneratePokerHands(const std::vector<Card>& cards)
 {
     std::vector<Card> hand(5);
     std::vector<std::vector<Card>> allHands;
 
-    GetAllCombinations(this->cards, hand, allHands, 0, 0);
+    GetAllCombinations(cards, hand, allHands, 0, 0);
 
     return allHands;
 }
@@ -840,8 +881,7 @@ bool HandsEqual(const std::vector<Card>& h1, const std::vector<Card>& h2)
 std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(const std::vector<Card>& cards)
 {
     
-    Hand h(cards);
-    std::vector<std::vector<Card>> allHands = h.GeneratePokerHands();
+    std::vector<std::vector<Card>> allHands = GeneratePokerHands(cards);
 
     // keep track of the current highest hand and any duplicate classifications
     std::vector<std::vector<Card>> duplicateRankings;
@@ -888,6 +928,8 @@ std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(const std::vector
 
     return {duplicateRankings[0], max};
 }
+
+
 bool Hand::CompareHands(std::vector<Card>& h1, std::vector<Card>& h2)
 {
     Hand::HandRanking h1Rank = Hand::EvaluateHand(h1);
@@ -909,8 +951,7 @@ std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(const Board& b, c
     std::vector<Card> cards = b.GetBoard();
     cards.push_back(holeCards.first);
     cards.push_back(holeCards.second);
-    Hand h(cards);
-    std::vector<std::vector<Card>> allHands = h.GeneratePokerHands();
+    std::vector<std::vector<Card>> allHands = Hand::GeneratePokerHands(cards);
 
     // keep track of the current highest hand and any duplicate classifications
     std::vector<std::vector<Card>> duplicateRankings;
@@ -958,4 +999,92 @@ std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(const Board& b, c
 
     return {duplicateRankings[0], max};
         
+}
+std::pair<std::vector<std::vector<Card>>, Hand::HandRanking> GetDuplicateRankings(const std::map<Hand::HandRanking, bool> possible, std::vector<Card>& cards)
+{
+    std::vector<std::vector<Card>> allHands = Hand::GeneratePokerHands(cards);
+    // keep track of the current highest hand and any duplicate classifications
+    std::vector<std::vector<Card>> duplicateRankings;
+    
+    //keep track of the hand classification of the high hand, and number of times that classification occurs
+    Hand::HandRanking max = Hand::HandRanking::HIGHCARD;
+    int maxcount = 1;
+
+    for(std::vector<Card> el: allHands)
+    {
+        Hand::HandRanking cur = Hand::EvaluateHand2(el, possible);
+        
+        if(static_cast<int>(cur) > static_cast<int>(max))
+        {
+            // new high hand
+            // update max, maxcount
+            // clear the duplicate rankings
+            // add new max
+
+            max = cur;
+            maxcount = 1;
+
+            duplicateRankings.clear();
+            duplicateRankings.push_back(el);
+        }
+        else if(static_cast<int>(cur) == static_cast<int>(max))
+        {
+            maxcount++;
+            duplicateRankings.push_back(el);
+        }
+    }
+
+    return {duplicateRankings, max};
+}
+bool Hand::PlayerVsPlayer(const std::pair<Card, Card>& p1, const std::pair<Card, Card>& p2, const Board& b)
+{
+    std::vector<Card> cards1 = b.GetBoard();
+    std::vector<Card> cards2 = cards1;
+
+    cards1.push_back(p1.first);
+    cards1.push_back(p1.second);
+
+    cards2.push_back(p2.first);
+    cards2.push_back(p2.second);
+
+
+    std::vector<std::vector<Card>> allHands1 = Hand::GeneratePokerHands(cards1);
+    std::vector<std::vector<Card>> allHands2 = Hand::GeneratePokerHands(cards2);
+    
+    auto possibleHands = Hand::GetPossibleHands(b);
+
+
+    // keep track of the current highest hand and any duplicate classifications
+    auto duplicateRankings1 = GetDuplicateRankings(possibleHands, cards1);
+    auto duplicateRankings2 = GetDuplicateRankings(possibleHands, cards2);
+
+    if(static_cast<int>(duplicateRankings1.second) < static_cast<int>(duplicateRankings1.second))
+    {
+        return true;
+    }
+    if(static_cast<int>(duplicateRankings1.second) > static_cast<int>(duplicateRankings1.second))
+    {
+        return false;
+    }
+    
+
+    // both hands have the same hand classification
+    if(duplicateRankings1.first.size() == 1)
+    {
+        
+    }
+    // need to determine best version of the duplicate hand class
+    HandRanking max = duplicateRankings1.second;
+    
+    std::sort(duplicateRankings1.first.begin(), duplicateRankings1.first.end(), 
+    [max](std::vector<Card>& h1, std::vector<Card>& h2) {
+        return Hand::CompareHands(h1, h2, max);
+    });
+
+    std::sort(duplicateRankings2.first.begin(), duplicateRankings2.first.end(), 
+    [max](std::vector<Card>& h1, std::vector<Card>& h2) {
+        return Hand::CompareHands(h1, h2, max);
+    });
+
+    return true;
 }
