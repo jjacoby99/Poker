@@ -11,4 +11,4 @@ CMakeFiles/
 .idea/
 testing.cpp
 main
-.DS_Store
+*.DS_Store
