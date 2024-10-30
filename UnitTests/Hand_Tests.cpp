@@ -893,6 +893,10 @@ TEST(HandTest, AceHighTrips)
 
     Board b;
     b.AddCards(board);
+
+    
+    
+    auto result = Hand::BestHand(b, holeCards);
     
     EXPECT_EQ(static_cast<int>(result.second), static_cast<int>(Hand::HandRanking::THREEOFAKIND));
 
