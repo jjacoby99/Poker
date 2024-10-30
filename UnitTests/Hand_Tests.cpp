@@ -25,10 +25,9 @@ TEST(HandTest, HandPermutations)
     cards.push_back(Card(Card::Suit::CLUBS, Card::FaceValue::SEVEN));
 
 
-    Hand h(cards);
     std::vector<std::vector<Card>> allHands;
 
-    allHands = h.GeneratePokerHands();
+    allHands = Hand::GeneratePokerHands(cards);
 
     // generate expected
     std::vector<std::vector<Card>> expected(21);
@@ -720,10 +719,9 @@ TEST(HandTest, StraightRecognize)
     std::vector<Card> expected = {NineH, TenS, JackC, QueenD, KingS};
     HandsSame(expected, r2.first);
 
-    Hand h(cards);
     std::vector<std::vector<Card>> allHands;
 
-    allHands = h.GeneratePokerHands();
+    allHands = Hand::GeneratePokerHands(cards);
     int i = 1;
     
     EXPECT_EQ(static_cast<int>(Hand::HandRanking::STRAIGHT), static_cast<int>(r2.second));
