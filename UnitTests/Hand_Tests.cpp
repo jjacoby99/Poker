@@ -810,5 +810,101 @@ TEST(HandTest, MultipleNotPossible)
     
     auto result = Hand::EvaluateHand2(hand, pos);
     EXPECT_EQ(static_cast<int>(result), static_cast<int>(Hand::HandRanking::THREEOFAKIND));
+}
 
+// The case where there was a pair, two pair, or three of a kind was returning the correct hand classification,
+// but it was returning the wrong five card hand. Aces were being treated as low, and furthermore, we were returning the first
+// element of the sorted vector of duplicate rankings when we should have been returning the last.
+// How this affects the rest of the program remains to be seen.
+TEST(HandTest, AceHighPair)
+{
+    Card As(Card::Suit::SPADES, Card::FaceValue::ACE);
+    Card Sixc(Card::Suit::CLUBS, Card::FaceValue::SIX);
+    Card Sixh(Card::Suit::HEARTS, Card::FaceValue::SIX);
+    Card Twod(Card::Suit::DIAMONDS, Card::FaceValue::TWO);
+    Card Qs(Card::Suit::SPADES, Card::FaceValue::QUEEN);
+    Card Kc(Card::Suit::CLUBS, Card::FaceValue::KING);
+    Card Sevh(Card::Suit::HEARTS, Card::FaceValue::SEVEN);
+
+    std::pair<Card, Card> holeCards = {Sixc, Sixh};
+    std::vector<Card> board = {As, Twod, Qs, Kc, Sevh};
+
+    Board b;
+    b.AddCards(board);
+
+    
+    
+    auto result = Hand::BestHand(b, holeCards);
+    
+    EXPECT_EQ(static_cast<int>(result.second), static_cast<int>(Hand::HandRanking::PAIR));
+
+    std::vector<Card> expected = {Sixc, Sixh, Qs, Kc, As};
+
+    for(int i = 0; i < 5; i++)
+    {
+        EXPECT_EQ(static_cast<int>(expected[i].GetValue()), static_cast<int>(result.first[i].GetValue()));
+        EXPECT_EQ(static_cast<int>(expected[i].GetSuit()), static_cast<int>(result.first[i].GetSuit()));
+    }
+}
+
+TEST(HandTest, AceHighTwoPair)
+{
+    Card As(Card::Suit::SPADES, Card::FaceValue::ACE);
+    Card Sixc(Card::Suit::CLUBS, Card::FaceValue::SIX);
+    Card Sixh(Card::Suit::HEARTS, Card::FaceValue::SIX);
+    Card Twod(Card::Suit::DIAMONDS, Card::FaceValue::TWO);
+    Card TwoC(Card::Suit::CLUBS, Card::FaceValue::TWO);
+    Card Kc(Card::Suit::CLUBS, Card::FaceValue::KING);
+    Card Sevh(Card::Suit::HEARTS, Card::FaceValue::SEVEN);
+
+    std::pair<Card, Card> holeCards = {Sixc, Sixh};
+    std::vector<Card> board = {As, Twod, TwoC, Kc, Sevh};
+
+    Board b;
+    b.AddCards(board);
+
+    
+    
+    auto result = Hand::BestHand(b, holeCards);
+    
+    EXPECT_EQ(static_cast<int>(result.second), static_cast<int>(Hand::HandRanking::TWOPAIR));
+
+    std::vector<Card> expected = {Twod,TwoC, Sixc, Sixh, As};
+
+    for(int i = 0; i < 5; i++)
+    {
+        EXPECT_EQ(static_cast<int>(expected[i].GetValue()), static_cast<int>(result.first[i].GetValue()));
+        EXPECT_EQ(static_cast<int>(expected[i].GetSuit()), static_cast<int>(result.first[i].GetSuit()));
+    }
+}
+
+TEST(HandTest, AceHighTrips)
+{
+    Card As(Card::Suit::SPADES, Card::FaceValue::ACE);
+    Card Sixc(Card::Suit::CLUBS, Card::FaceValue::SIX);
+    Card Sixh(Card::Suit::HEARTS, Card::FaceValue::SIX);
+    Card Sixd(Card::Suit::DIAMONDS, Card::FaceValue::SIX);
+    Card TwoC(Card::Suit::CLUBS, Card::FaceValue::TWO);
+    Card Kc(Card::Suit::CLUBS, Card::FaceValue::KING);
+    Card Sevh(Card::Suit::HEARTS, Card::FaceValue::SEVEN);
+
+    std::pair<Card, Card> holeCards = {Sixc, Sixh};
+    std::vector<Card> board = {As, Sixd, TwoC, Kc, Sevh};
+
+    Board b;
+    b.AddCards(board);
+
+    
+    
+    auto result = Hand::BestHand(b, holeCards);
+    
+    EXPECT_EQ(static_cast<int>(result.second), static_cast<int>(Hand::HandRanking::THREEOFAKIND));
+
+    std::vector<Card> expected = {Sixd,Sixc, Sixh, Kc, As};
+
+    for(int i = 0; i < 5; i++)
+    {
+        EXPECT_EQ(static_cast<int>(expected[i].GetValue()), static_cast<int>(result.first[i].GetValue()));
+        EXPECT_EQ(static_cast<int>(expected[i].GetSuit()), static_cast<int>(result.first[i].GetSuit()));
+    }
 }
