@@ -498,6 +498,23 @@ bool Hand::CompareStraight(std::vector<Card>& hand1, std::vector<Card>& hand2)
     }
     return Hand::CompareFaceValue(hand1[4], hand2[4]);
 }
+bool CompareFaceValueInt(int x, int y)
+{
+    if(x == y)
+    {
+        return false;
+    } 
+
+    if(x == static_cast<int>(Card::FaceValue::ACE))
+    {
+        return false;
+    }
+    if(y == static_cast<int>(Card::FaceValue::ACE))
+    {
+        return true;
+    }
+    return x < y;
+}
 bool Hand::CompareTrips(std::vector<Card>& hand1, std::vector<Card>& hand2)
 {
     std::map<int, int> o1 = Hand::CountRecurring(hand1);
@@ -542,8 +559,8 @@ bool Hand::CompareTrips(std::vector<Card>& hand1, std::vector<Card>& hand2)
     
     // know trips1 == trips2 == const
     // need to look at other cards
-    std::sort(kickers1.begin(), kickers1.end(), std::greater<int>());
-    std::sort(kickers2.begin(), kickers2.end(), std::greater<int>());
+    std::sort(kickers1.begin(), kickers1.end(), CompareFaceValueInt);
+    std::sort(kickers2.begin(), kickers2.end(), CompareFaceValueInt);
     
     for(int i = 1; i >= 0; i--)
     {
@@ -580,7 +597,7 @@ bool Hand::CompareTwoPair(std::vector<Card>& hand1, std::vector<Card>& hand2)
                 kicker = value;
             }
         }
-        std::sort(pairs.begin(), pairs.end(), std::greater<int>()); // Sort pairs descending for comparison
+        std::sort(pairs.begin(), pairs.end(), CompareFaceValueInt); // Sort pairs descending for comparison
     };
 
     extractPairsAndKicker(o1, hand1Pairs, kicker1);
@@ -648,8 +665,8 @@ bool Hand::ComparePair(std::vector<Card>& hand1, std::vector<Card>& hand2)
     }
     // know pair1 == pair2 == const
     // need to look at other cards
-    std::sort(kickers1.begin(), kickers1.end(), std::greater<int>());
-    std::sort(kickers2.begin(), kickers2.end(), std::greater<int>());
+    std::sort(kickers1.begin(), kickers1.end(), CompareFaceValueInt);
+    std::sort(kickers2.begin(), kickers2.end(), CompareFaceValueInt);
 
     for(int i = 0; i < 4; i++)
     {
@@ -994,10 +1011,7 @@ std::pair<std::vector<Card>, Hand::HandRanking> Hand::BestHand(const Board& b, c
     [max](std::vector<Card>& h1, std::vector<Card>& h2) {
         return Hand::CompareHands(h1, h2, max);
     });
-
-    
-
-    return {duplicateRankings[0], max};
+    return {duplicateRankings[duplicateRankings.size()-1], max};
         
 }
 std::pair<std::vector<std::vector<Card>>, Hand::HandRanking> GetDuplicateRankings(const std::map<Hand::HandRanking, bool> possible, std::vector<Card>& cards)
