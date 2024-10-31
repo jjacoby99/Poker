@@ -186,9 +186,16 @@ void Game::AwardPot()
 }
 bool Game::PlayBettingRound(const std::string& name)
 {
-    int lastIdx = this->button;
+    int curIdx = this->button;
+    int lastIdx = this->button == 0? 1: 0;
     
-    int curIdx = 0;
+    if(name == "Pre-flop")
+    {
+        // action starts on the button
+        lastIdx = this->button;
+        curIdx = this->button == 0? 1: 0;
+    }
+    
     this->playerList[lastIdx].TakeAction(this->playerList[curIdx].currentBet, this->bigBlind, name);
 
     if(this->playerList[lastIdx].GetAction() == Player::Action::FOLD)
@@ -265,8 +272,8 @@ void Game::Play()
             this->playerList[0].SetHoleCards({this->deck.Deal(1)[0], this->deck.Deal(1)[0]});
             this->playerList[1].SetHoleCards({this->deck.Deal(1)[0], this->deck.Deal(1)[0]});
 
-            std::cout << playerList[0].GetName() << " has " << playerList[0].GetHoleCards().first << playerList[0].GetHoleCards().second << std::endl;
-            std::cout << playerList[1].GetName() << " has " << playerList[1].GetHoleCards().first << playerList[1].GetHoleCards().second << std::endl;
+            PrintHoleCards(this->playerList[0]);
+            PrintHoleCards(this->playerList[1]);
         
             // player0 is bb, player1 is sb
             this->pot += this->playerList[0].PostBlind(this->bigBlind) + this->playerList[1].PostBlind(this->smallBlind);
