@@ -162,30 +162,7 @@ bool Game::HandOver()
     }
     return false;
 }
-void Game::PrintOptions(int playerIdx, double toCall)
-{
-    if(toCall == 0)
-    {
-        // can check or bet
-        std::cout << "1) Enter a number >= " << toCall * 2 << " to bet."<< std::endl;
-        std::cout << "2) Enter '0' to check." << std::endl;
-        return;
-    }
-    // check if player would be all in
-    if(this->playerList[playerIdx].GetStack() < toCall)
-    {
-        // player all in, can either call or fold
-        std::cout << "1) Enter '1' to call." << std::endl;
-        std::cout << "2) Enter '-1' to fold." << std::endl;
-        return;
-    }
 
-    // can bet, call, or fold
-    std::cout << "1) Enter a number >= " << toCall * 2 << " to raise."<< std::endl;
-    std::cout << "2) Enter '1' to call." << std::endl;
-    std::cout << "3) Enter '-1' to fold." << std::endl;
-    
-}
 
 void Game::ResetPlayers()
 {
@@ -250,131 +227,11 @@ bool Game::PlayPreFlop()
         return false;
     }
     
-    std::cout << "Pre-flop over. $" << this->pot << " in the pot." << std::endl;
-    
-    return true;
-}
-bool Game::PlayFlop()
-{
-    int lastIdx = 1;
-    int curIdx = 0;
-    if(this->button == 1)
-    {
-        curIdx = 1;
-        lastIdx = 0;
-    }
-    std::cout << "Action on " << this->playerList[lastIdx].GetName() << std::endl;
-    this->ResetPlayers();
-
-    int lastAction = this->Action(lastIdx, 0, "Flop");
-    while(!Game::NextRound())
-    {
-        int curAction = this->Action(curIdx, this->playerList[lastIdx].currentBet, "Flop");
-
-        if(this->playerList[curIdx].GetAction() == Player::Action::FOLD)
-        {
-            std::cout << this->playerList[curIdx].GetName() << " folded. Hand over." << std::endl;
-            std::cout << this->playerList[lastIdx].GetName() << " wins $" << this->pot << std::endl;
-            this->playerList[lastIdx].Win(this->pot);
-            this->pot = 0;
-            return false;
-        }
-
-        // continuation condition
-        std::swap(curIdx, lastIdx);
-        lastAction = curAction;
-    }
-    if(this->playerList[0].GetAction() == Player::Action::FOLD || this->playerList[0].GetAction() == Player::Action::FOLD)
-    {
-        // give the pot to the correct person
-        Game::AwardPot();
-        return false;
-    }
-    std::cout << "Flop over. $" << this->pot << " in the pot." << std::endl;
+    std::cout << name << " over. $" << this->pot << " in the pot." << std::endl;
     this->ResetPlayers();
     return true;
 }
-bool Game::PlayTurn()
-{
-    int lastIdx = 1;
-    int curIdx = 0;
-    if(this->button == 1)
-    {
-        curIdx = 1;
-        lastIdx = 0;
-    }
-    
-    std::cout << "Action on " << this->playerList[lastIdx].GetName() << std::endl;
-    this->ResetPlayers();
 
-    int lastAction = this->Action(lastIdx, 0, "Turn");
-    while(!Game::NextRound())
-    {
-        int curAction = this->Action(curIdx, this->playerList[lastIdx].currentBet, "Turn");
-
-        if(this->playerList[curIdx].GetAction() == Player::Action::FOLD)
-        {
-            std::cout << this->playerList[curIdx].GetName() << " folded. Hand over." << std::endl;
-            std::cout << this->playerList[lastIdx].GetName() << " wins $" << this->pot << std::endl;
-            this->playerList[lastIdx].Win(this->pot);
-            this->pot = 0;
-            return false;
-        }
-
-        // continuation condition
-        std::swap(curIdx, lastIdx);
-        lastAction = curAction;
-    }
-    if(this->playerList[0].GetAction() == Player::Action::FOLD || this->playerList[0].GetAction() == Player::Action::FOLD)
-    {
-        // give the pot to the correct person
-        Game::AwardPot();
-        return false;
-    }
-    std::cout << "Turn over. $" << this->pot << " in the pot." << std::endl;
-    
-    return true;
-}
-bool Game::PlayRiver()
-{
-    int lastIdx = 1;
-    int curIdx = 0;
-    if(this->button == 1)
-    {
-        curIdx = 1;
-        lastIdx = 0;
-    }
-    
-    std::cout << "Action on " << this->playerList[lastIdx].GetName() << std::endl;
-    this->ResetPlayers();
-
-    int lastAction = this->Action(lastIdx, 0, "River");
-    while(!Game::NextRound())
-    {
-        int curAction = this->Action(curIdx, this->playerList[lastIdx].currentBet, "River");
-
-        if(this->playerList[curIdx].GetAction() == Player::Action::FOLD)
-        {
-            std::cout << this->playerList[curIdx].GetName() << " folded. Hand over." << std::endl;
-            std::cout << this->playerList[lastIdx].GetName() << " wins $" << this->pot << std::endl;
-            this->playerList[lastIdx].Win(this->pot);
-            this->pot = 0;
-            return false;
-        }
-
-        // continuation condition
-        std::swap(curIdx, lastIdx);
-        lastAction = curAction;
-    }
-    if(this->playerList[0].GetAction() == Player::Action::FOLD || this->playerList[0].GetAction() == Player::Action::FOLD)
-    {
-        // give the pot to the correct person
-        Game::AwardPot();
-        return false;
-    }
-    std::cout << "River over, showdown. $" << this->pot << " in the pot." << std::endl;
-    return true;
-}
 void PrintHoleCards(const Player& p)
 {
     std::cout << p.GetName() << " has " << p.GetHoleCards().first << p.GetHoleCards().second << std::endl;

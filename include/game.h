@@ -37,14 +37,7 @@ private:
 
     // helper function for Play. 
     // returns true if the hand continues, false if someone folded.
-    bool PlayPreFlop();
-
-    bool PlayFlop();
-
-    bool PlayTurn();
-
-    bool PlayRiver();
-
+    bool PlayBettingRound(const std::string& name);
 
     double maxBuyIn;
 
