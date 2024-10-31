@@ -184,14 +184,12 @@ void Game::AwardPot()
     }
 
 }
-bool Game::PlayPreFlop()
+bool Game::PlayBettingRound(const std::string& name)
 {
     int lastIdx = this->button;
-    int lastAction = this->Action(lastIdx, this->bigBlind, "Pre-flop");
+    
     int curIdx = 0;
-
-    std::cout << playerList[0].GetName() << ": current bet = " << playerList[0].currentBet << std::endl;
-    std::cout << playerList[1].GetName() << ": current bet = " << playerList[1].currentBet << std::endl;
+    this->playerList[lastIdx].TakeAction(this->playerList[curIdx].currentBet, this->bigBlind, name);
 
     if(this->playerList[lastIdx].GetAction() == Player::Action::FOLD)
     {
@@ -201,10 +199,11 @@ bool Game::PlayPreFlop()
         this->pot = 0;
         return false;
     }
-            
+    // update the pot
+    
     while(!Game::NextRound())
     {
-        int curAction = this->Action(curIdx, this->playerList[lastIdx].currentBet, "Pre-flop");
+        this->playerList[curIdx].TakeAction(this->playerList[lastIdx].currentBet, this->bigBlind, name);
 
         if(this->playerList[curIdx].GetAction() == Player::Action::FOLD)
         {
@@ -217,9 +216,8 @@ bool Game::PlayPreFlop()
 
         // continuation condition
         std::swap(curIdx, lastIdx);
-        lastAction = curAction;
     }
-
+    this->pot = this->playerList[0].currentBet + this->playerList[1].currentBet;
     if(this->playerList[0].GetAction() == Player::Action::FOLD || this->playerList[0].GetAction() == Player::Action::FOLD)
     {
         // give the pot to the correct person
@@ -279,7 +277,7 @@ void Game::Play()
 
             
             /*---PRE-FLOP---*/
-            bool preFlop = Game::PlayPreFlop();
+            bool preFlop = Game::PlayBettingRound("Pre-flop");
             if(!preFlop)
             {
                 break;
@@ -295,8 +293,8 @@ void Game::Play()
             std::cout << "FLOP: ";
             this->board.DisplayBoard();
 
-
-            bool flop = Game::PlayFlop();
+            this->ResetPlayers();
+            bool flop = Game::Game::PlayBettingRound("Flop");;
             if(!flop)
             {
                 break;
@@ -315,7 +313,7 @@ void Game::Play()
             std::cout << "TURN: board: ";
             this->board.DisplayBoard();
 
-            bool turn = Game::PlayTurn();
+            bool turn = Game::PlayBettingRound("Turn");
             if(!turn)
             {
                 break;
@@ -334,7 +332,7 @@ void Game::Play()
             
             this->board.DisplayBoard();
 
-            bool river = Game::PlayRiver();
+            bool river = Game::PlayBettingRound("River");
 
             if(river)
             {

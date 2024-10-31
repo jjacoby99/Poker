@@ -27,8 +27,7 @@ private:
 
     int Action(int playerIdx, double toCall, const std::string& street);
 
-    void PrintOptions(int playerIdx, double toCall);
-
+    // resets the Action and current bet of each player to Undecided and 0, respectively.
     void ResetPlayers();
 
     // awards the pot to the only player who hasn't folded
