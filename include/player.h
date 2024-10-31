@@ -5,7 +5,7 @@
 #include "board.h"
 #include "hand.h"
 #include <vector>
-
+#include <iostream>
 
 
 class Player 
@@ -44,6 +44,8 @@ public:
     double PostBlind(double value);
 
     void DetermineBestHand(std::vector<Card> board);
+
+    void TakeAction(double bet, double minBet, const std::string& street);
 
     std::vector<Card> GetBestHand();
 
