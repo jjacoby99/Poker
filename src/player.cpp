@@ -24,7 +24,7 @@ void Player::TakeAction(double bet, double minBet, const std::string& street)
         {
             // player bet, add to pot and return bet amount
             std::cout << street << ". " << this->GetName() << " bet $" << result  << "." << std::endl;
-            this->Bet(result - this->currentBet);
+            this->Bet(result);
             return;
         }
     }
@@ -103,8 +103,6 @@ double Player::PostBlind(double value)
     this->action = Player::Action::UNDECIDED;
     if(value <= this->stack)
     {
-        // a bet is an absolute number. If there was a previous bet on the same street, a new bet deletes the 
-        // current one and is removed from the stack. Therefore, the previous bet should be added back to the stack.
         this->stack -= value;
         this->currentBet = value;
         return value;
