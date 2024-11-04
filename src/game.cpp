@@ -142,7 +142,7 @@ void PrintHoleCards(const Player& p)
 void PrintBestHand(const Player& p, const Board& b)
 {
     auto bestHand = Hand::BestHand(b, p.GetHoleCards());
-    std::cout << p.GetName() << "'s best hand: " << Hand::HandRankingToEnglish(bestHand.second);
+    std::cout << p.GetName() << "'s best hand: " << Hand::HandRankingToEnglish(bestHand.second) << ": ";
     
     for(Card c : bestHand.first)
     {
