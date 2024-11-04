@@ -84,7 +84,8 @@ bool Game::PlayBettingRound(const std::string& name)
 {
     int curIdx = this->button;
     int lastIdx = this->button == 0? 1: 0;
-    
+    std::cout << playerList[0].GetName() << ". Current bet: $" << playerList[0].currentBet << std::endl;
+    std::cout << playerList[1].GetName() << ". Current bet: $" << playerList[1].currentBet << std::endl;
     if(name == "Pre-flop")
     {
         // action starts on the button
@@ -102,8 +103,8 @@ bool Game::PlayBettingRound(const std::string& name)
         this->pot = 0;
         return false;
     }
-    // update the pot
-    
+    std::cout << playerList[0].GetName() << ". Current bet: $" << playerList[0].currentBet << std::endl;
+    std::cout << playerList[1].GetName() << ". Current bet: $" << playerList[1].currentBet << std::endl;
     while(!Game::NextRound())
     {
         this->playerList[curIdx].TakeAction(this->playerList[lastIdx].currentBet, this->bigBlind, name);
@@ -116,7 +117,8 @@ bool Game::PlayBettingRound(const std::string& name)
             this->pot = 0;
             return false;
         }
-
+        std::cout << playerList[0].GetName() << ". Current bet: $" << playerList[0].currentBet << std::endl;
+        std::cout << playerList[1].GetName() << ". Current bet: $" << playerList[1].currentBet << std::endl;
         // continuation condition
         std::swap(curIdx, lastIdx);
     }
