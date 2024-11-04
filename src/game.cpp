@@ -23,47 +23,23 @@ Game::Game(std::vector<Player> startPlayers, double sb, double bb)
 }
 bool Game::NextRound() 
 {
-    if (this->playerList[0].GetAction() == Player::Action::FOLD) {
-        // Award pot to player 1 and end hand
-        this->playerList[0].Win(this->pot);
-        this->pot = 0;
-        return false;
-    } else if (this->playerList[1].GetAction() == Player::Action::FOLD) {
-        // Award pot to player 0 and end hand
-        this->playerList[1].Win(this->pot);
-        this->pot = 0;
+    if(this->playerList[0].currentBet != this->playerList[1].currentBet)
+    {
         return false;
     }
-    if(this->playerList[0].GetAction() == Player::Action::CHECK && this->playerList[1].GetAction() == Player::Action::CHECK
-    && this->playerList[0].currentBet == this->playerList[1].currentBet)
+    // ways we can progress:
+    // 1) check check
+    // 2) bet call
+    if(this->playerList[0].GetAction() == Player::Action::CHECK && this->playerList[1].GetAction() == Player::Action::CHECK)
     {
-        // player 0 checked and player 1 checked, round over
         return true;
     }
-
-    // Check if all active players have matched the highest bet
-    if(this->playerList[0].GetAction() == Player::Action::BET && this->playerList[1].GetAction() == Player::Action::CALL
-    && this->playerList[0].currentBet == this->playerList[1].currentBet)
+    if(this->playerList[0].GetAction() == Player::Action::BET && this->playerList[1].GetAction() == Player::Action::CALL)
     {
-        // player 0 bet and player 1 called, round over
         return true;
     }
-    if(this->playerList[1].GetAction() == Player::Action::BET && this->playerList[0].GetAction() == Player::Action::CALL
-    && this->playerList[0].currentBet == this->playerList[1].currentBet)
+    if(this->playerList[0].GetAction() == Player::Action::CALL && this->playerList[1].GetAction() == Player::Action::BET)
     {
-        // player 1 bet and player 0 called, round over
-        return true;
-    }
-    if(this->playerList[1].GetAction() == Player::Action::CALL && this->playerList[0].GetAction() == Player::Action::CHECK
-    && this->playerList[0].currentBet == this->playerList[1].currentBet && this->preFlop)
-    {
-        // pre-flop, player 1 called, and player 0 checked, round over
-        return true;
-    }
-    if(this->playerList[0].GetAction() == Player::Action::CALL && this->playerList[1].GetAction() == Player::Action::CHECK
-    && this->playerList[0].currentBet == this->playerList[1].currentBet && this->preFlop)
-    {
-        // pre-flop, player 0 called, and player 1 checked, round over.
         return true;
     }
 
@@ -71,86 +47,6 @@ bool Game::NextRound()
     return false;
 }
 
-// simulates a player's action. based on their index and the amount to call determines the actions that are possible. 
-// Returns 0 for check (if possible), the bet amount for bet, and -1 for fold
-int Game::Action(int playerIdx, double bet, const std::string& street )
-{
-    int result = 0;
-
-    if(bet - this->playerList[playerIdx].currentBet == 0)
-    {
-        // can check or raise
-        std::cout << street << ", action on "  << this->playerList[playerIdx].GetName() << ". Options:\n1) Enter '0' to check.\n2) Enter a bet amount >= " << 2 * this->bigBlind << " to raise." << std::endl;
-        std::cin >> result;
-
-        if(result == 0)
-        {
-            // player checked, action over
-            std::cout << street << ". " << this->playerList[playerIdx].GetName() << " checked." << std::endl;
-            this->playerList[playerIdx].Check();
-            return 0;
-        }
-        else if (result >= this->bigBlind * 2)
-        {
-            // player bet, add to pot and return bet amount
-            std::cout << street << ". " << this->playerList[playerIdx].GetName() << " bet $" << result  << "." << std::endl;
-            this->pot += this->playerList[playerIdx].Bet(result - this->playerList[playerIdx].currentBet);
-            return result;
-        }
-    }
-
-    //check if player would be all in to call
-    if(this->playerList[playerIdx].GetStack() + this->playerList[playerIdx].currentBet < bet)
-    {
-        // player would be all in, can only call or fold
-        std::cout << street << ", action on "  << this->playerList[playerIdx].GetName() << ". Options:\n1) Enter '1' to call ALL IN.\n2) Enter -1 to fold." << std::endl;
-        std::cin >> result;
-        if(result == 1)
-        {
-            // player called all in
-            std::cout << street << ". " << this->playerList[playerIdx].GetName() << " called ALL IN." << std::endl;
-            double stack = this->playerList[playerIdx].GetStack();
-            this->pot += this->playerList[playerIdx].Call(bet - this->playerList[playerIdx].currentBet); // handles all in
-            return stack;
-        }
-        // player folded
-        this->playerList[playerIdx].Fold();
-        std::cout << street << ". " << this->playerList[playerIdx].GetName() << "folded." << std::endl;
-        return -1;
-    }
-
-    // player has no option to check, can either call, raise, or fold
-    std::cout << street << ", action on "  << this->playerList[playerIdx].GetName() << ". Options:\n1) Enter '1' to call $" << bet - this->playerList[playerIdx].currentBet << ".\n2) Enter a bet amount >= " << 2 * bet << " to raise.\n3) Enter -1 to fold." << std::endl;
-    std::cin >> result;
-
-    if(result == 1)
-    {
-        // player called
-        std::cout << street << ". " << this->playerList[playerIdx].GetName() << " called." << std::endl;
-        double cur = this->playerList[playerIdx].currentBet;
-        this->pot += this->playerList[playerIdx].Call(bet - cur);
-        return bet + cur;
-    }
-    if(result >= 2 * bet)
-    {
-        // player raised
-        this->pot -= this->playerList[playerIdx].currentBet;
-        this->pot += this->playerList[playerIdx].Bet(result);
-        std::cout << street << ". " << this->playerList[playerIdx].GetName() << " raised $" << result  << "." << std::endl;
-        return result;
-    }
-    // player folded
-    if(result == -1)
-    {
-        this->playerList[playerIdx].Fold();
-        std::cout << street << ". " << this->playerList[playerIdx].GetName() << " folded." << std::endl;
-        return -1;
-    }
-    std::cout << "Invalid input, call assumed. ($" << bet - this->playerList[playerIdx].currentBet << "). " << std::endl;
-    this->pot += this->playerList[playerIdx].Call(bet - this->playerList[playerIdx].currentBet);
-    return bet;
-    
-}
 bool Game::HandOver()
 {
     for(const Player& p: this->playerList)
