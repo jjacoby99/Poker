@@ -3,7 +3,11 @@
 
 #include "board.h"
 #include "player.h"
+#include "HumanPlayer.h"
+#include "AIPlayer.h"
 #include "sim.h"
+
+
 
 class Game 
 {
@@ -12,7 +16,7 @@ public:
 
     // sets the sb, bb, and maxBuyIn
     // sets players, button, and turn
-    Game(std::vector<Player> players, double sb, double bb);
+    Game(std::vector<HumanPlayer> humans, std::vector<AIPlayer> cpu,  double sb, double bb);
 
     //void AddPlayer(Player newPlayer);
 
@@ -25,14 +29,11 @@ public:
 private:
     bool NextRound();
 
-    int Action(int playerIdx, double toCall, const std::string& street);
-
     // resets the Action and current bet of each player to Undecided and 0, respectively.
     void ResetPlayers();
 
     // awards the pot to the only player who hasn't folded
     void AwardPot();
-
 
     // helper function for Play. 
     // returns true if the hand continues, false if someone folded.
@@ -50,7 +51,7 @@ private:
 
     // keeps track of players in the game, true if in current hand, false if not. 
     // Hand over if only 1 players.second == true;
-    std::vector<Player> playerList;
+    std::vector<std::shared_ptr<Player>> playerList;
     int button; // index of button in players
 
     int turn; // index of player who's turn it is currently
