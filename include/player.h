@@ -5,15 +5,11 @@
 #include "board.h"
 #include "hand.h"
 #include <vector>
-#include <iostream>
+#include <string>
 
-
-class Player 
-{
+class Player {
 public:
-    // attribute for storing player's choice:
-    enum class Action
-    {
+    enum class Action {
         BET = 4,
         CALL = 3,
         CHECK = 2,
@@ -21,45 +17,96 @@ public:
         UNDECIDED = 0 
     };
 
-    Player();
-    Player(double buyin, std::string name);
+    Player() : stack(0), name(""), action(Action::UNDECIDED) {}
+    Player(double buyin, const std::string& name) : stack(buyin), name(name), action(Action::UNDECIDED) {}
 
-    double Bet(double bet);
+    virtual ~Player() = default;
 
-    double Call(double bet);
-
-    void Check();
-
-    void Fold();
-
-    void SetHoleCards(const std::pair<Card, Card>& holeCards);
     
-    std::pair<Card, Card> GetHoleCards() const;
-
-    // returns stack after adding on
-    double AddOn(double buyin);
-
-    double GetStack();
-
-    double PostBlind(double value);
-
-    void DetermineBestHand(std::vector<Card> board);
-
-    void TakeAction(double bet, double minBet, const std::string& street);
-
-    std::vector<Card> GetBestHand();
-
-    Hand::HandRanking GetHandRanking();
-
-    std::string GetName() const;
     
-    Player::Action GetAction() const;
-    void SetAction(Player::Action newAction);
+    virtual void TakeAction(double bet, double minBet, const std::string& street) = 0;
+    
+    void DetermineBestHand(std::vector<Card> board)
+    {
+        std::vector<Card> cards = board;
+        cards.push_back(this->holeCards.first);
+        cards.push_back(this->holeCards.second);
 
+        auto result = Hand::BestHand(cards);
+        this->bestHand = result.first;
+        this->ranking = result.second;
+    }
+
+    // Shared methods
+    void Check() {this->action = Action::CHECK; };
+    void Fold() {this->action = Action::FOLD; this->bestHand.clear();};
+    double PostBlind(double value) 
+    {
+        this->action = Player::Action::UNDECIDED;
+        if(value <= this->stack)
+        {
+            this->stack -= value;
+            this->currentBet = value;
+            return value;
+        }
+        // player is all in
+        this->currentBet = this->stack;
+        double copy = this->stack;
+        this->stack = 0;
+        return copy;
+    }
+    void SetHoleCards(const std::pair<Card, Card>& holeCards) { this->holeCards = holeCards; }
+    std::pair<Card, Card> GetHoleCards() const { return this->holeCards; }
+    std::vector<Card> GetBestHand() const {return this->bestHand; }
+    Hand::HandRanking GetHandRanking() const {return this->ranking; }
+
+    double Bet(double bet)
+    {
+        this->action = Player::Action::BET;
+        if(bet <= this->stack)
+        {
+            // a bet is an absolute number. If there was a previous bet on the same street, a new bet deletes the 
+            // current one and is removed from the stack. Therefore, the previous bet should be added back to the stack.
+            this->stack -= bet;
+            this->stack += this->currentBet;
+
+            this->currentBet = bet;
+            return bet;
+        }
+
+        // player is all in
+        this->currentBet = this->stack;
+        double copy = this->stack;
+        this->stack = 0;
+        return copy;
+    }
+    double Call(double bet)
+    {
+        this->action = Player::Action::CALL;
+        if(bet <= this->stack)
+        {
+            this->stack -= bet;
+            this->currentBet += bet;
+            return bet;
+        }
+        // player is all in
+        this->currentBet = this->stack;
+        double copy = this->stack;
+        this->stack = 0;
+        return copy;
+    }
+
+    double AddOn(double buyin) { stack += buyin; return stack; }
+    double GetStack() const { return stack; }
+    std::string GetName() const { return name; }
+    
+    Action GetAction() const { return action; }
+    void SetAction(Action newAction) { action = newAction; }
+    void Win(double pot) {this->stack += pot; }
+    
     double currentBet;
-    void Win(double pot);
 
-private:
+protected:
     double stack;
     std::pair<Card, Card> holeCards;
 
@@ -69,10 +116,6 @@ private:
     std::string name;
 
     Action action;
-
-    
-    
 };
 
-
-#endif 
+#endif
