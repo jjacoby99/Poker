@@ -15,6 +15,7 @@ Game::Game(std::vector<HumanPlayer> humans, std::vector<AIPlayer> cpu,  double s
 
         this->playerList.push_back(std::make_shared<HumanPlayer>(p));
     }
+    
     for(auto c : cpu)
     {
         this->playerList.push_back(std::make_shared<AIPlayer>(c));
@@ -299,6 +300,7 @@ void Game::Play()
         newDeck.Shuffle();
         this->deck = newDeck;
         this->pot = 0;
+
         hands++;
     }
     
