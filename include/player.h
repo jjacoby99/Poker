@@ -17,6 +17,14 @@ public:
         UNDECIDED = 0 
     };
 
+    const struct GameState
+    {
+        std::string street;
+        double pot;
+        double toCall;
+        double minBet;
+    };
+    
     Player() : stack(0), name(""), action(Action::UNDECIDED) {}
     Player(double buyin, const std::string& name) : stack(buyin), name(name), action(Action::UNDECIDED) {}
 
@@ -103,7 +111,7 @@ public:
     Action GetAction() const { return action; }
     void SetAction(Action newAction) { action = newAction; }
     void Win(double pot) {this->stack += pot; }
-    
+
     double currentBet;
 
 protected:

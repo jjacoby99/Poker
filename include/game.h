@@ -12,6 +12,7 @@
 class Game 
 {
 public:
+    
     int players = 6;
 
     // sets the sb, bb, and maxBuyIn

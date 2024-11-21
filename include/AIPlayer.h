@@ -15,6 +15,8 @@ public:
 
     void TakeAction(double bet, double minBet, const std::string& street) override;
 
+    void TakeAction(const GameState& state);
+
 };
 
 #endif
