@@ -16,10 +16,12 @@ add_executable(PokerTests
 		Deck_Tests.cpp
 		Board_Tests.cpp
 		Hand_Tests.cpp
+		Range_Tests.cpp
 		/Users/joshjacoby/Desktop/Code/Poker/Poker/src/card.cpp
 		/Users/joshjacoby/Desktop/Code/Poker/Poker/src/deck.cpp
 		/Users/joshjacoby/Desktop/Code/Poker/Poker/src/board.cpp
 		/Users/joshjacoby/Desktop/Code/Poker/Poker/src/hand.cpp
+		/Users/joshjacoby/Desktop/Code/Poker/Poker/src/range.cpp
 		)
 
 # Link GoogleTest libraries
