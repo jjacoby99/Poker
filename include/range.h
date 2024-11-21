@@ -1,14 +1,19 @@
 #ifndef RANGE_H
 #define RANGE_H
-#include "Card.h"
+#include "card.h"
+#include <vector>
 #include <map>
+#include <iostream>
+
 class Range 
 {
 public: 
 
     // initializes a range object from a vector of pair of hole cards
     // frequency of each hand is assumed to be 1.0 (100%)
-    Range(const std::vector<std::pair<Card, Card>>& range);
+    Range(const std::vector<std::pair<Card, Card>>& range, const std::vector<Card>& deadCards = {});
+
+    Range(const Range& other);
 
     // initializes a range based on a std::vector of card, but accounts for frequencies of each hand
     Range(const std::vector<std::map<std::pair<Card,Card>, double>>& rangeFrequencies);
@@ -22,6 +27,17 @@ public:
     // dead cards can include the caller's holeCards, as well as the community cards
     std::vector<std::map<std::pair<Card,Card>, int>> GetCombos(const std::vector<Card>& deadCards);
 
+    // gets the number of combinations of a given hand, based on the dead cards provided.
+    // note that this function differentiates between suited hands and off-suit hands. 
+    // For example, if a suited hand is provided, the number of suited combinations of that same hand will be determined.
+    int GetHandCombos(const std::pair<Card, Card>& hand, const std::vector<Card>& deadCards = {});
+
+    void PrintRangeTable();
+
+    void PrintRangeHeaders();
+
+    std::vector<std::vector<double>> GetRangeTable() const;
+
 private:
     
     // table representing the range of a player.
@@ -32,7 +48,17 @@ private:
     // ...
     // A2o  K2o Q2o J2o ... 42o 32o 22
     // rangeTable[i][j] is the frequency that the hand is in the range  
-    double rangeTable[13][13] = {0};
+    std::vector<std::vector<double>> rangeTable = std::vector<std::vector<double>>(14, std::vector<double>(14, 0.0));
+
+    bool IsOffSuitHand(const std::pair<Card,Card>& hand);
+
+    bool IsSuitedHand(const std::pair<Card, Card>& hand);
+
+    bool IsPairHand(const std::pair<Card, Card>& hand);
+
+    double GetSingleHandFrequency(const std::pair<Card, Card>& hand, const std::vector<Card>& deadCards);
+
+    
 };
 
 #endif
