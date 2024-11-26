@@ -13,6 +13,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Include directories for your main source files
 include_directories(${PROJECT_SOURCE_DIR}/src)
+include_directories(/Users/joshjacoby/Desktop/Code/Libraries/json-develop/include)
+
 
 # Specify the source files in the src directory
 file(GLOB_RECURSE SOURCES
