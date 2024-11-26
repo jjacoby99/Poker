@@ -37,6 +37,62 @@ public:
     void PrintRangeHeaders();
 
     std::vector<std::vector<double>> GetRangeTable() const;
+    
+    // gets the combinations of the hand represented by RangeTable[i][j] given dead cards
+    // GetCombos(i, j) returns {{As,Ah}, {As,Ac}, {As,Ad}, {Ah,Ac}, {Ah,Ad}, {Ac,Ad}}
+    std::vector<std::pair<Card, Card>> GetCombos(const size_t i, const size_t j, const std::vector<Card>& deadCards);
+    /*class Iterator
+    {
+        private:
+            const std::vector<std::vector<double>>& table;
+            size_t outerIndex;
+            size_t innerIndex;
+
+        public:
+            Iterator(const std::vector<std::vector<double>>& table, size_t outer, size_t inner)
+                : table(table), outerIndex(outer), innerIndex(inner) {}
+
+            // Dereference operator
+            double operator*() const 
+            {
+                return table[outerIndex][innerIndex];
+            }
+
+            // Pre-increment operator
+            Iterator& operator++() 
+            {
+                if (++innerIndex >= table[outerIndex].size()) {
+                    innerIndex = 0;
+                    ++outerIndex;
+                }
+                return *this;
+            }
+
+            // Equality comparison
+            bool operator==(const Iterator& other) const 
+            {
+                return outerIndex == other.outerIndex && innerIndex == other.innerIndex;
+            }
+
+            // Inequality comparison
+            bool operator!=(const Iterator& other) const 
+            {
+                return !(*this == other);
+            }
+    };
+
+    // Begin iterator
+    Iterator begin() const 
+    {
+        return Iterator(rangeTable, 0, 0);
+    }
+
+    // End iterator
+    Iterator end() const 
+    {
+        return Iterator(rangeTable, rangeTable.size(), 0);
+    }*/
+    
 
 private:
     
@@ -48,7 +104,9 @@ private:
     // ...
     // A2o  K2o Q2o J2o ... 42o 32o 22
     // rangeTable[i][j] is the frequency that the hand is in the range  
-    std::vector<std::vector<double>> rangeTable = std::vector<std::vector<double>>(14, std::vector<double>(14, 0.0));
+    std::vector<std::vector<double>> rangeTable = std::vector<std::vector<double>>(13, std::vector<double>(13, 0.0));
+
+    const std::vector<double>& operator[](size_t index) const;
 
     bool IsOffSuitHand(const std::pair<Card,Card>& hand);
 
@@ -57,6 +115,7 @@ private:
     bool IsPairHand(const std::pair<Card, Card>& hand);
 
     double GetSingleHandFrequency(const std::pair<Card, Card>& hand, const std::vector<Card>& deadCards);
+
 
     
 };
