@@ -2,6 +2,38 @@
 #include <iostream>
 #include <sstream>
 
+nlohmann::json Game::GetGameState() const
+{
+    nlohmann::json state;
+    
+    // Example: Add players and their chip counts
+    state["players"] = nlohmann::json::array();
+    for (const auto& player : this->playerList) {
+        std::string handString = player->GetHoleCards().first.ToString() + player->GetHoleCards().second.ToString();
+        std::string active = player->GetAction() == Player::Action::FOLD ? "unactive": "active";
+        state["players"].push_back({
+            {"name", player->GetName()},
+            {"chips", player->GetStack()},
+            {"is_active", active},
+            {"hand", handString} 
+        });
+    }
+
+    state["pot"] = this->pot;
+
+    std::string boardString = "";
+    for(const Card& c: this->board.GetBoard())
+    {
+        boardString += c.ToString();
+    }
+    state["board"] = boardString;
+
+    // add state for bet and/or who's turn it is
+
+    return state;
+
+
+}
 Game::Game(std::vector<HumanPlayer> humans, std::vector<AIPlayer> cpu,  double sb, double bb)
 {
     this->smallBlind = sb;
@@ -15,7 +47,7 @@ Game::Game(std::vector<HumanPlayer> humans, std::vector<AIPlayer> cpu,  double s
 
         this->playerList.push_back(std::make_shared<HumanPlayer>(p));
     }
-    
+
     for(auto c : cpu)
     {
         this->playerList.push_back(std::make_shared<AIPlayer>(c));
