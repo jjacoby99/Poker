@@ -6,8 +6,7 @@
 #include "HumanPlayer.h"
 #include "AIPlayer.h"
 #include "sim.h"
-
-
+#include "/Users/joshjacoby/Desktop/Code/Libraries/json-develop/include/nlohmann/json.hpp"
 
 class Game 
 {
@@ -26,6 +25,8 @@ public:
     void Play();
 
     bool HandOver();
+
+    nlohmann::json GetGameState() const;
 
 private:
     bool NextRound();
