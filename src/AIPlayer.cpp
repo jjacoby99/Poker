@@ -1,4 +1,4 @@
-#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/Include/AIPlayer.h"
+#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/AIPlayer.h"
 
 AIPlayer::AIPlayer(double buyin, const std::string& name) : Player(buyin, name) {}
 
@@ -20,6 +20,6 @@ void AIPlayer::TakeAction(const GameState& state)
         betsize = 3 * state.minBet;
     }
 
-    
+
 
 }
