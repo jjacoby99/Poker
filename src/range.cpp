@@ -158,7 +158,10 @@ void Range::PrintRangeHeaders()
     std::cout << "A3o\tK3o\tQ3o\tJ3o\tT3o\t93o\t83o\t73o\t63o\t53o\t43o\t33 \t32s" << std::endl;
     std::cout << "A2o\tK2o\tQ2o\tJ2o\tT2o\t92o\t82o\t72o\t62o\t52o\t42o\t32o\t22 " << std::endl;
 }
-
+const std::vector<double>& Range::operator[](size_t index) const
+{
+    return this->rangeTable[index];
+}
 bool Range::IsOffSuitHand(const std::pair<Card,Card>& hand)
 {
     return hand.first.GetSuit() != hand.second.GetSuit();
@@ -224,7 +227,7 @@ int CountAvailableRanks(const Card& c, const std::vector<Card>& deadCards)
     }
     return count;
 }
-int Range::GetHandCombos(const std::pair<Card, Card>& hand, const std::vector<Card>& deadCards)
+std::map<Card::Suit, bool> MapDeadSuits(const std::pair<Card, Card>& hand, const std::vector<Card>& deadCards)
 {
     std::map<Card::Suit, bool> deadSuits;
     deadSuits[Card::Suit::CLUBS] = false;
@@ -240,6 +243,12 @@ int Range::GetHandCombos(const std::pair<Card, Card>& hand, const std::vector<Ca
             deadSuits[c.GetSuit()] = true;
         }
     }
+    return deadSuits;
+}
+int CountDeadSuits(const std::pair<Card, Card>& hand, const std::vector<Card>& deadCards)
+{
+    std::map<Card::Suit, bool> deadSuits = MapDeadSuits(hand, deadCards);
+    int countDeadSuits = 0;
     for(auto el: deadSuits)
     {
         if(el.second)
@@ -247,6 +256,12 @@ int Range::GetHandCombos(const std::pair<Card, Card>& hand, const std::vector<Ca
             countDeadSuits++;
         }
     }
+    return countDeadSuits;
+}
+int Range::GetHandCombos(const std::pair<Card, Card>& hand, const std::vector<Card>& deadCards)
+{
+    int deadSuits = CountDeadSuits(hand, deadCards);
+
     if(this->IsSuitedHand(hand))
     {
         if(deadCards.size() == 0)
@@ -254,7 +269,7 @@ int Range::GetHandCombos(const std::pair<Card, Card>& hand, const std::vector<Ca
             return 4;
         }
         
-        return 4 - countDeadSuits;
+        return 4 - deadSuits;
     }
     if(this->IsPairHand(hand))
     {
@@ -276,5 +291,31 @@ int Range::GetHandCombos(const std::pair<Card, Card>& hand, const std::vector<Ca
     int availableRank2 = CountAvailableRanks(hand.second, deadCards);
     
 
-    return (availableRank1 * availableRank2) - (4 - countDeadSuits);
+    return (availableRank1 * availableRank2) - (4 - deadSuits);
+}
+
+std::vector<std::pair<Card, Card>> Range::GetCombos(const size_t i, const size_t j, const std::vector<Card>& deadCards)
+{
+    int suit = 0;
+    int rank = 0;
+    if(i == j)
+    {
+        // paired card
+        if(i == 0)
+        {
+            // aces
+            rank = 1;
+        }
+        else
+        {
+            rank = 14 - i;
+        }
+
+
+    }
+    if(i < j)
+    {
+        // suited hand
+    }
+    // unsuited hand
 }
