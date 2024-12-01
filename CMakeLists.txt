@@ -21,7 +21,7 @@ file(GLOB_RECURSE SOURCES ${CMAKE_SOURCE_DIR}/src/*.cpp)
 file(GLOB_RECURSE HEADERS ${CMAKE_SOURCE_DIR}/include/*.h)
 
 # Add the executable
-add_executable(Poker ${SOURCES} ${HEADERS})
+add_executable(Poker ${SOURCES})
 
 # Include directories for headers
 target_include_directories(Poker PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
