@@ -15,14 +15,10 @@ include_directories(/Users/joshjacoby/Desktop/Code/Libraries/json-develop/includ
 
 
 # Specify the source files in the src directory
-file(GLOB_RECURSE SOURCES
-    /Users/joshjacoby/Desktop/Code/Poker/Poker/src/*.cpp
-)
+file(GLOB_RECURSE SOURCES ${CMAKE_SOURCE_DIR}/src/*.cpp)
 
 # Specify the header files in the include directory
-file(GLOB_RECURSE HEADERS
-    /Users/joshjacoby/Desktop/Code/Poker/Poker/include/*.h
-)
+file(GLOB_RECURSE HEADERS ${CMAKE_SOURCE_DIR}/include/*.h)
 
 # Add the executable
 add_executable(Poker ${SOURCES} ${HEADERS})
