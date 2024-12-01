@@ -310,9 +310,22 @@ std::vector<std::pair<Card, Card>> Range::GetCombos(const size_t i, const size_t
         {
             rank = 14 - i;
         }
+        Card::FaceValue faceVal = static_cast<Card::FaceValue>(rank);
+        
+        // note that the suits are irrelevant here. MapDeadSuits does not depend on the suits of hand, only that of deadCards
+        std::map<Card::Suit, bool> deadSuits = MapDeadSuits({Card(Card::Suit::CLUBS, faceVal), Card(Card::Suit::DIAMONDS, faceVal)}, deadCards);
 
-
-    }
+        std::vector<Card> cards;
+        for(auto p : deadSuits)
+        {
+            if(!p.second)
+            {
+                // if a suit isn't dead, add it to the list of cards to form permutations with
+                cards.push_back(Card(p.first, faceVal));
+            }
+        }
+        
+    }   
     if(i < j)
     {
         // suited hand
