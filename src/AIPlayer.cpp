@@ -1,4 +1,4 @@
-#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/AIPlayer.h"
+#include "AIPlayer.h"
 
 AIPlayer::AIPlayer(double buyin, const std::string& name) : Player(buyin, name) {}
 

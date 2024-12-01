@@ -1,6 +1,6 @@
-#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/board.h"
-
+#include "board.h"
 #include <iostream>
+
 Board::Board()
 {
     
