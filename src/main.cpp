@@ -2,7 +2,7 @@
 #include "sim.h"
 #include "game.h"
 #include "HumanPlayer.h"
-#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/httplib.h"
+#include "httplib.h"
 #include "/Users/joshjacoby/Desktop/Code/Libraries/json-develop/include/nlohmann/json.hpp"
 
 int main() {
