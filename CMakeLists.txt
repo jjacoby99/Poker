@@ -8,11 +8,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 
-# Find the SFML package and required components
-#find_package(SFML 2.5 COMPONENTS system window graphics REQUIRED)
-
 # Include directories for your main source files
 include_directories(${PROJECT_SOURCE_DIR}/src)
+
 include_directories(/Users/joshjacoby/Desktop/Code/Libraries/json-develop/include)
 
 
@@ -32,7 +30,4 @@ add_executable(Poker ${SOURCES} ${HEADERS})
 # Include directories for headers
 target_include_directories(Poker PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-# Optional: If you're using Google Test for unit testing
-# Uncomment the following lines if you decide to implement unit tests
-# find_package(GTest REQUIRED)
-# target_link_libraries(Poker GTest::GTest GTest::Main)
+

@@ -7,6 +7,9 @@
 #include "/Users/joshjacoby/Desktop/Code/Libraries/json-develop/include/nlohmann/json.hpp"
 
 int main() {
+
+    httplib::Server svr;
+
     int players = 2;
     int bb = 2;
     int sb = 1;

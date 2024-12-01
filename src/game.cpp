@@ -31,8 +31,6 @@ nlohmann::json Game::GetGameState() const
     // add state for bet and/or who's turn it is
 
     return state;
-
-
 }
 Game::Game(std::vector<HumanPlayer> humans, std::vector<AIPlayer> cpu,  double sb, double bb)
 {
@@ -105,6 +103,24 @@ void Game::ResetPlayers()
         p->SetAction(Player::Action::UNDECIDED);
         p->currentBet = 0;
     }
+}
+
+void Game::Reset()
+{
+    Deck newDeck;
+    this->deck = newDeck;
+
+    this->deck.Shuffle();
+
+    this->pot = 0.0;
+
+    this->ResetPlayers();
+
+    // Move the button to the next player
+    this->button = (button + 1) % playerList.size();
+
+    
+
 }
 void Game::AwardPot()
 {
@@ -205,6 +221,7 @@ void Game::Play()
     int hands = 0;
     while(hands < 10)
     {
+        this->Reset();
         // while nobody has folded, keep playing the hand
         while(!Game::HandOver())
         {
@@ -322,17 +339,6 @@ void Game::Play()
                 }
             }
         }
-
-        // reset folds
-        for(auto p: this->playerList)
-        {
-            p->SetAction(Player::Action::UNDECIDED);
-        }
-        Deck newDeck;
-        newDeck.Shuffle();
-        this->deck = newDeck;
-        this->pot = 0;
-
         hands++;
     }
     

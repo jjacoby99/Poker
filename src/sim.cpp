@@ -173,3 +173,9 @@ double Sim::CalculateEquity(size_t num_sims, size_t num_threads)
     }
     return equity / static_cast<double>(num_sims);
 }
+
+
+double Sim::CalculateEquityVsRange(size_t num_sims, const std::pair<Card, Card>& hand, const Range& range)
+{
+    return 0.0;
+}

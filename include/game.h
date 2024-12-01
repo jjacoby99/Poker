@@ -41,6 +41,8 @@ private:
     // returns true if the hand continues, false if someone folded.
     bool PlayBettingRound(const std::string& name);
 
+    void Reset();
+
     double maxBuyIn;
 
     Deck deck;
