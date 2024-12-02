@@ -25,6 +25,7 @@ public:
     // returns the number of cards remaining in the deck
     int CardsRemaining();
 
+    // removes cards from the deck. this is used to account for dead cards that become known after the creation of the deck
     void RemoveCards(const std::vector<Card>& cards);
     
     Deck& operator=(const Deck& other);

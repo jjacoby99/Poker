@@ -1,4 +1,4 @@
-#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/game.h"
+#include "game.h"
 #include <iostream>
 #include <sstream>
 

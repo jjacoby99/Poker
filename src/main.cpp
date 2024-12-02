@@ -1,10 +1,9 @@
 #include <iostream>
-#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/sim.h"
-//#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/player.h"
-#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/game.h"
-#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/HumanPlayer.h"
-#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/httplib.h"
-#include "/Users/joshjacoby/Desktop/Code/Libraries/json-develop/include/nlohmann/json.hpp"
+#include "sim.h"
+#include "game.h"
+#include "HumanPlayer.h"
+#include "httplib.h"
+#include <nlohmann/json.hpp>
 
 int main() {
 

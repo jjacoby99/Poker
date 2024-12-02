@@ -1,4 +1,4 @@
-#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/sim.h"
+#include "sim.h"
 #include <iostream>
 
 Sim::Sim(std::pair<Card, Card> h1, std::pair<Card, Card> h2)

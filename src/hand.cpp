@@ -1,4 +1,4 @@
-#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/hand.h"
+#include "hand.h"
 #include <iostream>
 #include <functional>
 #include <exception>

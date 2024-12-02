@@ -34,7 +34,6 @@ public:
     Card(Suit s, FaceValue val);
     Card(); // Default constructor: Ace of Spades
 
-    //assignment operator
     Card& operator=(const Card& other);
 
     bool operator==(const Card& other) const;

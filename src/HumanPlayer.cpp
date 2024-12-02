@@ -1,4 +1,4 @@
-#include "/Users/joshjacoby/Desktop/Code/Poker/Poker/include/HumanPlayer.h"
+#include "HumanPlayer.h"
 
 
 HumanPlayer::HumanPlayer(double stack, const std::string& name) : Player(stack, name) {}
