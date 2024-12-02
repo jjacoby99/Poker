@@ -12,3 +12,4 @@ CMakeFiles/
 testing.cpp
 main
 *.DS_Store
+/external/vcpkg/
