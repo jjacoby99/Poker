@@ -23,11 +23,17 @@ public:
         HIGHCARD = 1
     };
 
+    // returns a string representation of a given hand rank
+    // "Royal Flush", "Straight Flush", etc
     static std::string HandRankingToEnglish(HandRanking rank);
 
     Hand(std::vector<Card> cards);
 
     Hand(const Board& b, const std::pair<Card, Card>& holeCards);
+
+    // gets all combinations of 5 card poker hands given the provided cards
+    // it's possible that hard coding this would be better from a performance standpoint. However, this method may be called
+    // with any number of cards (ie flop, turn, and river), so it's more flexible than a potential hard-coded version
     static void GetAllCombinations(const std::vector<Card>& cards, std::vector<Card>& hand, std::vector<std::vector<Card>>& allHands, int idx, int start);
 
     // determines the winning hand between p1 and p2
@@ -42,8 +48,12 @@ public:
     // classifies a 5 card poker hand into one of the HandRankings
     static HandRanking EvaluateHand(std::vector<Card>& hand);
     
+    // an iteration of EvaluateHand that uses a map of possible hands for pruning so that it doesn't have to check
+    // hands that aren't possible. Turned out it was slower than the version that didn't use pruning, so isn't used
     static HandRanking EvaluateHand2(std::vector<Card>& hand, const std::map<HandRanking, bool>& possibleHands);
     
+    // helper method to generate a map of all possible hand given a current board. Was used in combination with the pruning
+    // methods to try to improve performance
     static std::map<HandRanking, bool> GetPossibleHands(const Board& board);
 
     // Determines best 5 card poker hand

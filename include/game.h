@@ -26,6 +26,7 @@ public:
 
     bool HandOver();
 
+    // to be refined for front-end
     nlohmann::json GetGameState() const;
 
 private:
@@ -41,6 +42,7 @@ private:
     // returns true if the hand continues, false if someone folded.
     bool PlayBettingRound(const std::string& name);
 
+    // helper function to reset board, deck, and pot in between handss
     void Reset();
 
     double maxBuyIn;
