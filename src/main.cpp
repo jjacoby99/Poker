@@ -3,7 +3,7 @@
 #include "game.h"
 #include "HumanPlayer.h"
 #include "httplib.h"
-#include "/Users/joshjacoby/Desktop/Code/Libraries/json-develop/include/nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 
 int main() {
 
