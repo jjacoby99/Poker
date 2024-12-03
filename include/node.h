@@ -11,7 +11,7 @@ struct Node
     NodeType type;
     std::vector<double> regrets;                    // regret value for each action (Call, raise, fold, check)
     std::vector<double> strategy;                   // frequency for each action
-    std::vector<std::shared_ptr<Node>> children;    
+    std::vector<std::unique_ptr<Node>> children;    
     double utility;                                 // payout, only applicable at terminal node
 
     // initializes a uniform strategy, call, raise, fold
