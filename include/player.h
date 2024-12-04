@@ -25,6 +25,11 @@ public:
         double minBet;
     };
 
+    enum class Position {
+        IP = 1,
+        OOP = 0
+    };
+
     Player() : stack(0), name(""), action(Action::UNDECIDED) {}
     Player(double buyin, const std::string& name) : stack(buyin), name(name), action(Action::UNDECIDED) {}
 
@@ -110,6 +115,7 @@ public:
     
     Action GetAction() const { return action; }
     void SetAction(Action newAction) { action = newAction; }
+    void SetPosition(Position pos) {this->position = pos;}
     void Win(double pot) {this->stack += pot; }
 
     double currentBet;
@@ -124,6 +130,8 @@ protected:
     std::string name;
 
     Action action;
+
+    Position position;
 };
 
 #endif
