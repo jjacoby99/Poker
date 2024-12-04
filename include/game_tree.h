@@ -11,7 +11,7 @@ public:
 
     GameTree(int numActions);
 
-    void BuildTree(std::unique_ptr<Node> node, int depth, int maxDepth, int numActions);
+    void BuildTree(std::unique_ptr<Node>& node, int depth, int maxDepth, int numActions);
 
     ~GameTree();
 private:
