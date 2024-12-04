@@ -42,7 +42,6 @@ Game::Game(std::vector<HumanPlayer> humans, std::vector<AIPlayer> cpu,  double s
 
     for(auto p: humans)
     {
-
         this->playerList.push_back(std::make_shared<HumanPlayer>(p));
     }
 
@@ -52,7 +51,7 @@ Game::Game(std::vector<HumanPlayer> humans, std::vector<AIPlayer> cpu,  double s
     }
 
     this->button = this->playerList.size() - 1;
-    this->turn = 2; // 0 - sb, 1 - bb, 2, utg1
+    this->turn = this->button; 
 
     this->deck.Shuffle();
     this->pot = 0.0;
@@ -119,8 +118,7 @@ void Game::Reset()
     // Move the button to the next player
     this->button = (button + 1) % playerList.size();
 
-    
-
+    this->SetPositions();
 }
 void Game::AwardPot()
 {
@@ -136,7 +134,7 @@ void Game::AwardPot()
 }
 bool Game::PlayBettingRound(const std::string& name)
 {
-    int curIdx = this->button == 0? 1: 0;
+    int curIdx = this->button == 1? 1: 0;
     int lastIdx = (curIdx == 0)? 1: 0;
 
     std::cout << playerList[0]->GetName() << ". Current bet: $" << playerList[0]->currentBet << std::endl;
@@ -215,35 +213,53 @@ void PrintBestHand(const std::shared_ptr<Player> p, const Board& b)
     }
     std::cout << std::endl;
 }
+void Game::SetPositions()
+{
+    if(this->button == 0)
+    {
+        this->playerList[0]->SetPosition(Player::Position::IP);
+        this->playerList[1]->SetPosition(Player::Position::OOP);
+        return;
+    }
+    this->playerList[0]->SetPosition(Player::Position::OOP);
+    this->playerList[1]->SetPosition(Player::Position::IP);
+}
 
 void Game::Play()
 {
 
-    int hands = 0;
-    while(hands < 10)
+    int hands = 1;
+    this->SetPositions();
+    while(hands <= 10)
     {
-        this->Reset();
+        
         // while nobody has folded, keep playing the hand
         while(!Game::HandOver())
         {
             this->preFlop = true;
             std::cout << "Hand " << hands << " beginning." << std::endl;
+            
             std::cout << this->playerList[0]->GetName() << " has $" << this->playerList[0]->GetStack() << " in their stack." << std::endl;
             std::cout << this->playerList[1]->GetName() << " has $" << this->playerList[1]->GetStack() << " in their stack." << std::endl;
 
             std::cout << "Hole cards being dealt..." << std::endl;
+            
             // deal hole carrds
             this->playerList[0]->SetHoleCards({this->deck.Deal(1)[0], this->deck.Deal(1)[0]});
             this->playerList[1]->SetHoleCards({this->deck.Deal(1)[0], this->deck.Deal(1)[0]});
 
+
+            // state positions
+            std::cout << this->playerList[0]->GetName() << " is " << (this->playerList[0]->GetPosition() == Player::Position::IP ? "in position.": "out of position.") << std::endl;
+            std::cout << this->playerList[1]->GetName() << " is " << (this->playerList[1]->GetPosition() == Player::Position::IP ? "in position.": "out of position.") << std::endl;
+
             PrintHoleCards(this->playerList[0]);
             PrintHoleCards(this->playerList[1]);
         
-            // player0 is bb, player1 is sb
-            this->pot += this->playerList[0]->PostBlind(this->bigBlind) + this->playerList[1]->PostBlind(this->smallBlind);
+            size_t bbIdx = this->button == 1? 0: 1;
+            this->pot += this->playerList[bbIdx]->PostBlind(this->bigBlind) + this->playerList[this->button]->PostBlind(this->smallBlind);
             
             
-
             std::cout << playerList[0]->GetName() << " posted the big blind ($" << this->bigBlind << ")." << std::endl;
             std::cout << playerList[1]->GetName() << " posted the small blind ($" << this->smallBlind << ")." << std::endl;
 
@@ -341,6 +357,7 @@ void Game::Play()
                 }
             }
         }
+        this->Reset();
         hands++;
     }
     

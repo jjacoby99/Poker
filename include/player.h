@@ -111,6 +111,7 @@ public:
 
     double AddOn(double buyin) { stack += buyin; return stack; }
     double GetStack() const { return stack; }
+    Position GetPosition() const {return position;}
     std::string GetName() const { return name; }
     
     Action GetAction() const { return action; }

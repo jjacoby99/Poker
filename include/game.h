@@ -35,6 +35,9 @@ private:
     // resets the Action and current bet of each player to Undecided and 0, respectively.
     void ResetPlayers();
 
+    // Sets the position attributes of each player before the hand begins
+    void SetPositions();
+
     // awards the pot to the only player who hasn't folded
     void AwardPot();
 
