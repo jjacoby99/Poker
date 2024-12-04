@@ -136,19 +136,20 @@ void Game::AwardPot()
 }
 bool Game::PlayBettingRound(const std::string& name)
 {
-    int curIdx = this->button;
-    int lastIdx = this->button == 0? 1: 0;
+    int curIdx = this->button == 0? 1: 0;
+    int lastIdx = (curIdx == 0)? 1: 0;
+
     std::cout << playerList[0]->GetName() << ". Current bet: $" << playerList[0]->currentBet << std::endl;
     std::cout << playerList[1]->GetName() << ". Current bet: $" << playerList[1]->currentBet << std::endl;
     bool preflop = false;
     if(name == "Pre-flop")
     {
         // action starts on the button
-        lastIdx = this->button;
-        curIdx = this->button == 0? 1: 0;
+        std::swap(curIdx, lastIdx);
         preflop = true;
     }
     
+
     this->playerList[lastIdx]->TakeAction(this->playerList[curIdx]->currentBet, this->bigBlind, name);
 
     if(this->playerList[lastIdx]->GetAction() == Player::Action::FOLD)
@@ -240,6 +241,7 @@ void Game::Play()
         
             // player0 is bb, player1 is sb
             this->pot += this->playerList[0]->PostBlind(this->bigBlind) + this->playerList[1]->PostBlind(this->smallBlind);
+            
             
 
             std::cout << playerList[0]->GetName() << " posted the big blind ($" << this->bigBlind << ")." << std::endl;
