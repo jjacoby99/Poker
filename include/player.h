@@ -4,6 +4,7 @@
 #include "card.h"
 #include "board.h"
 #include "hand.h"
+#include "range.h"
 #include <vector>
 #include <string>
 
@@ -20,6 +21,7 @@ public:
     struct GameState
     {
         std::string street;
+        int bets; // 0 -> no bet (check), 1 -> SRP, 2->raise, re-raise (3!), 3->raise,re-raise,re-re-raise, (4!)
         double pot;
         double toCall;
         double minBet;
@@ -109,6 +111,12 @@ public:
         return copy;
     }
 
+    // Determines the required equity to call, pot odds 
+    double CalculatePotOdds(double pot, double toCall) {return toCall / (pot + toCall); }
+
+    double CalculateMDF(double pot, double toCall) { return 1.0 - toCall / (pot + toCall); }
+    
+
     double AddOn(double buyin) { stack += buyin; return stack; }
     double GetStack() const { return stack; }
     Position GetPosition() const {return position;}
@@ -133,6 +141,7 @@ protected:
     Action action;
 
     Position position;
+    Range range;
 };
 
 #endif
