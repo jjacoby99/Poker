@@ -4,11 +4,13 @@
 #include <vector>
 #include <map>
 #include <iostream>
+#include <tuple>
 
 class Range 
 {
 public: 
 
+    Range();
     // initializes a range object from a vector of pair of hole cards
     // frequency of each hand is assumed to be 1.0 (100%)
     Range(const std::vector<std::pair<Card, Card>>& range, const std::vector<Card>& deadCards = {});
@@ -32,67 +34,21 @@ public:
     // For example, if a suited hand is provided, the number of suited combinations of that same hand will be determined.
     int GetHandCombos(const std::pair<Card, Card>& hand, const std::vector<Card>& deadCards = {});
 
+    // The purpose of this method is to update the range table by determining which combinations of hands are now impossible
+    // due to the new deadCards
+    // importantly, this method assumes that cards already in deadCards have been accounted for
+    void UpdateRange(const std::vector<Card>& newDead);
+
     void PrintRangeTable();
 
     void PrintRangeHeaders();
 
-    std::vector<std::vector<double>> GetRangeTable() const;
+    std::vector<std::vector<std::vector<double>>> GetRangeTable() const;
     
     // gets the combinations of the hand represented by RangeTable[i][j] given dead cards
     // GetCombos(i, j) returns {{As,Ah}, {As,Ac}, {As,Ad}, {Ah,Ac}, {Ah,Ad}, {Ac,Ad}}
     std::vector<std::pair<Card, Card>> GetCombos(const size_t i, const size_t j, const std::vector<Card>& deadCards);
-    /*class Iterator
-    {
-        private:
-            const std::vector<std::vector<double>>& table;
-            size_t outerIndex;
-            size_t innerIndex;
 
-        public:
-            Iterator(const std::vector<std::vector<double>>& table, size_t outer, size_t inner)
-                : table(table), outerIndex(outer), innerIndex(inner) {}
-
-            // Dereference operator
-            double operator*() const 
-            {
-                return table[outerIndex][innerIndex];
-            }
-
-            // Pre-increment operator
-            Iterator& operator++() 
-            {
-                if (++innerIndex >= table[outerIndex].size()) {
-                    innerIndex = 0;
-                    ++outerIndex;
-                }
-                return *this;
-            }
-
-            // Equality comparison
-            bool operator==(const Iterator& other) const 
-            {
-                return outerIndex == other.outerIndex && innerIndex == other.innerIndex;
-            }
-
-            // Inequality comparison
-            bool operator!=(const Iterator& other) const 
-            {
-                return !(*this == other);
-            }
-    };
-
-    // Begin iterator
-    Iterator begin() const 
-    {
-        return Iterator(rangeTable, 0, 0);
-    }
-
-    // End iterator
-    Iterator end() const 
-    {
-        return Iterator(rangeTable, rangeTable.size(), 0);
-    }*/
-    
 
 private:
     
@@ -103,10 +59,11 @@ private:
     // AJo  KJo QJo JJ  ... J4s J3s J2s
     // ...
     // A2o  K2o Q2o J2o ... 42o 32o 22
-    // rangeTable[i][j] is the frequency that the hand is in the range  
-    std::vector<std::vector<double>> rangeTable = std::vector<std::vector<double>>(13, std::vector<double>(13, 0.0));
 
-    const std::vector<double>& operator[](size_t index) const;
+    // rangeTable[i][j] is a vector of the frequency that each combo of the hand is in range  
+    std::vector<std::vector<std::vector<double>>> rangeTable = std::vector<std::vector<std::vector<double>>>(13, std::vector<std::vector<double>>(13, std::vector<double>(4, 0.0)));
+
+    const std::vector<double>& operator[](size_t i) const;
 
     bool IsOffSuitHand(const std::pair<Card,Card>& hand);
 
@@ -114,9 +71,7 @@ private:
 
     bool IsPairHand(const std::pair<Card, Card>& hand);
 
-    double GetSingleHandFrequency(const std::pair<Card, Card>& hand, const std::vector<Card>& deadCards);
-
-
+    std::vector<Card> deadCards{};
     
 };
 

@@ -1,26 +1,106 @@
 #include "range.h"
 
 
+// maps to store the suit combos to their respective tuple indices in range table
+// can be done programatically, but done this way to save time
+
+// order doesn't matter for pairs, ie AhAs == AsAh
+static const std::map<std::pair<Card::Suit, Card::Suit>, size_t> pair2index = {
+    {{Card::Suit::SPADES, Card::Suit::HEARTS}, 0},
+    {{Card::Suit::SPADES, Card::Suit::DIAMONDS}, 1},
+    {{Card::Suit::SPADES, Card::Suit::CLUBS}, 2},
+    {{Card::Suit::HEARTS, Card::Suit::DIAMONDS}, 3},
+    {{Card::Suit::HEARTS, Card::Suit::CLUBS}, 4},
+    {{Card::Suit::DIAMONDS, Card::Suit::CLUBS}, 5}
+};
+
+// only one suit required for suited conversion
+static const std::map<Card::Suit, size_t> suited2index = {
+    {{Card::Suit::SPADES}, 0},
+    {{Card::Suit::HEARTS}, 1},
+    {{Card::Suit::DIAMONDS}, 2},
+    {{Card::Suit::CLUBS}, 3}
+};
+
+// order DOES matter for unsuited hands, ie AhKc != AcKh
+static const std::map<std::pair<Card::Suit, Card::Suit>, size_t> offsuit2index = {
+    {{Card::Suit::SPADES, Card::Suit::HEARTS}, 0},
+    {{Card::Suit::SPADES, Card::Suit::DIAMONDS}, 1},
+    {{Card::Suit::SPADES, Card::Suit::CLUBS}, 2},
+    {{Card::Suit::HEARTS, Card::Suit::SPADES}, 3},
+    {{Card::Suit::HEARTS, Card::Suit::DIAMONDS}, 4},
+    {{Card::Suit::HEARTS, Card::Suit::CLUBS}, 5},
+    {{Card::Suit::DIAMONDS, Card::Suit::SPADES}, 6},
+    {{Card::Suit::DIAMONDS, Card::Suit::HEARTS}, 7},
+    {{Card::Suit::DIAMONDS, Card::Suit::CLUBS}, 8},
+    {{Card::Suit::CLUBS, Card::Suit::SPADES}, 9},
+    {{Card::Suit::CLUBS, Card::Suit::HEARTS}, 10},
+    {{Card::Suit::CLUBS, Card::Suit::DIAMONDS}, 11}
+};
+
+Range::Range()
+{
+    // initialize range table sizes with all false
+
+    for(int row = 0; row < 14; row++)
+    {
+        for(int col = 0; col < 14; col++)
+        {
+            int combos = 0;
+            if(row == col) // pair
+            {
+                combos = 6;
+            }
+            else if(row < col) // suited hand
+            {
+                combos = 4;
+            }
+            else // unsuited hand
+            {
+                combos = 12;
+            }
+
+            for(int i = 0; i < combos; i++)
+            {
+                this->rangeTable[row][col].push_back(false);
+            }
+        }
+    }
+}
 
 Range::Range(const std::vector<std::pair<Card, Card>>& range, const std::vector<Card>& deadCards)
 {
-    double frequency = 1.0;
-
-    std::vector<std::pair<Card, Card>> offSuitHands;
-    std::vector<std::pair<Card, Card>> suitedHands;
-    std::vector<std::pair<Card, Card>> pairedHands;
-
-    for(auto p: range)
+    for(int row = 0; row < 13; row++)
     {
-        std::cout << "Hand: " << p.first << p.second << std::endl;
+        for(int col = 0; col < 13; col++)
+        {
+            int combos = 0;
+            if(row == col) // pair
+            {
+                combos = 6;
+            }
+            else if(row < col) // suited hand
+            {
+                combos = 4;
+            }
+            else // unsuited hand
+            {
+                combos = 12;
+            }
+
+            // 4 is the starting size of rangeTable[i][j], so we need to push back combos - 4 elements
+            for(int i = 0; i < combos - 4; i++)
+            {
+                this->rangeTable[row][col].push_back(0.0);
+            }
+        }
     }
+    
+
     for(const std::pair<Card, Card>& hand: range)
     {
-        // classify each specific hand into it's category for the rangeTable
         if(this->IsPairHand(hand))
         {
-            // paired hand, insert by face value
-            pairedHands.push_back(hand);
             size_t index = static_cast<size_t>(hand.first.GetValue());
             if(index == 1)
             {
@@ -32,12 +112,17 @@ Range::Range(const std::vector<std::pair<Card, Card>>& range, const std::vector<
                 // King = 1, Queen = 2, Jack = 3, ...
                 index = 14 - index;
             }
-            this->rangeTable[index][index] += 1.0 / static_cast<double>(this->GetHandCombos(hand, deadCards));
+            
+            // order of suits for pairs doesn't matter, ei AsAc == AcAs, need to give pair2index the proper order
+            size_t handIdx = pair2index.at(std::make_pair(
+                                hand.first.GetSuit() > hand.second.GetSuit()? hand.first.GetSuit(): hand.second.GetSuit(),                  
+                                hand.first.GetSuit() < hand.second.GetSuit()? hand.first.GetSuit(): hand.second.GetSuit()));
+
+            this->rangeTable[index][index][handIdx] = 1.0; 
         }
         else if(this->IsSuitedHand(hand))
         {
             // row is the highest face value
-            suitedHands.push_back(hand);
             int val1 = static_cast<int>(hand.first.GetValue());
             int val2 = static_cast<int>(hand.second.GetValue());
 
@@ -65,13 +150,15 @@ Range::Range(const std::vector<std::pair<Card, Card>>& range, const std::vector<
             // col can't be an ace
             col = 14 - col;
 
-            this->rangeTable[row][col] += 1.0 / static_cast<double>(this->GetHandCombos(hand, deadCards));
+            // both suits are the same so we only need one
+            size_t handIdx = suited2index.at(hand.first.GetSuit());
+
+            this->rangeTable[row][col][handIdx] = 1.0;
+
         }
         else
         {
             // dealing with an unsuited unpaired hand
-            // these hands make up the lower triangle of the table
-            offSuitHands.push_back(hand);
 
             // col is the highest face value
             int val1 = static_cast<int>(hand.first.GetValue());
@@ -101,11 +188,14 @@ Range::Range(const std::vector<std::pair<Card, Card>>& range, const std::vector<
         
             // row can't be an ace
             row = 14 - row;
-            this->rangeTable[row][col] += 1.0 / static_cast<double>(this->GetHandCombos(hand, deadCards));
-        }
 
+            // order of suits is important
+            size_t handIdx = offsuit2index.at(std::make_pair(hand.first.GetSuit(), hand.second.GetSuit()));
+            this->rangeTable[row][col][handIdx] = 1.0;
+        }
     }
 }
+
 
 Range::Range(const Range& other)
 {
@@ -122,7 +212,7 @@ Range::Range(const std::pair<Card, Card>& bottomOffsuit, const std::pair<Card, C
 
 }
 
-std::vector<std::vector<double>> Range::GetRangeTable() const
+std::vector<std::vector<std::vector<double>>> Range::GetRangeTable() const
 {
     return this->rangeTable;
 }
@@ -132,7 +222,29 @@ void Range::PrintRangeTable()
     {
         for(int j = 0; j < 13; j++)
         {
-            std::cout << this->rangeTable[i][j];
+            double frequency = 0;
+            for(int k = 0; k < this->rangeTable[i][j].size(); k++)
+            {
+                this->rangeTable[i][j][k]? frequency += 1.0: 0;
+            }
+            
+            double combos = 0.0;
+            if(i == j)
+            {
+                combos = 6;
+            }
+            else if(i < j)
+            {
+                combos = 4;
+            }
+            else
+            {
+                combos = 12;
+            }
+            frequency /= combos;
+
+            std::cout << frequency;
+
             if(j != 12)
             {
                 std::cout << " ";
@@ -158,10 +270,10 @@ void Range::PrintRangeHeaders()
     std::cout << "A3o\tK3o\tQ3o\tJ3o\tT3o\t93o\t83o\t73o\t63o\t53o\t43o\t33 \t32s" << std::endl;
     std::cout << "A2o\tK2o\tQ2o\tJ2o\tT2o\t92o\t82o\t72o\t62o\t52o\t42o\t32o\t22 " << std::endl;
 }
-const std::vector<double>& Range::operator[](size_t index) const
+/*const std::vector<double>& Range::operator[](size_t index) const
 {
     return this->rangeTable[index];
-}
+}*/
 bool Range::IsOffSuitHand(const std::pair<Card,Card>& hand)
 {
     return hand.first.GetSuit() != hand.second.GetSuit();
@@ -177,31 +289,6 @@ bool Range::IsPairHand(const std::pair<Card, Card>& hand)
     return hand.first.GetValue() == hand.second.GetValue();
 }
 
-double Range::GetSingleHandFrequency(const std::pair<Card, Card>& hand, const std::vector<Card>& deadCards)
-{
-    int startCombos = 1;
-    if(this->IsPairHand(hand))
-    { 
-        startCombos = 6;
-        int cards = 4;
-        for(const Card& card: deadCards)
-        {
-            if(card.GetValue() == hand.first.GetValue())
-            {
-                cards--;
-            }
-        }
-
-        // number of combos is cards choose 2
-        return static_cast<double>(cards * (cards - 1)) / 2.0 / startCombos;
-    }
-
-    // steps
-    // determine how many dead cards have the same face value as one card in the hand
-    // determine how many combos. 
-
-    return 1.0;
-}
 int CountAvailableCards(const Card& c, const std::vector<Card>& deadCards)
 {
     int count = 4;
@@ -294,41 +381,27 @@ int Range::GetHandCombos(const std::pair<Card, Card>& hand, const std::vector<Ca
     return (availableRank1 * availableRank2) - (4 - deadSuits);
 }
 
-std::vector<std::pair<Card, Card>> Range::GetCombos(const size_t i, const size_t j, const std::vector<Card>& deadCards)
+
+void Range::UpdateRange(const std::vector<Card>& newDead)
 {
-    int suit = 0;
-    int rank = 0;
-    if(i == j)
+    for(const Card& c: newDead)
     {
-        // paired card
-        if(i == 0)
+        int idx = static_cast<int>(c.GetValue());
+        if(idx == 1)
         {
-            // aces
-            rank = 1;
+            // ace
+            idx = 0;
         }
         else
         {
-            rank = 14 - i;
+            idx = 14 - idx;
         }
-        Card::FaceValue faceVal = static_cast<Card::FaceValue>(rank);
-        
-        // note that the suits are irrelevant here. MapDeadSuits does not depend on the suits of hand, only that of deadCards
-        std::map<Card::Suit, bool> deadSuits = MapDeadSuits({Card(Card::Suit::CLUBS, faceVal), Card(Card::Suit::DIAMONDS, faceVal)}, deadCards);
 
-        std::vector<Card> cards;
-        for(auto p : deadSuits)
-        {
-            if(!p.second)
-            {
-                // if a suit isn't dead, add it to the list of cards to form permutations with
-                cards.push_back(Card(p.first, faceVal));
-            }
-        }
-        
-    }   
-    if(i < j)
-    {
-        // suited hand
     }
-    // unsuited hand
+
+    for(const Card& c: newDead)
+    {
+        this->deadCards.push_back(c);
+    }
+
 }
