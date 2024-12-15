@@ -396,6 +396,8 @@ void Range::UpdateRange(const std::vector<Card>& newDead)
         {
             idx = 14 - idx;
         }
+        // search row and column idx, set frequency of any hands containing the specific card to 0.0
+        
 
     }
 
