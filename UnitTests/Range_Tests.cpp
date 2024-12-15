@@ -37,7 +37,10 @@ TEST(RangeTests, PrintRange)
     std::pair<Card, Card> QhQd = {Card(Card::Suit::HEARTS, Card::FaceValue::QUEEN), Card(Card::Suit::DIAMONDS, Card::FaceValue::QUEEN)};
 
     std::vector<std::pair<Card, Card>> hands = {AsAc, AsAd, AsAh, AcAh, AcAd, AhAd, KsKc, KsKd, KsKh, KcKh, KcKd, KhKd, QsQc, QsQd, QsQh, QcQh, QcQd, QhQd};
+    
+
     Range r(hands);
+
     r.PrintRangeHeaders();
     r.PrintRangeTable();
 }
